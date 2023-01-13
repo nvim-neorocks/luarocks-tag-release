@@ -129,6 +129,9 @@ if repo_info_str and repo_info_str ~= '' then
   if not summary or summary == '' then
     summary = repo_meta.description and repo_meta.description or ''
   end
+  if not labels or #labels == 0 then
+    labels = repo_meta.topics and repo_meta.topics or {}
+  end
   if repo_meta.homepage and repo_meta.homepage ~= '' then
     homepage = repo_meta.homepage
   end
