@@ -71,6 +71,7 @@ Example:
 #### `labels`
 
 Labels to add to the rockspec.
+If none are specified, this action will use the repo's GitHub.
 
 Example:
 
