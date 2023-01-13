@@ -19,6 +19,8 @@ jobs:
           dependencies: |
             plenary.nvim
             telescope.nvim
+          labels: |
+            neovim
           summary: "Luarocks release workflow for GitHub"
           detailed_description: |
             This is not a real lua package.
