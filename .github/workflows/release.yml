@@ -1,0 +1,27 @@
+name: "Luarocks release"
+on: 
+  push:
+    tags:
+      - '*'
+
+jobs:
+  luarocks-release:
+    runs-on: ubuntu-latest
+    name: Luarocks upload
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Luarocks Upload
+        uses: ./
+        env:
+          LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
+        with:
+          dependencies: |
+            plenary.nvim
+            telescope.nvim
+          labels: |
+            neovim
+          summary: "Luarocks release workflow for GitHub"
+          detailed_description: |
+            This is not a real lua package.
+            It exists for the purpose of testing the workflow.

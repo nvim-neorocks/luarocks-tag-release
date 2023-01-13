@@ -1,0 +1,35 @@
+local git_tag = '$git_tag'
+local modrev = '$modrev'
+local specrev = '-1'
+
+local repo_url = '$repo_url'
+
+rockspec_format = '3.0'
+package = '$package'
+version = modrev .. specrev
+
+description = {
+  summary = '$summary',
+  detailed = $detailed,
+  labels = $labels,
+  homepage = '$homepage',
+  $license
+}
+
+dependencies = $dependencies
+
+source = {
+  url = repo_url .. '/archive/' .. git_tag .. '.zip',
+  dir = '$repo_name-' .. modrev,
+}
+
+if modrev == 'scm' then
+  source = {
+    url = repo_url,
+  }
+end
+
+build = {
+  type = '$build_type',
+  copy_directories = $copy_directories,
+}
