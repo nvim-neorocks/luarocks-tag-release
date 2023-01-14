@@ -142,7 +142,7 @@ Example:
 ## Limitations
 
 * This workflow only works on public repositories.
-* This action was designed with Neovim plugins in mind. It should work with any Luarocks package, but this has not been tested.
+* This action was designed with Neovim plugins in mind. It should work with any Luarocks package (lua >= 5.1), but this has not been tested.
 
 ## Acknowledgements
 
