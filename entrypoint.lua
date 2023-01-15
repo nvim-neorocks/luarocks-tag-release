@@ -39,6 +39,7 @@ local copy_directories = parse_list_args(args[4])
 local summary = args[5]
 local detailed_description_lines = parse_list_args(args[6])
 local build_type = args[7]
+local rockspec_template_file_path = args[8]
 
 local modrev = git_tag:gsub('v', '')
 
@@ -102,15 +103,10 @@ local function mk_lua_multiline_str(tbl)
   return '[[\n    ' .. table.concat(tbl, '\n    ') .. '  \n]]'
 end
 
-local rockspec_template_file = io.open(package .. '.rockspec.template', 'r')
-if rockspec_template_file then
-  print('Found rockspec template file.')
-else
-  print('Using predefined rockspec template file.')
-  rockspec_template_file = io.open('/rockspec.template', 'r')
-end
+print('Using template: ' .. rockspec_template_file_path)
+local rockspec_template_file = io.open(rockspec_template_file_path, 'r')
 if not rockspec_template_file then
-  error('Could not open rockspec.template. Please report this as a bug.')
+  error('Could not open ' .. rockspec_template_file_path)
 end
 local content = rockspec_template_file:read('*a')
 rockspec_template_file:close()
@@ -141,7 +137,7 @@ local rockspec = content
   :gsub('$repo_url', repo_url)
   :gsub('$package', package)
   :gsub('$summary', summary)
-  :gsub('$detailed', mk_lua_multiline_str(detailed_description_lines))
+  :gsub('$detailed_description', mk_lua_multiline_str(detailed_description_lines))
   :gsub('$dependencies', mk_table_str(dependencies))
   :gsub('$labels', mk_table_str(labels))
   :gsub('$homepage', homepage)

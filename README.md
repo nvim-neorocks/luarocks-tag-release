@@ -23,11 +23,11 @@ No need to add a rockspec to your repo for each release (or at all).
 
 Create `.github/workflows/release.yml` in your repo with the following contents:
 ```yaml
-name: "Luarocks release"
+name: Luarocks release
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   luarocks-release:
@@ -136,7 +136,23 @@ Example:
 - name: Luarocks Upload
   uses: mrcjkb/luarocks-tag-release@master
   with:
-    build_type: 'make'
+    build_type: "make"
+```
+
+#### `template`
+
+By default, this workflow will generate a rockspec based on a [predefined template](./rockspec.template).
+
+You can also add a modified template to your repository and specify the path to it with the `template` variable.
+
+
+Example:
+
+```yaml
+- name: Luarocks Upload
+  uses: mrcjkb/luarocks-tag-release@master
+  with:
+    template: "/path/to/my/template.rockspec"
 ```
 
 ## Limitations
