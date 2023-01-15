@@ -62,6 +62,7 @@ RUN set -ex \
 FROM alpine-luarocks AS luarocks-tag-release
 
 RUN luarocks install dkjson
-COPY *.rockspec rockspec.template entrypoint.lua /
+COPY rockspec.template /rockspec.template
+COPY entrypoint.lua /entrypoint.lua
 
 ENTRYPOINT ["/entrypoint.lua"]
