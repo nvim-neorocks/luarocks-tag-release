@@ -142,7 +142,8 @@ Example:
 ## Limitations
 
 * This workflow only works on public repositories.
-* This action was designed with Neovim plugins in mind. It should work with any Luarocks package (lua >= 5.1), but this has not been tested.
+* It was designed with Neovim plugins in mind. It should work with any Luarocks package (lua >= 5.1), but this has not been tested.
+* The docker image uses lua 5.1. So any packages that depend on lua > 5.1 will fail to install.
 
 ## Acknowledgements
 
