@@ -88,15 +88,6 @@ local function luarocks_upload(rockspec_content)
   print(stdout)
 end
 
-local rockspec_template_file = io.open(package .. '.rockspec.template', 'r')
-if rockspec_template_file then
-  print('Found rockspec template file. Copying to ' .. target_rockspec_file)
-  local content = rockspec_template_file:read('*a')
-  rockspec_template_file:close()
-  luarocks_upload(content)
-  return true
-end
-
 local function mk_table_str(tbl)
   if #tbl == 0 then
     return '{ }'
@@ -111,7 +102,13 @@ local function mk_lua_multiline_str(tbl)
   return '[[\n    ' .. table.concat(tbl, '\n    ') .. '  \n]]'
 end
 
-rockspec_template_file = io.open('rockspec.template', 'r')
+local rockspec_template_file = io.open(package .. '.rockspec.template', 'r')
+if rockspec_template_file then
+  print('Found rockspec template file.')
+else
+  rockspec_template_file = io.open('rockspec.template', 'r')
+end
+
 if not rockspec_template_file then
   error('Could not open rockspec.template. Please report this as a bug.')
 end
