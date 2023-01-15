@@ -104,11 +104,11 @@ end
 
 local rockspec_template_file = io.open(package .. '.rockspec.template', 'r')
 if rockspec_template_file then
-  print('Found rockspec template file.')
+  print('Found rockspec template file: ' .. rockspec_template_file)
 else
+  print('Using predefined rockspec template file.')
   rockspec_template_file = io.open('rockspec.template', 'r')
 end
-
 if not rockspec_template_file then
   error('Could not open rockspec.template. Please report this as a bug.')
 end
