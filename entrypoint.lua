@@ -88,7 +88,7 @@ local function luarocks_upload(rockspec_content)
   print(stdout)
 end
 
-local rockspec_template_file = io.open(package .. '-template.rockspec', 'r')
+local rockspec_template_file = io.open(package .. '.rockspec.template', 'r')
 if rockspec_template_file then
   print('Found rockspec template file. Copying to ' .. target_rockspec_file)
   local content = rockspec_template_file:read('*a')
