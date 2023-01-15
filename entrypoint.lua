@@ -89,14 +89,14 @@ local function luarocks_upload(rockspec_content)
 end
 
 local function mk_table_str(tbl)
-  if #tbl == 0 then
+  if not tbl or #tbl == 0 then
     return '{ }'
   end
   return "{ '" .. table.concat(tbl, "', '") .. "' } "
 end
 
 local function mk_lua_multiline_str(tbl)
-  if #tbl == 0 then
+  if not tbl or #tbl == 0 then
     return "''"
   end
   return '[[\n    ' .. table.concat(tbl, '\n    ') .. '  \n]]'
@@ -122,7 +122,7 @@ local repo_info_str, _ =
 if repo_info_str and repo_info_str ~= '' then
   local json = require('dkjson')
   local repo_meta = json.decode(repo_info_str)
-  license = repo_meta.license and "license = '" .. repo_meta.license.spdx_id .. "'"
+  license = repo_meta.license and "license = '" .. repo_meta.license.spdx_id .. "'" or ''
   if not summary or summary == '' then
     summary = repo_meta.description and repo_meta.description or ''
   end
