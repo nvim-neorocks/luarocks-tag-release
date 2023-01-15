@@ -10,7 +10,7 @@ version = modrev .. specrev
 
 description = {
   summary = '$summary',
-  detailed = $detailed,
+  detailed = $detailed_description,
   labels = $labels,
   homepage = '$homepage',
   $license

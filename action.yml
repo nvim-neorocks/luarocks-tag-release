@@ -29,9 +29,13 @@ inputs:
     summary: "'builtin' or 'make'"
     required: true
     default: "builtin"
+  template:
+    summary: "Path to a rockspec template."
+    required: true
+    default: "/rockspec.template"
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
   args:
     - ${{ inputs.name }}
     - ${{ inputs.dependencies }}
@@ -40,4 +44,4 @@ runs:
     - ${{ inputs.summary }}
     - ${{ inputs.detailed_description }}
     - ${{ inputs.build_type }}
-    - ${{ inputs.upload }}
+    - ${{ inputs.template }}
