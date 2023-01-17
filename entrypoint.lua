@@ -1,6 +1,17 @@
 #!/usr/bin/env lua
 
-local args = { ... }
+---@class Args
+---@field package string
+---@field dependencies string[]
+---@field labels string[]
+---@field copy_directories string[]
+---@field summary string
+---@field detailed_description_lines string[]
+---@field build_type string
+---@field rockspec_template_file_path string
+
+---@type string[]
+local arg_list = { ... }
 
 local ref_type = os.getenv('GITHUB_REF_TYPE')
 if not ref_type or ref_type ~= 'tag' then
@@ -11,6 +22,8 @@ if not os.getenv('LUAROCKS_API_KEY') then
   error('LUAROCKS_API_KEY secret not set')
 end
 
+---@param str string
+---@return string[] list_arg
 local function parse_list_args(str)
   local tbl = {}
   for arg in str:gmatch('[^\r\n]+') do
@@ -24,30 +37,41 @@ local github_repo = os.getenv('GITHUB_REPOSITORY')
 if not github_repo then
   error('GITHUB_REPOSITORY not set')
 end
+
+---@type string
 local repo_name = github_repo:match('/(.+)')
+  or error([[
+    Could not determine repo name from GITHUB_REPOSITORY.
+    If you see this, please report this as a bug.
+  ]])
 
 local github_server_url = os.getenv('GITHUB_SERVER_URL')
 if not github_server_url then
   error('GITHUB_SERVER_URL not set')
 end
 
-local package = args[1]
-local dependencies = parse_list_args(args[2])
-table.insert(dependencies, 1, 'lua >= 5.1')
-local labels = parse_list_args(args[3])
-local copy_directories = parse_list_args(args[4])
-local summary = args[5]
-local detailed_description_lines = parse_list_args(args[6])
-local build_type = args[7]
-local rockspec_template_file_path = args[8]
+---@type Args
+local args = {
+  package = arg_list[1],
+  dependencies = parse_list_args(arg_list[2]),
+  labels = parse_list_args(arg_list[3]),
+  copy_directories = parse_list_args(arg_list[4]),
+  summary = arg_list[5],
+  detailed_description_lines = parse_list_args(arg_list[6]),
+  build_type = arg_list[7],
+  rockspec_template_file_path = arg_list[8],
+}
+table.insert(args.dependencies, 1, 'lua >= 5.1')
 
 local modrev = git_tag:gsub('v', '')
 
 local target_rockspec_file = package .. '-' .. modrev .. '-1.rockspec'
 
-local function read_file(fname)
-  local content = ''
-  local f = io.open(fname, 'r')
+---@param filename string
+---@return string? content
+local function read_file(filename)
+  local content
+  local f = io.open(filename, 'r')
   if f then
     content = f:read('*a')
     f:close()
@@ -55,19 +79,24 @@ local function read_file(fname)
   return content
 end
 
+---@param cmd string
+---@param on_failure fun(error_msg:string)
+---@return string stdout, string stderr
 local function execute(cmd, on_failure)
   local exec_out = 'exec_out.txt'
   local exec_err = 'exec_err.txt'
   local to_exec_out = ' >' .. exec_out .. ' 2>' .. exec_err
   local exit_code = os.execute(cmd .. to_exec_out)
-  local stdout = read_file(exec_out)
-  local stderr = read_file(exec_err)
+  local stdout = read_file(exec_out) or ''
+  local stderr = read_file(exec_err) or ''
   if exit_code ~= 0 then
     on_failure('FAILED (exit code ' .. exit_code .. '): ' .. cmd .. ' ' .. stderr)
   end
   return stdout, stderr
 end
 
+---@param rockspec_content string
+---@return nil
 local function luarocks_upload(rockspec_content)
   local outfile = io.open(target_rockspec_file, 'w')
   if not outfile then
@@ -89,24 +118,28 @@ local function luarocks_upload(rockspec_content)
   print(stdout)
 end
 
-local function mk_table_str(tbl)
-  if not tbl or #tbl == 0 then
+---@param xs string[]?
+---@return string lua_list_string
+local function mk_lua_list_string(xs)
+  if not xs or #xs == 0 then
     return '{ }'
   end
-  return "{ '" .. table.concat(tbl, "', '") .. "' } "
+  return "{ '" .. table.concat(xs, "', '") .. "' } "
 end
 
-local function mk_lua_multiline_str(tbl)
-  if not tbl or #tbl == 0 then
+---@param xs string[]?
+---@return string lua_multiline_string
+local function mk_lua_multiline_str(xs)
+  if not xs or #xs == 0 then
     return "''"
   end
-  return '[[\n    ' .. table.concat(tbl, '\n    ') .. '  \n]]'
+  return '[[\n    ' .. table.concat(xs, '\n    ') .. '  \n]]'
 end
 
-print('Using template: ' .. rockspec_template_file_path)
-local rockspec_template_file = io.open(rockspec_template_file_path, 'r')
+print('Using template: ' .. args.rockspec_template_file_path)
+local rockspec_template_file = io.open(args.rockspec_template_file_path, 'r')
 if not rockspec_template_file then
-  error('Could not open ' .. rockspec_template_file_path)
+  error('Could not open ' .. args.rockspec_template_file_path)
 end
 local content = rockspec_template_file:read('*a')
 rockspec_template_file:close()
@@ -119,11 +152,11 @@ if repo_info_str and repo_info_str ~= '' then
   local json = require('dkjson')
   local repo_meta = json.decode(repo_info_str)
   license = repo_meta.license and "license = '" .. repo_meta.license.spdx_id .. "'" or ''
-  if not summary or summary == '' then
-    summary = repo_meta.description and repo_meta.description or ''
+  if not args.summary or args.summary == '' then
+    args.summary = repo_meta.description and repo_meta.description or ''
   end
-  if not labels or #labels == 0 then
-    labels = repo_meta.topics and repo_meta.topics or {}
+  if not args.labels or #args.labels == 0 then
+    args.labels = repo_meta.topics and repo_meta.topics or {}
   end
   if repo_meta.homepage and repo_meta.homepage ~= '' then
     homepage = repo_meta.homepage
@@ -136,14 +169,14 @@ local rockspec = content
   :gsub('$modrev', modrev)
   :gsub('$repo_url', repo_url)
   :gsub('$package', package)
-  :gsub('$summary', summary)
-  :gsub('$detailed_description', mk_lua_multiline_str(detailed_description_lines))
-  :gsub('$dependencies', mk_table_str(dependencies))
-  :gsub('$labels', mk_table_str(labels))
+  :gsub('$summary', args.summary)
+  :gsub('$detailed_description', mk_lua_multiline_str(args.detailed_description_lines))
+  :gsub('$dependencies', mk_lua_list_string(args.dependencies))
+  :gsub('$labels', mk_lua_list_string(args.labels))
   :gsub('$homepage', homepage)
   :gsub('$license', license)
-  :gsub('$copy_directories', mk_table_str(copy_directories))
-  :gsub('$build_type', build_type)
+  :gsub('$copy_directories', mk_lua_list_string(args.copy_directories))
+  :gsub('$build_type', args.build_type)
   :gsub('$repo_name', repo_name)
 
 print('')
@@ -156,4 +189,3 @@ luarocks_upload(rockspec)
 
 print('')
 print('Done.')
-return true
