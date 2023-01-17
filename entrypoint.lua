@@ -26,7 +26,7 @@ end
 ---@return string[] list_arg
 local function parse_list_args(str)
   local tbl = {}
-  for arg in str:gmatch('[^\r\n]+') do
+  for arg in string.gmatch(str, '[^\r\n]+') do
     table.insert(tbl, arg)
   end
   return tbl
@@ -38,12 +38,13 @@ if not github_repo then
   error('GITHUB_REPOSITORY not set')
 end
 
----@type string
-local repo_name = github_repo:match('/(.+)')
-  or error([[
+local repo_name = string.match(github_repo, '/(.+)')
+if not repo_name then
+  error([[
     Could not determine repo name from GITHUB_REPOSITORY.
     If you see this, please report this as a bug.
   ]])
+end
 
 local github_server_url = os.getenv('GITHUB_SERVER_URL')
 if not github_server_url then
@@ -63,7 +64,7 @@ local args = {
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 
-local modrev = git_tag:gsub('v', '')
+local modrev = string.gsub(git_tag, 'v', '')
 
 local target_rockspec_file = args.package_name .. '-' .. modrev .. '-1.rockspec'
 
