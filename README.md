@@ -5,7 +5,7 @@
 > This action is a work in progress and may be moved to another oragnisation.
 
 Publishes packages to [LuaRocks](https://luarocks.org/) when a git tag is pushed.
-No need to add a rockspec to your repo for each release (or at all).
+No need to add a rockspec to your repository for each release (or at all).
 
 ## Features
 
@@ -17,11 +17,11 @@ No need to add a rockspec to your repo for each release (or at all).
 ## Prerequisites
 
 * A Luarocks account and an [API key](https://luarocks.org/settings/api-keys).
-* Add the API key to your [repo's GitHub Actions secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
+* Add the API key to your [repository's GitHub Actions secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 
 ## Usage
 
-Create `.github/workflows/release.yml` in your repo with the following contents:
+Create `.github/workflows/release.yml` in your repository with the following contents:
 ```yaml
 name: Luarocks release
 on:
@@ -46,13 +46,13 @@ jobs:
 
 The following optional inputs can be specified using `with:`
 
-#### `name`
+### `name`
 
 The name of the the luarocks package.
 
 * Defaults to the repository name.
 
-#### `dependencies`
+### `dependencies`
 
 Lua dependencies.
 Any dependencies specified here must be available on Luarocks.
@@ -68,10 +68,10 @@ Example:
       telescope.nvim
 ```
 
-#### `labels`
+### `labels`
 
 Labels to add to the rockspec.
-If none are specified, this action will use the repo's GitHub.
+If none are specified, this action will use the repository's GitHub.
 
 Example:
 
@@ -83,7 +83,7 @@ Example:
       neovim
 ```
 
-#### `copy_directories`
+### `copy_directories`
 
 Directories in the source directory to be copied to the rock installation prefix as-is. Useful for installing documentation and other files such as samples and tests.
 
@@ -102,12 +102,12 @@ Example to specify additional directories:
 >
 > Do not use the following directory names: `lua`, `lib`, `rock_manifest` or the name of your rockspec; those names are used by the .rock format internally, and attempting to copy directories with those names using the build.copy_directories directive will cause a clash.
 
-#### `summary`
+### `summary`
 
 A short description of the package (one line).
-If excluded, this action will fetch it from your repo's about section.
+If excluded, this action will fetch it from your repository's about section.
 
-#### `detailed_description`
+### `detailed_description`
 
 A more detailed description of the package. Can be multiple lines.
 
@@ -119,11 +119,11 @@ Example:
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
-      Automatically generates a rockspec from repo metadata
+      Automatically generates a rockspec from repository metadata
       and tests the installation before releasing.
 ```
 
-#### `build_type`
+### `build_type`
 
 The LuaRocks build backend.
 
@@ -139,7 +139,7 @@ Example:
     build_type: "make"
 ```
 
-#### `template`
+### `template`
 
 By default, this workflow will generate a rockspec based on a [predefined template](./rockspec.template).
 

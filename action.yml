@@ -1,3 +1,4 @@
+---
 name: 'Luarocks tag release'
 decription: 'Publish a package to Luarocks when a new tag is pushed'
 inputs:
