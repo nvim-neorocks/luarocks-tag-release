@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 
 ---@class Args
----@field package string
+---@field package_name string
 ---@field dependencies string[]
 ---@field labels string[]
 ---@field copy_directories string[]
