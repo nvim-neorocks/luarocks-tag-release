@@ -65,7 +65,7 @@ table.insert(args.dependencies, 1, 'lua >= 5.1')
 
 local modrev = git_tag:gsub('v', '')
 
-local target_rockspec_file = package .. '-' .. modrev .. '-1.rockspec'
+local target_rockspec_file = args.package .. '-' .. modrev .. '-1.rockspec'
 
 ---@param filename string
 ---@return string? content
@@ -112,7 +112,7 @@ local function luarocks_upload(rockspec_content)
   print('UPLOAD: ' .. cmd)
   stdout, _ = execute(cmd, error)
   print(stdout)
-  cmd = 'luarocks install ' .. package .. ' ' .. modrev
+  cmd = 'luarocks install ' .. args.package .. ' ' .. modrev
   print('TEST: ' .. cmd)
   stdout, _ = execute(cmd, print)
   print(stdout)
@@ -163,12 +163,12 @@ if repo_info_str and repo_info_str ~= '' then
   end
 end
 
-print('Generating Luarocks release ' .. modrev .. ' for: ' .. package .. ' ' .. git_tag .. '.')
+print('Generating Luarocks release ' .. modrev .. ' for: ' .. args.package .. ' ' .. git_tag .. '.')
 local rockspec = content
   :gsub('$git_tag', git_tag)
   :gsub('$modrev', modrev)
   :gsub('$repo_url', repo_url)
-  :gsub('$package', package)
+  :gsub('$package', args.package)
   :gsub('$summary', args.summary)
   :gsub('$detailed_description', mk_lua_multiline_str(args.detailed_description_lines))
   :gsub('$dependencies', mk_lua_list_string(args.dependencies))
