@@ -1,6 +1,10 @@
 ---
 name: 'Luarocks tag release'
-decription: 'Publish a package to Luarocks when a new tag is pushed'
+description: 'Publish a package to Luarocks when a new tag is pushed'
+author: 'Marc Jakobi'
+branding:
+  color: 'purple'
+  icon: 'moon'
 inputs:
   name:
     description: "The name of the your package"
