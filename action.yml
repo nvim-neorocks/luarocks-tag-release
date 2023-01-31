@@ -27,15 +27,19 @@ inputs:
     required: true
     default: ""
   detailed_description:
-    summary: "Detailed description of the package."
+    description: "Detailed description of the package."
     required: true
     default: ""
   build_type:
-    summary: "'builtin' or 'make'"
+    description: "The build type."
     required: true
-    default: "builtin"
+    default: builtin
+    type: choice
+    options:
+      - builtin
+      - make
   template:
-    summary: "Path to a rockspec template."
+    description: "Path to a rockspec template."
     required: true
     default: "/rockspec.template"
 runs:
