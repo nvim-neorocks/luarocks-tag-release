@@ -1,8 +1,4 @@
-# [WIP] LuaRocks tag release action
-
-> :warning:
->
-> This action is a work in progress and may be moved to another oragnisation.
+# LuaRocks tag release action
 
 Publishes packages to [LuaRocks](https://luarocks.org/) when a git tag is pushed.
 No need to add a rockspec to your repository for each release (or at all).
@@ -16,14 +12,14 @@ No need to add a rockspec to your repository for each release (or at all).
 
 ## Prerequisites
 
-* A Luarocks account and an [API key](https://luarocks.org/settings/api-keys).
+* A LuaRocks account and an [API key](https://luarocks.org/settings/api-keys).
 * Add the API key to your [repository's GitHub Actions secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 
 ## Usage
 
 Create `.github/workflows/release.yml` in your repository with the following contents:
 ```yaml
-name: Luarocks release
+name: LuaRocks release
 on:
   push:
     tags:
@@ -32,12 +28,12 @@ on:
 jobs:
   luarocks-release:
     runs-on: ubuntu-latest
-    name: Luarocks upload
+    name: LuaRocks upload
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Luarocks Upload
-        uses: mrcjkb/luarocks-tag-release@master
+      - name: LuaRocks Upload
+        uses: nvim-neorocks/luarocks-tag-release@v1.0.0
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
@@ -55,13 +51,13 @@ The name of the the luarocks package.
 ### `dependencies`
 
 Lua dependencies.
-Any dependencies specified here must be available on Luarocks.
+Any dependencies specified here must be available on LuaRocks.
 
 Example:
 
 ```yaml
-- name: Luarocks Upload
-  uses: mrcjkb/luarocks-tag-release@master
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v1.0.0
   with:
     dependencies: |
       plenary.nvim
@@ -76,8 +72,8 @@ If none are specified, this action will use the repository's GitHub.
 Example:
 
 ```yaml
-- name: Luarocks Upload
-  uses: mrcjkb/luarocks-tag-release@master
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v1.0.0
   with:
     labels: |
       neovim
@@ -90,15 +86,15 @@ Directories in the source directory to be copied to the rock installation prefix
 Example to specify additional directories:
 
 ```yaml
-- name: Luarocks Upload
-  uses: mrcjkb/luarocks-tag-release@master
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v1.0.0
   with:
     copy_directories: |
       doc
       plugin
 ```
 
-> :warning:
+>**Warning**
 >
 > Do not use the following directory names: `lua`, `lib`, `rock_manifest` or the name of your rockspec; those names are used by the .rock format internally, and attempting to copy directories with those names using the build.copy_directories directive will cause a clash.
 
@@ -114,8 +110,8 @@ A more detailed description of the package. Can be multiple lines.
 Example:
 
 ```yaml
-- name: Luarocks Upload
-  uses: mrcjkb/luarocks-tag-release@master
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v1.0.0
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -133,8 +129,8 @@ The LuaRocks build backend.
 Example:
 
 ```yaml
-- name: Luarocks Upload
-  uses: mrcjkb/luarocks-tag-release@master
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v1.0.0
   with:
     build_type: "make"
 ```
@@ -149,8 +145,8 @@ You can also add a modified template to your repository and specify the path to 
 Example:
 
 ```yaml
-- name: Luarocks Upload
-  uses: mrcjkb/luarocks-tag-release@master
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v1.0.0
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -158,8 +154,8 @@ Example:
 ## Limitations
 
 * This workflow only works on public repositories.
-* It was designed with Neovim plugins in mind. It should work with any Luarocks package (lua >= 5.1), but this has not been tested.
-* The docker image uses lua 5.1. So any packages that depend on lua > 5.1 will fail to install.
+* It was designed with Neovim plugins in mind. It should work with any LuaRocks package (lua >= 5.1), but this has not been tested.
+* This action uses lua 5.1. So any packages that depend on lua > 5.1 will fail to install.
 
 ## Acknowledgements
 

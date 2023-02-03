@@ -1,6 +1,6 @@
 ---
-name: 'Luarocks tag release'
-description: 'Publish a package to Luarocks when a new tag is pushed'
+name: 'LuaRocks tag release'
+description: 'Publish a package to LuaRocks when a new tag is pushed'
 author: 'Marc Jakobi'
 branding:
   color: 'purple'
@@ -11,7 +11,7 @@ inputs:
     required: true
     default: ${{ github.event.repository.name }}
   dependencies:
-    description: "List of Luarocks dependencies."
+    description: "List of LuaRocks dependencies."
     required: true
     default: ""
   labels:
