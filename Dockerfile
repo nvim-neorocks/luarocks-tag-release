@@ -8,4 +8,4 @@ COPY flake.lock /pkg/flake.lock
 COPY entrypoint.sh /entrypoint.sh
 COPY rockspec.template /rockspec.template
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]

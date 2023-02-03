@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.0.1] - 2023-02-03
+### Fixed
+- Used wrong entrypoint.sh
+
 ## [v1.0.0] - 2023-02-03
 ### Added
 - First release.
