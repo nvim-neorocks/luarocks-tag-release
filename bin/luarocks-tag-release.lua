@@ -164,13 +164,20 @@ if repo_info_str and repo_info_str ~= '' then
   end
 end
 
+---@param str string
+---@return string
+local function escape_quotes(str)
+  local escaped = str:gsub("'", "\\'")
+  return escaped
+end
+
 print('Generating Luarocks release ' .. modrev .. ' for: ' .. args.package_name .. ' ' .. git_tag .. '.')
 local rockspec = content
   :gsub('$git_tag', git_tag)
   :gsub('$modrev', modrev)
   :gsub('$repo_url', repo_url)
   :gsub('$package', args.package_name)
-  :gsub('$summary', args.summary)
+  :gsub('$summary', escape_quotes(args.summary))
   :gsub('$detailed_description', mk_lua_multiline_str(args.detailed_description_lines))
   :gsub('$dependencies', mk_lua_list_string(args.dependencies))
   :gsub('$labels', mk_lua_list_string(args.labels))
