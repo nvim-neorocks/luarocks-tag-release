@@ -42,6 +42,13 @@ inputs:
     description: "Path to a rockspec template."
     required: true
     default: "/rockspec.template"
+  license:
+    description: |
+      The license SPDX identifier.
+      By default, it will be fetched from GitHub.
+      But sometimes, GitHub does not recognise it,
+      in which case LuaRocks will fall back to this one.
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -54,3 +61,4 @@ runs:
     - ${{ inputs.detailed_description }}
     - ${{ inputs.build_type }}
     - ${{ inputs.template }}
+    - ${{ inputs.license }}

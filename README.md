@@ -33,7 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v1.0.2
+        uses: nvim-neorocks/luarocks-tag-release@v2.0.0
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
@@ -57,7 +57,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v1.0.2
+  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
   with:
     dependencies: |
       plenary.nvim
@@ -73,7 +73,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v1.0.2
+  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
   with:
     labels: |
       neovim
@@ -87,7 +87,7 @@ Example to specify additional directories:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v1.0.2
+  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
   with:
     copy_directories: |
       doc
@@ -111,7 +111,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v1.0.2
+  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -130,7 +130,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v1.0.2
+  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
   with:
     build_type: "make"
 ```
@@ -146,10 +146,30 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v1.0.2
+  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
   with:
     template: "/path/to/my/template.rockspec"
 ```
+
+### `license` (optional)
+
+The license used by this package.
+If not set (by default), this workflow will fetch the license SPDX ID from GitHub.
+If GitHub cannot detect the license automatically, you can set it here.
+
+Example:
+
+```yaml
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  with:
+    license: "MIT"
+```
+> **Note**
+>
+> If GitHub can detect the license automatically, it will be displayed in your repository's About section.
+>
+> ![about](https://user-images.githubusercontent.com/12857160/218101570-b0605716-0457-47c1-ab2e-91d48a48881c.png)
 
 ## Limitations
 
