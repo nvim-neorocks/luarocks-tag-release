@@ -9,6 +9,7 @@
 ---@field detailed_description_lines string[]
 ---@field build_type string
 ---@field rockspec_template_file_path string
+---@field license string|nil
 
 ---@type string[]
 local arg_list = { ... }
@@ -61,6 +62,7 @@ local args = {
   detailed_description_lines = parse_list_args(arg_list[6]),
   build_type = arg_list[7],
   rockspec_template_file_path = arg_list[8],
+  license = #arg_list > 8 and arg_list[9] ~= '' and arg_list[9] or nil,
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 
@@ -146,13 +148,24 @@ local content = rockspec_template_file:read('*a')
 rockspec_template_file:close()
 local repo_url = github_server_url .. '/' .. github_repo
 local homepage = repo_url
-local license = ''
+local license
 local repo_info_str, _ =
   execute('curl -H "Accept: application/vnd.github+json" https://api.github.com/repos/' .. github_repo, print)
 if repo_info_str and repo_info_str ~= '' then
   local json = require('dkjson')
   local repo_meta = json.decode(repo_info_str)
-  license = repo_meta.license and "license = '" .. repo_meta.license.spdx_id .. "'" or ''
+  local repo_license = repo_meta.license
+  if args.license then
+    license = "license = '" .. args.license .. "'"
+  elseif repo_license and repo_license.spdx_id ~= '' and repo_license.spdx_id ~= 'NOASSERTION' then
+    license = "license = '" .. repo_license.spdx_id .. "'"
+  else
+    error([[
+    Could not get the license SPDX ID from the GitHub API.
+    Please add a license file that GitHub can recognise or add a `license` input.
+    See: https://github.com/nvim-neorocks/luarocks-tag-release#license
+    ]])
+  end
   if not args.summary or args.summary == '' then
     args.summary = repo_meta.description and repo_meta.description or ''
   end
