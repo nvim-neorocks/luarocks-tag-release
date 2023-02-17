@@ -3,6 +3,16 @@
 Publishes packages to [LuaRocks](https://luarocks.org/) when a git tag is pushed.
 No need to add a rockspec to your repository for each release (or at all).
 
+## Quick links
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+- [Inputs](#inputs)
+- [Example configurations](https://github.com/nvim-neorocks/luarocks-tag-release/wiki/Example-configurations)
+- [Limitations](#limitations)
+- [Acknowledgements](#acknowledgements)
+
 ## Features
 
 * Can generate a [rockspec](https://github.com/luarocks/luarocks/wiki/Rockspec-format) based on repository metadata and information provided to the action.
