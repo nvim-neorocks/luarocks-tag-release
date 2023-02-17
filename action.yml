@@ -10,6 +10,10 @@ inputs:
     description: "The name of the your package"
     required: true
     default: ${{ github.event.repository.name }}
+  version:
+    description: "The version of your package. By default, the git tag is used."
+    required: true
+    default: ${{ github.ref_name }}
   dependencies:
     description: "List of LuaRocks dependencies."
     required: true
@@ -54,6 +58,7 @@ runs:
   image: "Dockerfile"
   args:
     - ${{ inputs.name }}
+    - ${{ inputs.version }}
     - ${{ inputs.dependencies }}
     - ${{ inputs.labels }}
     - ${{ inputs.copy-directories }}

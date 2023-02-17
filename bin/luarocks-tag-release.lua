@@ -2,6 +2,7 @@
 
 ---@class Args
 ---@field package_name string
+---@field package_version string
 ---@field dependencies string[]
 ---@field labels string[]
 ---@field copy_directories string[]
@@ -14,14 +15,7 @@
 ---@type string[]
 local arg_list = { ... }
 
-local ref_type = os.getenv('GITHUB_REF_TYPE')
-if not ref_type or ref_type ~= 'tag' then
-  error('This GitHub workflow is designed to be run on tagged releases only.')
-end
-
-if not os.getenv('LUAROCKS_API_KEY') then
-  error('LUAROCKS_API_KEY secret not set')
-end
+assert(os.getenv('LUAROCKS_API_KEY'), 'LUAROCKS_API_KEY secret not set')
 
 ---@param str string
 ---@return string[] list_arg
@@ -33,40 +27,43 @@ local function parse_list_args(str)
   return tbl
 end
 
-local git_tag = os.getenv('GITHUB_REF_NAME') or 'scm'
-local github_repo = os.getenv('GITHUB_REPOSITORY')
-if not github_repo then
-  error('GITHUB_REPOSITORY not set')
-end
+local github_repo = assert(os.getenv('GITHUB_REPOSITORY'), 'GITHUB_REPOSITORY not set')
 
-local repo_name = string.match(github_repo, '/(.+)')
-if not repo_name then
-  error([[
-    Could not determine repo name from GITHUB_REPOSITORY.
+local repo_name = assert(
+  string.match(github_repo, '/(.+)'),
+  [[
+    Could not determine repository name from GITHUB_REPOSITORY.
     If you see this, please report this as a bug.
-  ]])
-end
+  ]]
+)
 
-local github_server_url = os.getenv('GITHUB_SERVER_URL')
-if not github_server_url then
-  error('GITHUB_SERVER_URL not set')
-end
+local github_server_url = assert(os.getenv('GITHUB_SERVER_URL'), 'GITHUB_SERVER_URL not set')
 
 ---@type Args
 local args = {
   package_name = arg_list[1],
-  dependencies = parse_list_args(arg_list[2]),
-  labels = parse_list_args(arg_list[3]),
-  copy_directories = parse_list_args(arg_list[4]),
-  summary = arg_list[5],
-  detailed_description_lines = parse_list_args(arg_list[6]),
-  build_type = arg_list[7],
-  rockspec_template_file_path = arg_list[8],
-  license = #arg_list > 8 and arg_list[9] ~= '' and arg_list[9] or nil,
+  package_version = arg_list[2],
+  dependencies = parse_list_args(arg_list[3]),
+  labels = parse_list_args(arg_list[4]),
+  copy_directories = parse_list_args(arg_list[5]),
+  summary = arg_list[6],
+  detailed_description_lines = parse_list_args(arg_list[7]),
+  build_type = arg_list[8],
+  rockspec_template_file_path = arg_list[9],
+  license = #arg_list > 9 and arg_list[10] ~= '' and arg_list[10] or nil,
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 
-local modrev = string.gsub(git_tag, 'v', '')
+local modrev = string.gsub(args.package_version, 'v', '')
+
+local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
+local git_ref = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
+local archive_dir_suffix = modrev
+if not is_tag then
+  print('Publishing an untagged release.')
+  git_ref = assert(os.getenv('GITHUB_SHA'), 'GITHUB_SHA not set')
+  archive_dir_suffix = git_ref
+end
 
 local target_rockspec_file = args.package_name .. '-' .. modrev .. '-1.rockspec'
 
@@ -101,15 +98,16 @@ end
 ---@param rockspec_content string
 ---@return nil
 local function luarocks_upload(rockspec_content)
-  local outfile = io.open(target_rockspec_file, 'w')
-  if not outfile then
-    error('Could not create ' .. target_rockspec_file .. '.')
-  end
+  local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
   outfile:write(rockspec_content)
   outfile:close()
   local cmd = 'luarocks install ' .. target_rockspec_file
   print('TEST: ' .. cmd)
   local stdout, _ = execute(cmd, error)
+  print(stdout)
+  cmd = 'luarocks remove ' .. args.package_name
+  print('TEST: ' .. cmd)
+  stdout, _ = execute(cmd, error)
   print(stdout)
   cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
   print('UPLOAD: ' .. cmd)
@@ -140,10 +138,8 @@ local function mk_lua_multiline_str(xs)
 end
 
 print('Using template: ' .. args.rockspec_template_file_path)
-local rockspec_template_file = io.open(args.rockspec_template_file_path, 'r')
-if not rockspec_template_file then
-  error('Could not open ' .. args.rockspec_template_file_path)
-end
+local rockspec_template_file =
+  assert(io.open(args.rockspec_template_file_path, 'r'), 'Could not open ' .. args.rockspec_template_file_path)
 local content = rockspec_template_file:read('*a')
 rockspec_template_file:close()
 local repo_url = github_server_url .. '/' .. github_repo
@@ -154,7 +150,7 @@ local repo_info_str, _ =
 if repo_info_str and repo_info_str ~= '' then
   local json = require('dkjson')
   local repo_meta = json.decode(repo_info_str)
-  local repo_license = repo_meta.license
+  local repo_license = repo_meta.license or repo_meta.source and repo_meta.source.license
   if args.license then
     license = "license = '" .. args.license .. "'"
   elseif repo_license and repo_license.spdx_id ~= '' and repo_license.spdx_id ~= 'NOASSERTION' then
@@ -184,11 +180,22 @@ local function escape_quotes(str)
   return escaped
 end
 
-print('Generating Luarocks release ' .. modrev .. ' for: ' .. args.package_name .. ' ' .. git_tag .. '.')
+print(
+  'Generating Luarocks release '
+    .. modrev
+    .. ' for: '
+    .. args.package_name
+    .. ' version '
+    .. args.package_version
+    .. ' from ref '
+    .. git_ref
+    .. '.'
+)
 local rockspec = content
-  :gsub('$git_tag', git_tag)
+  :gsub('$git_ref', git_ref)
   :gsub('$modrev', modrev)
   :gsub('$repo_url', repo_url)
+  :gsub('$archive_dir_suffix', archive_dir_suffix)
   :gsub('$package', args.package_name)
   :gsub('$summary', escape_quotes(args.summary))
   :gsub('$detailed_description', mk_lua_multiline_str(args.detailed_description_lines))

@@ -33,7 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+        uses: nvim-neorocks/luarocks-tag-release@v2.1.0
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
@@ -57,7 +57,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
   with:
     dependencies: |
       plenary.nvim
@@ -73,7 +73,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
   with:
     labels: |
       neovim
@@ -87,7 +87,7 @@ Example to specify additional directories:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
   with:
     copy_directories: |
       doc
@@ -111,7 +111,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -130,7 +130,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
   with:
     build_type: "make"
 ```
@@ -146,7 +146,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -161,7 +161,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.0.0
+  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
   with:
     license: "MIT"
 ```
@@ -170,6 +170,50 @@ Example:
 > If GitHub can detect the license automatically, it will be displayed in your repository's About section.
 >
 > ![about](https://user-images.githubusercontent.com/12857160/218101570-b0605716-0457-47c1-ab2e-91d48a48881c.png)
+
+
+### `version` (optional)
+
+The package version to release to LuaRocks (without the rockspec revision).
+By default, this workflow will use the git tag to determine the LuaRocks package version.
+If you do not have a workflow that releases based on tags, you can manually set the version input.
+
+The following is an example for a basic workflow that runs daily at 00:00,
+sets the package version to `0.0.<number_of_commits>`, and publishes to LuaRocks
+if there have been any commits in the last 24 hours:
+
+```yaml
+name: "release"
+on:
+  workflow_dispatch: # allows manual triggering
+  schedule:
+    - cron: '0 0 * * *' # runs daily at 00:00
+
+jobs:
+  luarocks-upload:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required to count the commits
+      - name: Set luarocks version
+        run: echo "LUAROCKS_VERSION=0.0.$(git log --oneline | wc -l)" >> $GITHUB_ENV
+      - name: Get new commits
+        run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
+      - name: LuaRocks Upload
+        uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+        if: ${{ env.NEW_COMMIT_COUNT > 0 }}
+        env:
+          LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
+        with:
+          version: ${{ env.LUAROCKS_VERSION }}
+```
+
+> **Note**
+>
+> A `v` prefix (e.g. git tags such as `v1.0.0`) is also supported.
+> It will be removed from the LuaRocks version.
+
 
 ## Limitations
 
