@@ -1,4 +1,4 @@
-local git_tag = '$git_tag'
+local git_ref = '$git_ref'
 local modrev = '$modrev'
 local specrev = '-1'
 
@@ -19,15 +19,9 @@ description = {
 dependencies = $dependencies
 
 source = {
-  url = repo_url .. '/archive/' .. git_tag .. '.zip',
-  dir = '$repo_name-' .. modrev,
+  url = repo_url .. '/archive/' .. git_ref .. '.zip',
+  dir = '$repo_name-' .. '$archive_dir_suffix',
 }
-
-if modrev == 'scm' then
-  source = {
-    url = repo_url,
-  }
-end
 
 build = {
   type = '$build_type',
