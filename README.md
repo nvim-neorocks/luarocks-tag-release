@@ -214,6 +214,9 @@ jobs:
 > A `v` prefix (e.g. git tags such as `v1.0.0`) is also supported.
 > It will be removed from the LuaRocks version.
 
+## Example configurations
+
+See the [Example configurations wiki page](https://github.com/nvim-neorocks/luarocks-tag-release/wiki/Example-configurations).
 
 ## Limitations
 
