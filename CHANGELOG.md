@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.2.0] - 2023-02-24
+### Added
+- Added 'make' to build environment to fix the support for rockspecs of build type 'make'
+
 ## [v2.1.0] - 2023-02-17
 ### Added
 - Optional `version` input to support basic git workflows (#11).
