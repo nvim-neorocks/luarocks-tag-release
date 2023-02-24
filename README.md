@@ -43,7 +43,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+        uses: nvim-neorocks/luarocks-tag-release@latest
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
@@ -67,7 +67,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@latest
   with:
     dependencies: |
       plenary.nvim
@@ -83,7 +83,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@latest
   with:
     labels: |
       neovim
@@ -97,7 +97,7 @@ Example to specify additional directories:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@latest
   with:
     copy_directories: |
       doc
@@ -121,7 +121,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@latest
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -140,7 +140,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@latest
   with:
     build_type: "make"
 ```
@@ -156,7 +156,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@latest
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -171,7 +171,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@latest
   with:
     license: "MIT"
 ```
@@ -211,7 +211,7 @@ jobs:
       - name: Get new commits
         run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+        uses: nvim-neorocks/luarocks-tag-release@latest
         if: ${{ env.NEW_COMMIT_COUNT > 0 }}
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
