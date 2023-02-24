@@ -101,15 +101,15 @@ local function luarocks_upload(rockspec_content)
   local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
   outfile:write(rockspec_content)
   outfile:close()
-  local cmd = 'luarocks install ' .. target_rockspec_file
+  local cmd = 'luarocks install --verbose ' .. target_rockspec_file
   print('TEST: ' .. cmd)
   local stdout, _ = execute(cmd, error)
   print(stdout)
-  cmd = 'luarocks remove ' .. args.package_name
+  cmd = 'luarocks remove --verbose ' .. args.package_name
   print('TEST: ' .. cmd)
   stdout, _ = execute(cmd, error)
   print(stdout)
-  cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
+  cmd = 'luarocks upload --verbose ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
   print('UPLOAD: ' .. cmd)
   stdout, _ = execute(cmd, error)
   print(stdout)
