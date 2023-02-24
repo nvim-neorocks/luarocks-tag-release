@@ -39,11 +39,12 @@
         name = "luarocks-tag-release";
         runtimeInputs = with pkgs; [
           curl
-          zip
-          unzip
-          luarocks-tag-release-wrapped
-          lua51Packages.luarocks
+          gnumake
           lua51Packages.dkjson # Used by luarocks
+          lua51Packages.luarocks
+          luarocks-tag-release-wrapped
+          unzip
+          zip
         ];
 
         text = ''
