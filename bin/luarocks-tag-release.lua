@@ -101,7 +101,7 @@ local function luarocks_upload(rockspec_content)
   local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
   outfile:write(rockspec_content)
   outfile:close()
-  local cmd = 'luarocks install ' .. target_rockspec_file
+  local cmd = 'luarocks install --local ' .. target_rockspec_file
   print('TEST: ' .. cmd)
   local stdout, _ = execute(cmd, error)
   print(stdout)
@@ -113,7 +113,7 @@ local function luarocks_upload(rockspec_content)
   print('UPLOAD: ' .. cmd)
   stdout, _ = execute(cmd, error)
   print(stdout)
-  cmd = 'luarocks install ' .. args.package_name .. ' ' .. modrev
+  cmd = 'luarocks install --local ' .. args.package_name .. ' ' .. modrev
   print('TEST: ' .. cmd)
   stdout, _ = execute(cmd, print)
   print(stdout)
