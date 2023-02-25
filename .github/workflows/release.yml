@@ -3,7 +3,7 @@ name: "Luarocks release"
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v2.*.*'
 
 jobs:
   luarocks-release:
