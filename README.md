@@ -48,6 +48,10 @@ jobs:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
 
+> **Note**
+>
+> Use the `v2.x` tag to keep up with the latest releases, without breaking changes.
+
 ## Inputs
 
 The following optional inputs can be specified using `with:`
