@@ -8,11 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Support for `latest` tag
+- Maintain a `2.x` tag for the latest non-breaking release.
 
 ## [v2.2.0] - 2023-02-24
 ### Added
-- Added 'make' to build environment to fix the support for rockspecs of build type 'make'
+- Added 'make' to build environment to fix the support for rockspecs of build type 'make'.
 
 ## [v2.1.0] - 2023-02-17
 ### Added
