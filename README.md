@@ -121,7 +121,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.c
+  uses: nvim-neorocks/luarocks-tag-release@v2.x
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
