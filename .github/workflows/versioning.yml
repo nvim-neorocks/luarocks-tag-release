@@ -1,0 +1,11 @@
+name: Update vX and vX.X tags on release
+
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  actions-tagger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Actions-R-Us/actions-tagger@latest

@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Maintain a `v2.x` tag for the latest non-breaking release.
+- Maintain `vX` and `vX.X` tags for the latest non-breaking releases.
 
 ## [v2.2.0] - 2023-02-24
 ### Added
