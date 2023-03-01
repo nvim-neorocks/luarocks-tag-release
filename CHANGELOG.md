@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v2.2.0] - 2023-02-24
 ### Added
 - Added 'make' to build environment to fix the support for rockspecs of build type 'make'.
+### Fixed
+- Only install packages locally when running as non-root.
+  Fixes build failure in docker container.
 
 ## [v2.1.0] - 2023-02-17
 ### Added

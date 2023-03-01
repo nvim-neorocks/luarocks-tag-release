@@ -1,5 +1,7 @@
 # LuaRocks tag release action
 
+[![Luarocks release](https://github.com/nvim-neorocks/luarocks-tag-release/actions/workflows/release.yml/badge.svg)](https://github.com/nvim-neorocks/luarocks-tag-release/actions/workflows/release.yml)
+
 Publishes packages to [LuaRocks](https://luarocks.org/) when a git tag is pushed.
 No need to add a rockspec to your repository for each release (or at all).
 

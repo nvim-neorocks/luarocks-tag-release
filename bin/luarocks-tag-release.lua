@@ -10,6 +10,7 @@
 ---@field detailed_description_lines string[]
 ---@field build_type string
 ---@field rockspec_template_file_path string
+---@field upload boolean
 ---@field license string|nil
 
 ---@type string[]
@@ -50,7 +51,8 @@ local args = {
   detailed_description_lines = parse_list_args(arg_list[7]),
   build_type = arg_list[8],
   rockspec_template_file_path = arg_list[9],
-  license = #arg_list > 9 and arg_list[10] ~= '' and arg_list[10] or nil,
+  upload = arg_list[10] == 'true',
+  license = #arg_list > 10 and arg_list[11] ~= '' and arg_list[11] or nil,
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 
@@ -101,19 +103,26 @@ local function luarocks_upload(rockspec_content)
   local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
   outfile:write(rockspec_content)
   outfile:close()
-  local cmd = 'luarocks install --local ' .. target_rockspec_file
+  local tmp_dir = execute('mktemp -d', error):gsub('\n', '')
+  local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir
+
+  local cmd = luarocks_install_cmd .. ' ' .. target_rockspec_file
   print('TEST: ' .. cmd)
   local stdout, _ = execute(cmd, error)
   print(stdout)
-  cmd = 'luarocks remove ' .. args.package_name
+  cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. args.package_name
   print('TEST: ' .. cmd)
   stdout, _ = execute(cmd, error)
+  if not args.upload then
+    print('LuaRocks upload disabled. Skipping...')
+    return
+  end
   print(stdout)
   cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
   print('UPLOAD: ' .. cmd)
   stdout, _ = execute(cmd, error)
   print(stdout)
-  cmd = 'luarocks install --local ' .. args.package_name .. ' ' .. modrev
+  cmd = luarocks_install_cmd .. ' ' .. args.package_name .. ' ' .. modrev
   print('TEST: ' .. cmd)
   stdout, _ = execute(cmd, print)
   print(stdout)
