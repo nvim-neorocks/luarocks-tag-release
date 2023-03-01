@@ -46,6 +46,12 @@ inputs:
     description: "Path to a rockspec template."
     required: true
     default: "/rockspec.template"
+  upload:
+    description: |
+      Whether to upload to LuaRocks.
+      WARNING: This is an undocumented input, used internally for tests.
+      It is not part of the public API and may be removed without a major version bump.
+    default: true
   license:
     description: |
       The license SPDX identifier.
@@ -66,4 +72,5 @@ runs:
     - ${{ inputs.detailed_description }}
     - ${{ inputs.build_type }}
     - ${{ inputs.template }}
+    - ${{ inputs.upload }}
     - ${{ inputs.license }}
