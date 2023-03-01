@@ -45,14 +45,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v2
+        uses: nvim-neorocks/luarocks-tag-release@v3
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
 
 > **Note**
 >
-> Use the `v2` tag to keep up with the latest releases, without breaking changes.
+> Use the `v3` tag to keep up with the latest releases, without breaking changes.
 
 ## Inputs
 
@@ -73,7 +73,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2
+  uses: nvim-neorocks/luarocks-tag-release@v3
   with:
     dependencies: |
       plenary.nvim
@@ -89,7 +89,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2
+  uses: nvim-neorocks/luarocks-tag-release@v3
   with:
     labels: |
       neovim
@@ -99,17 +99,40 @@ Example:
 
 Directories in the source directory to be copied to the rock installation prefix as-is. Useful for installing documentation and other files such as samples and tests.
 
-Example to specify additional directories:
+Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2
+  uses: nvim-neorocks/luarocks-tag-release@v3
   with:
     copy_directories: |
-      doc
-      plugin
+      {{ neovim.plugin.dirs }}
+      src
+      examples
 ```
 
+>**Note**
+>
+> The value `{{ neovim.plugin.dirs }}` (set by default) expands to common Neovim plugin directories
+> (see also `:help runtimepath`):
+>
+> * autoload
+> * colors
+> * compiler
+> * doc
+> * filetype.lua
+> * indent
+> * keymap
+> * lang
+> * menu.vim
+> * parser
+> * plugin
+> * queries
+> * query
+> * rplugin
+> * spell
+> * syntax
+>
 >**Warning**
 >
 > Do not use the following directory names: `lua`, `lib`, `rock_manifest` or the name of your rockspec; those names are used by the .rock format internally, and attempting to copy directories with those names using the build.copy_directories directive will cause a clash.
@@ -127,7 +150,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2
+  uses: nvim-neorocks/luarocks-tag-release@v3
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -146,7 +169,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2
+  uses: nvim-neorocks/luarocks-tag-release@v3
   with:
     build_type: "make"
 ```
@@ -162,7 +185,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2
+  uses: nvim-neorocks/luarocks-tag-release@v3
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -177,7 +200,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2
+  uses: nvim-neorocks/luarocks-tag-release@v3
   with:
     license: "MIT"
 ```
@@ -217,7 +240,7 @@ jobs:
       - name: Get new commits
         run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v2
+        uses: nvim-neorocks/luarocks-tag-release@v3
         if: ${{ env.NEW_COMMIT_COUNT > 0 }}
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}

@@ -30,8 +30,9 @@
 
         src = self;
 
-        propagatedBuildInputs = with pkgs; [
-          lua51Packages.dkjson
+        propagatedBuildInputs = with pkgs.lua51Packages; [
+          dkjson
+          luafilesystem
         ];
       };
     in

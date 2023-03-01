@@ -26,6 +26,9 @@ jobs:
           detailed_description: |
             This is not a real lua package.
             It exists for the purpose of testing the workflow.
+          copy_directories: |
+            {{ neovim.plugin.dirs }}
+            bin
       - name: Fail if changelog entry does not exist
         run: grep -q "${{ github.ref_name }}" CHANGELOG.md
       - name: Release to marketplace

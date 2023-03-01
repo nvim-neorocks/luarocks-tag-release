@@ -23,9 +23,14 @@ inputs:
     required: true
     default: ""
   copy_directories:
-    description: "List of additional directories to copy."
+    description: |
+      List of additional directories to copy.
+      Only directories that exist will be copied.
+      The defaults are taken from Neovim's `:help runtimepath`
+      WARNING: Do not add the directories `lua`, `lib` or `rock_manifest`.
     required: true
-    default: ""
+    default: |
+      {{ neovim.plugin.dirs }}
   summary:
     description: "Short description of the package."
     required: true
