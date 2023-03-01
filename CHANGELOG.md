@@ -7,10 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Maintain `vX` and `vX.X` tags for the latest non-breaking releases.
 
 ## [v2.2.0] - 2023-02-24
 ### Added
-- Added 'make' to build environment to fix the support for rockspecs of build type 'make'
+- Added 'make' to build environment to fix the support for rockspecs of build type 'make'.
 
 ## [v2.1.0] - 2023-02-17
 ### Added

@@ -43,10 +43,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+        uses: nvim-neorocks/luarocks-tag-release@v2
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
+
+> **Note**
+>
+> Use the `v2` tag to keep up with the latest releases, without breaking changes.
 
 ## Inputs
 
@@ -67,7 +71,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@v2
   with:
     dependencies: |
       plenary.nvim
@@ -83,7 +87,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@v2
   with:
     labels: |
       neovim
@@ -97,7 +101,7 @@ Example to specify additional directories:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@v2
   with:
     copy_directories: |
       doc
@@ -121,7 +125,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@v2
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -140,7 +144,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@v2
   with:
     build_type: "make"
 ```
@@ -156,7 +160,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@v2
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -171,7 +175,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+  uses: nvim-neorocks/luarocks-tag-release@v2
   with:
     license: "MIT"
 ```
@@ -211,7 +215,7 @@ jobs:
       - name: Get new commits
         run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v2.1.0
+        uses: nvim-neorocks/luarocks-tag-release@v2
         if: ${{ env.NEW_COMMIT_COUNT > 0 }}
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
