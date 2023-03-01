@@ -50,6 +50,9 @@
         text = ''
           luarocks-tag-release.lua "$@"
         '';
+
+        # The default checkPhase depends on ShellCheck, which depends on GHC
+        checkPhase = "";
       };
   in {
     packages = perSystem (system: let
