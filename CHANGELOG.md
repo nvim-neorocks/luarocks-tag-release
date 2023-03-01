@@ -11,13 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v2.3.0] - 2023-03-01
 ### Added
 - Maintain `vX` and `vX.X` tags for the latest non-breaking releases.
+### Fixed
+- Only install packages locally when running as non-root.
+  Fixes build failure in docker container.
+### Changed
+- Remove ShellCheck and transitive GHC dependency.
 
 ## [v2.2.0] - 2023-02-24
 ### Added
 - Added 'make' to build environment to fix the support for rockspecs of build type 'make'.
-### Fixed
-- Only install packages locally when running as non-root.
-  Fixes build failure in docker container.
 
 ## [v2.1.0] - 2023-02-17
 ### Added
