@@ -8,7 +8,7 @@ on:
 jobs:
   luarocks-release:
     runs-on: ubuntu-latest
-    name: Luarocks upload
+    name: Release
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -26,3 +26,10 @@ jobs:
           detailed_description: |
             This is not a real lua package.
             It exists for the purpose of testing the workflow.
+      - name: Fail if changelog entry does not exist
+        run: grep -q "${{ github.ref_name }}" CHANGELOG.md
+      - name: Release to marketplace
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: "CHANGELOG.md"
+          allowUpdates: true
