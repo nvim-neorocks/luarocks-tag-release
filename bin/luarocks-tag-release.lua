@@ -18,16 +18,6 @@ local arg_list = { ... }
 
 assert(os.getenv('LUAROCKS_API_KEY'), 'LUAROCKS_API_KEY secret not set')
 
----@param str string
----@return string[] list_arg
-local function parse_list_args(str)
-  local tbl = {}
-  for arg in string.gmatch(str, '[^\r\n]+') do
-    table.insert(tbl, arg)
-  end
-  return tbl
-end
-
 local github_repo = assert(os.getenv('GITHUB_REPOSITORY'), 'GITHUB_REPOSITORY not set')
 
 local repo_name = assert(
@@ -40,13 +30,77 @@ local repo_name = assert(
 
 local github_server_url = assert(os.getenv('GITHUB_SERVER_URL'), 'GITHUB_SERVER_URL not set')
 
+---@param str string
+---@return string[] list_arg
+local function parse_list_args(str)
+  local tbl = {}
+  for arg in string.gmatch(str, '[^\r\n]+') do
+    table.insert(tbl, arg)
+  end
+  return tbl
+end
+
+---Filter out directories that don't exist.
+---@param directories string[] List of directories.
+---@return string[] existing_directories
+local function filter_existing_directories(directories)
+  local existing_directories = {}
+  for _, dir in pairs(directories) do
+    if require('lfs').attributes(dir, 'mode') == 'directory' then
+      existing_directories[#existing_directories + 1] = dir
+    end
+  end
+  return existing_directories
+end
+
+---Insert Neovim plugin directories into the `copy_directories` list
+---@param copy_directories string[] List of directories
+local function insert_neovim_plugin_dirs(copy_directories)
+  local neovim_plugin_dirs = {
+    'autoload',
+    'colors',
+    'compiler',
+    'doc',
+    'filetype.lua',
+    'indent',
+    'keymap',
+    'lang',
+    'menu.vim',
+    'parser',
+    'plugin',
+    'queries',
+    'query',
+    'rplugin',
+    'spell',
+    'syntax',
+  }
+  for _, dir in neovim_plugin_dirs do
+    table.insert(copy_directories, dir)
+  end
+end
+
+---@param str_args string The arguments to parse
+---@return string[] copy_directories The directories to copy
+local function parse_copy_directory_args(str_args)
+  local args = parse_list_args(str_args)
+  local copy_directories = {}
+  for _, arg in pairs(args) do
+    if string.match(arg, '{{ neovim.plugin.dirs }}') then
+      insert_neovim_plugin_dirs(copy_directories)
+    else
+      copy_directories[#copy_directories + 1] = arg
+    end
+  end
+  return filter_existing_directories(copy_directories)
+end
+
 ---@type Args
 local args = {
   package_name = arg_list[1],
   package_version = arg_list[2],
   dependencies = parse_list_args(arg_list[3]),
   labels = parse_list_args(arg_list[4]),
-  copy_directories = parse_list_args(arg_list[5]),
+  copy_directories = parse_copy_directory_args(arg_list[5]),
   summary = arg_list[6],
   detailed_description_lines = parse_list_args(arg_list[7]),
   build_type = arg_list[8],

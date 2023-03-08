@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v3.0.0] - 2023-03-08
+### Added
+- Add directories from Neovim's `runtimepath` and some common plugin directories
+  as the default for the `copy_directories` input.
+  BREAKING CHANGE: This could potentially add new directories to LuaRocks packages,
+  if the `copy_directories` input is not explicity specified, and one of the new default directories exists.
+### Changed
+- Only add directories that exist to the rockspec's `copy_directories`.
+
 ## [v2.3.0] - 2023-03-01
 ### Added
 - Maintain `vX` and `vX.X` tags for the latest non-breaking releases.

@@ -12,6 +12,7 @@ description = {
 dependencies = {
   'lua >= 5.1',
   'dkjson',
+  'luafilesystem',
 }
 
 source = {
