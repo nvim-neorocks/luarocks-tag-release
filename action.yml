@@ -65,11 +65,21 @@ inputs:
       in which case LuaRocks will fall back to this one.
     required: false
 runs:
+  # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+  pre-if: {{github.event_name}} == 'pull_request'
+  pre:
+    env:
+      LUAROCKS_NAME="${{ inputs.name }}.pr"
+      LUAROCKS_VERSION=1
+ # k GITHUB_EVENT_NAME
+  # steps:
+  #   - if [ ${{ inputs.version }} ]
+
   using: "docker"
   image: "Dockerfile"
   args:
     - ${{ inputs.name }}
-    - ${{ inputs.version }}
+    - $ROCKSPEC_VERSION
     - ${{ inputs.dependencies }}
     - ${{ inputs.labels }}
     - ${{ inputs.copy-directories }}
