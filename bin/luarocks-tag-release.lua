@@ -1,5 +1,7 @@
 #!/usr/bin/env lua
 
+---@alias build_type 'builtin'|'make'
+
 ---@class Args
 ---@field package_name string
 ---@field package_version string
@@ -8,7 +10,7 @@
 ---@field copy_directories string[]
 ---@field summary string
 ---@field detailed_description_lines string[]
----@field build_type string
+---@field build_type build_type
 ---@field rockspec_template_file_path string
 ---@field upload boolean
 ---@field license string|nil
@@ -243,6 +245,17 @@ local function escape_quotes(str)
   return escaped
 end
 
+---@see https://github.com/luarocks/luarocks/wiki/Creating-a-Makefile-that-plays-nice-with-LuaRocks
+local install_variables_str = args.build_type == 'make'
+    and [[{
+    INST_PREFIX = '$(PREFIX)',
+    INST_BINDIR = '$(BINDIR)',
+    INST_LIBDIR = '$(LIBDIR)',
+    INST_LUADIR = '$(LUADIR)',
+    INST_CONFDIR = '$(CONFDIR)',
+  }]]
+  or '{}'
+
 print(
   'Generating Luarocks release '
     .. modrev
@@ -267,6 +280,7 @@ local rockspec = content
   :gsub('$homepage', homepage)
   :gsub('$license', license)
   :gsub('$copy_directories', mk_lua_list_string(args.copy_directories))
+  :gsub('$install_variables', install_variables_str)
   :gsub('$build_type', args.build_type)
   :gsub('$repo_name', repo_name)
 

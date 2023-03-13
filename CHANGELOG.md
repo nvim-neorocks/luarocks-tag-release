@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Set `build.install_variables` if `build_type` is `'make'`.
+
 ## [v3.0.0] - 2023-03-08
 ### Added
 - Add directories from Neovim's `runtimepath` and some common plugin directories

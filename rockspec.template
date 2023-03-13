@@ -26,4 +26,5 @@ source = {
 build = {
   type = '$build_type',
   copy_directories = $copy_directories,
+  install_variables = $install_variables,
 }
