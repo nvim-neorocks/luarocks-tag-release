@@ -66,11 +66,11 @@ inputs:
     required: false
 runs:
   # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
-  pre-if: {{github.event_name}} == 'pull_request'
-  pre:
-    env:
-      LUAROCKS_NAME="${{ inputs.name }}.pr"
-      LUAROCKS_VERSION=1
+  # pre-if: {{github.event_name}} == 'pull_request'
+  pre: echo 'LUAROCKS_NAME="${{ inputs.name }}.pr"' >> $GITHUB_ENV
+    # env:
+    #   LUAROCKS_NAME="${{ inputs.name }}.pr"
+    #   LUAROCKS_VERSION=1
  # k GITHUB_EVENT_NAME
   # steps:
   #   - if [ ${{ inputs.version }} ]
@@ -78,7 +78,7 @@ runs:
   using: "docker"
   image: "Dockerfile"
   args:
-    - ${{ inputs.name }}
+    - $ROCKSPEC_NAME
     - $ROCKSPEC_VERSION
     - ${{ inputs.dependencies }}
     - ${{ inputs.labels }}
