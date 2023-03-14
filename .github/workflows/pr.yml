@@ -21,3 +21,5 @@ jobs:
           copy_directories: |
             {{ neovim.plugin.dirs }}
             bin
+          extra_packages: |
+            deno

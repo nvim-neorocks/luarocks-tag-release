@@ -47,6 +47,11 @@ inputs:
     options:
       - builtin
       - make
+  extra_packages:
+    description: |
+      List of extra packages from nixpkgs that can be used for the build.
+    required: true
+    default: ""
   template:
     description: "Path to a rockspec template."
     required: true
@@ -68,6 +73,7 @@ runs:
   using: "docker"
   image: "Dockerfile"
   args:
+    - ${{ inputs.extra_packages }}
     - ${{ inputs.name }}
     - ${{ inputs.version }}
     - ${{ inputs.dependencies }}

@@ -190,7 +190,23 @@ Example:
     template: "/path/to/my/template.rockspec"
 ```
 
-### `license` (optional)
+### `extra_packages`
+
+List of extra packages from [`nixpkgs`](https://search.nixos.org/packages?channel=unstable)
+that can be used for building the LuaRocks package.
+
+Example:
+
+```yaml
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v3
+  with:
+    extra_packages: |
+      deno
+      inkscape
+```
+
+### `license`
 
 The license used by this package.
 If not set (by default), this workflow will fetch the license SPDX ID from GitHub.
@@ -211,7 +227,7 @@ Example:
 > ![about](https://user-images.githubusercontent.com/12857160/218101570-b0605716-0457-47c1-ab2e-91d48a48881c.png)
 
 
-### `version` (optional)
+### `version`
 
 The package version to release to LuaRocks (without the rockspec revision).
 By default, this workflow will use the git tag to determine the LuaRocks package version.

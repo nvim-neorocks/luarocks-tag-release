@@ -35,18 +35,21 @@
           luafilesystem
         ];
       };
+      extraRuntimeInputs = (import ./nix/extraRuntimeInputs.nix pkgs).extraRuntimeInputs;
     in
       pkgs.writeShellApplication {
         name = "luarocks-tag-release";
-        runtimeInputs = with pkgs; [
-          curl
-          gnumake
-          lua51Packages.dkjson # Used by luarocks
-          lua51Packages.luarocks
-          luarocks-tag-release-wrapped
-          unzip
-          zip
-        ];
+        runtimeInputs = with pkgs;
+          [
+            curl
+            gnumake
+            lua51Packages.dkjson # Used by luarocks
+            lua51Packages.luarocks
+            luarocks-tag-release-wrapped
+            unzip
+            zip
+          ]
+          ++ extraRuntimeInputs;
 
         text = ''
           luarocks-tag-release.lua "$@"

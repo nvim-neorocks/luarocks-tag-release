@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `extra_packages` input for adding additional build dependencies from `nixpkgs`.
+
 ## [v3.0.0] - 2023-03-08
 ### Added
 - Add directories from Neovim's `runtimepath` and some common plugin directories
