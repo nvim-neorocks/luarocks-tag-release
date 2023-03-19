@@ -16,12 +16,10 @@ inputs:
     default: ${{ github.ref_name }}
   dependencies:
     description: "List of LuaRocks dependencies."
-    required: true
-    default: ""
+    required: false
   labels:
     description: "List of package labels."
-    required: true
-    default: ""
+    required: false
   copy_directories:
     description: |
       List of additional directories to copy.
@@ -33,12 +31,10 @@ inputs:
       {{ neovim.plugin.dirs }}
   summary:
     description: "Short description of the package."
-    required: true
-    default: ""
+    required: false
   detailed_description:
     description: "Detailed description of the package."
-    required: true
-    default: ""
+    required: false
   build_type:
     description: "The build type."
     required: true
@@ -50,7 +46,7 @@ inputs:
   template:
     description: "Path to a rockspec template."
     required: true
-    default: "/rockspec.template"
+    default: "resources/rockspec.template"
   upload:
     description: |
       Whether to upload to LuaRocks.
@@ -70,17 +66,19 @@ runs:
     - uses: cachix/install-nix-action@v20
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
-    - run: |
-        entrypoint.sh
-        \ ${{ inputs.name }}
-        \ ${{ inputs.version }}
-        \ ${{ inputs.dependencies }}
-        \ ${{ inputs.labels }}
-        \ ${{ inputs.copy-directories }}
-        \ ${{ inputs.summary }}
-        \ ${{ inputs.detailed_description }}
-        \ ${{ inputs.build_type }}
-        \ ${{ inputs.template }}
-        \ ${{ inputs.upload }}
-        \ ${{ inputs.license }}
+    - run: nix profile install ".#luarocks-tag-release-action"
+      shell: bash
+    - run: luarocks-tag-release-action
+      env:
+        INPUT_NAME: ${{ inputs.name }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_DEPENDENCIES: ${{ inputs.dependencies }}
+        INPUT_LABELS: ${{ inputs.labels }}
+        INPUT_COPY_DIRECTORIES: ${{ inputs.copy-directories }}
+        INPUT_SUMMARY: ${{ inputs.summary }}
+        INPUT_DETAILED_DESCRIPTION: ${{ inputs.detailed_description }}
+        INPUT_BUILD_TYPE: ${{ inputs.build_type }}
+        INPUT_TEMPLATE: ${{ inputs.template }}
+        INPUT_UPLOAD: ${{ inputs.upload }}
+        INPUT_LICENSE: ${{ inputs.license }}
       shell: bash

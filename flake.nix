@@ -22,7 +22,7 @@
     perSystem = nixpkgs.lib.genAttrs supportedSystems;
     pkgsFor = system: import nixpkgs {inherit system;};
 
-    luarocks-tag-release-for = system: let
+    luarocks-tag-release-action-for = system: let
       pkgs = pkgsFor system;
       luarocks-tag-release-wrapped = pkgs.lua51Packages.buildLuaApplication {
         pname = "luarocks-tag-release";
@@ -37,7 +37,7 @@
       };
     in
       pkgs.writeShellApplication {
-        name = "luarocks-tag-release";
+        name = "luarocks-tag-release-action";
         runtimeInputs = with pkgs; [
           curl
           gnumake
@@ -49,7 +49,7 @@
         ];
 
         text = ''
-          luarocks-tag-release.lua "$@"
+          luarocks-tag-release-action.lua "$@"
         '';
 
         # The default checkPhase depends on ShellCheck, which depends on GHC
@@ -57,10 +57,10 @@
       };
   in {
     packages = perSystem (system: let
-      luarocks-tag-release = luarocks-tag-release-for system;
+      luarocks-tag-release-action = luarocks-tag-release-action-for system;
     in {
-      default = luarocks-tag-release;
-      inherit luarocks-tag-release;
+      default = luarocks-tag-release-action;
+      inherit luarocks-tag-release-action;
     });
   };
 }
