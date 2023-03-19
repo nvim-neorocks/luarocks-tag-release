@@ -65,17 +65,22 @@ inputs:
       in which case LuaRocks will fall back to this one.
     required: false
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args:
-    - ${{ inputs.name }}
-    - ${{ inputs.version }}
-    - ${{ inputs.dependencies }}
-    - ${{ inputs.labels }}
-    - ${{ inputs.copy-directories }}
-    - ${{ inputs.summary }}
-    - ${{ inputs.detailed_description }}
-    - ${{ inputs.build_type }}
-    - ${{ inputs.template }}
-    - ${{ inputs.upload }}
-    - ${{ inputs.license }}
+  using: "composite"
+  steps:
+    - uses: cachix/install-nix-action@v20
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+    - run: |
+        entrypoint.sh
+        \ ${{ inputs.name }}
+        \ ${{ inputs.version }}
+        \ ${{ inputs.dependencies }}
+        \ ${{ inputs.labels }}
+        \ ${{ inputs.copy-directories }}
+        \ ${{ inputs.summary }}
+        \ ${{ inputs.detailed_description }}
+        \ ${{ inputs.build_type }}
+        \ ${{ inputs.template }}
+        \ ${{ inputs.upload }}
+        \ ${{ inputs.license }}
+      shell: bash
