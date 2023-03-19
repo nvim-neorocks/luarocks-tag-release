@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v4.0.0] - 2023-03-08
+## [v4.0.0] - 2023-03-19
 - POTENIALLY BREAKING: Convert to composite action.
 - POTENTIALLY BREAKING: Remove redundant `build_type` input.
   Use `template` input for non-builtin build types instead.
