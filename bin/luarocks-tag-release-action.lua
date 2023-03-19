@@ -89,6 +89,8 @@ end
 
 local license_input = os.getenv('INPUT_LICENSE')
 local template_input = os.getenv('INPUT_TEMPLATE')
+local package_name = getenv_or_err('INPUT_NAME')
+local package_version = getenv_or_err('INPUT_VERSION')
 
 local interpreters_input = os.getenv('INPUT_TEST_INTERPRETERS')
 ---@type lua_interpreter[]
@@ -112,8 +114,6 @@ local args = {
   github_repo = github_repo,
   repo_name = repo_name,
   github_server_url = github_server_url,
-  package_name = getenv_or_err('INPUT_NAME'),
-  package_version = getenv_or_err('INPUT_VERSION'),
   dependencies = parse_list_args(getenv_or_empty('INPUT_DEPENDENCIES')),
   labels = parse_list_args(getenv_or_empty('INPUT_LABELS')),
   copy_directories = parse_copy_directory_args(getenv_or_err('INPUT_COPY_DIRECTORIES')),
@@ -136,4 +136,9 @@ end
 
 local luarocks_tag_release = require('luarocks-tag-release')
 
-luarocks_tag_release(args)
+if getenv_or_empty('GITHUB_EVENT_NAME') == "pull_request" then
+  print("Running in a pull request, suffixing package name")
+  package_name = package_name.."pr-"..os.getenv("GITHUB_HEAD_REF")
+end
+
+luarocks_tag_release(package_name, package_version, args)

@@ -43,7 +43,7 @@ inputs:
       Whether to upload to LuaRocks.
       WARNING: This is an undocumented input, used internally for tests.
       It is not part of the public API and may be removed without a major version bump.
-    default: true
+    default: "true"
   license:
     description: |
       The license SPDX identifier.
@@ -67,6 +67,14 @@ runs:
     - run: |
         nix profile install --accept-flake-config "${{ github.action_path }}#luarocks-tag-release-action"
       shell: bash
+    - run: |
+        pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        echo "$GITHUB_EVENT_PATH"
+        cat "$GITHUB_EVENT_PATH"
+        echo "PR NBR: $pull_number"
+        which jq
+      shell: bash
+
     - run: luarocks-tag-release-action
       env:
         INPUT_NAME: ${{ inputs.name }}

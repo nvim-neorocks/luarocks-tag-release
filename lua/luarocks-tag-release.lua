@@ -21,13 +21,29 @@
 ---@field license string|nil License SPDX ID (optional).
 ---@field luarocks_test_interpreters lua_interpreter[]
 
+---@param package_name string
+---@param package_version string
 ---@param args Args
-local function luarocks_tag_release(args)
-  local modrev = string.gsub(args.package_version, 'v', '')
+local function luarocks_tag_release(package_name, package_version, args)
+  local modversion = string.gsub(package_version, 'v', '')
 
+  local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
+  --
+  local git_head_ref = os.getenv('GITHUB_HEAD_REF')
+  local is_pr = git_head_ref ~= nil
+  local git_ref = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
+  local modrev = '1'
   local archive_dir_suffix = args.ref_type == 'tag' and modrev or args.git_ref
+  if not is_tag then
+    print('Publishing an untagged release.')
+    git_ref = assert(os.getenv('GITHUB_SHA'), 'GITHUB_SHA not set')
+    archive_dir_suffix = git_ref
+  end
+  if is_pr then
+    modrev = git_ref
+  end
 
-  local target_rockspec_file = args.package_name .. '-' .. modrev .. '-1.rockspec'
+  local target_rockspec_file = package_name .. '-' .. modversion .. '-'.. modrev .. '.rockspec'
 
   ---@param filename string
   ---@return string? content
@@ -93,27 +109,37 @@ local function luarocks_tag_release(args)
     execute('rm -r .luarocks luarocks', print)
   end
 
+  ---@param rockspec_content string
+  ---@param do_upload boolean Upload to luarocks.org when true
+  ---@param test_release boolean Force push when dealing with test releases (e.g., PRs)
   ---@return nil
-  local function luarocks_upload()
+  local function luarocks_upload(rockspec_content, do_upload, test_release)
+    local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
+    outfile:write(rockspec_content)
+    outfile:close()
+    local tmp_dir = execute('mktemp -d', error):gsub('\n', '')
     local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir
 
     local cmd = luarocks_install_cmd .. ' ' .. target_rockspec_file
     print('TEST: ' .. cmd)
     local stdout, _ = execute(cmd)
     print(stdout)
-    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. args.package_name
+    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. package_name
     print('TEST: ' .. cmd)
-    stdout, _ = execute(cmd)
-    if not args.upload then
+    stdout, _ = execute(cmd, error)
+    if not do_upload then
       print('LuaRocks upload disabled. Skipping...')
       return
     end
     print(stdout)
     cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
+    if test_release then
+      cmd = cmd.." --force"
+    end
     print('UPLOAD: ' .. cmd)
     stdout, _ = execute(cmd)
     print(stdout)
-    cmd = luarocks_install_cmd .. ' ' .. args.package_name .. ' ' .. modrev
+    cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev
     print('TEST: ' .. cmd)
     stdout, _ = execute(cmd, print)
     print(stdout)
@@ -184,19 +210,23 @@ local function luarocks_tag_release(args)
     'Generating Luarocks release '
       .. modrev
       .. ' for: '
-      .. args.package_name
+      .. package_name
       .. ' version '
-      .. args.package_version
+      .. package_version
       .. ' from ref '
       .. args.git_ref
       .. '.'
   )
+  print("is_pr", is_pr, "event name", os.getenv('GITHUB_EVENT_NAME'), "head:", os.getenv('GITHUB_HEAD_REF'))
+  if is_pr then
+    print("Running from Pull Request, overriding existing releases enabled")
+  end
   local rockspec = content
     :gsub('$git_ref', args.git_ref)
     :gsub('$modrev', modrev)
     :gsub('$repo_url', repo_url)
     :gsub('$archive_dir_suffix', archive_dir_suffix)
-    :gsub('$package', args.package_name)
+    :gsub('$package', package_name)
     :gsub('$summary', escape_quotes(args.summary))
     :gsub('$detailed_description', mk_lua_multiline_str(args.detailed_description_lines))
     :gsub('$dependencies', mk_lua_list_string(args.dependencies))
@@ -218,7 +248,7 @@ local function luarocks_tag_release(args)
       luarocks_test(interpreter)
     end
   end
-  luarocks_upload()
+  luarocks_upload(rockspec, args.upload, is_pr)
 
   print('')
   print('Done.')
