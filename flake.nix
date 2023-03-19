@@ -40,7 +40,6 @@
         name = "luarocks-tag-release-action";
         runtimeInputs = with pkgs; [
           curl
-          gnumake
           lua51Packages.dkjson # Used by luarocks
           lua51Packages.luarocks
           luarocks-tag-release-wrapped

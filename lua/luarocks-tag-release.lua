@@ -11,7 +11,6 @@
 ---@field copy_directories string[]
 ---@field summary string
 ---@field detailed_description_lines string[]
----@field build_type string
 ---@field rockspec_template_file_path string
 ---@field upload boolean
 ---@field license string|nil
@@ -175,7 +174,6 @@ local function luarocks_tag_release(args)
     :gsub('$homepage', homepage)
     :gsub('$license', license)
     :gsub('$copy_directories', mk_lua_list_string(args.copy_directories))
-    :gsub('$build_type', args.build_type)
     :gsub('$repo_name', args.repo_name)
 
   print('')

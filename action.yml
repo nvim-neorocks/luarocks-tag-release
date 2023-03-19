@@ -35,14 +35,6 @@ inputs:
   detailed_description:
     description: "Detailed description of the package."
     required: false
-  build_type:
-    description: "The build type."
-    required: true
-    default: builtin
-    type: choice
-    options:
-      - builtin
-      - make
   template:
     description: "Path to a rockspec template."
     required: false
@@ -74,7 +66,6 @@ runs:
         INPUT_COPY_DIRECTORIES: ${{ inputs.copy-directories }}
         INPUT_SUMMARY: ${{ inputs.summary }}
         INPUT_DETAILED_DESCRIPTION: ${{ inputs.detailed_description }}
-        INPUT_BUILD_TYPE: ${{ inputs.build_type }}
         INPUT_TEMPLATE: ${{ inputs.template }}
         INPUT_UPLOAD: ${{ inputs.upload }}
         INPUT_LICENSE: ${{ inputs.license }}

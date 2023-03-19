@@ -24,6 +24,6 @@ source = {
 }
 
 build = {
-  type = '$build_type',
+  type = 'builtin',
   copy_directories = $copy_directories,
 }

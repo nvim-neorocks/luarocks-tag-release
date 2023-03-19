@@ -101,7 +101,6 @@ local args = {
   copy_directories = parse_copy_directory_args(getenv_or_err('INPUT_COPY_DIRECTORIES')),
   summary = getenv_or_empty('INPUT_SUMMARY'),
   detailed_description_lines = parse_list_args(getenv_or_empty('INPUT_DETAILED_DESCRIPTION')),
-  build_type = getenv_or_err('INPUT_BUILD_TYPE'),
   rockspec_template_file_path = template_input ~= '' and template_input
     or action_path .. '/resources/rockspec.template',
   upload = getenv_or_err('INPUT_UPLOAD') == 'true',
