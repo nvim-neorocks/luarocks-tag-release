@@ -45,8 +45,7 @@ inputs:
       - make
   template:
     description: "Path to a rockspec template."
-    required: true
-    default: "resources/rockspec.template"
+    required: false
   upload:
     description: |
       Whether to upload to LuaRocks.
@@ -64,9 +63,7 @@ runs:
   using: "composite"
   steps:
     - uses: cachix/install-nix-action@v20
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
-    - run: nix profile install ".#luarocks-tag-release-action"
+    - run: nix profile install "${{ github.action_path }}#luarocks-tag-release-action"
       shell: bash
     - run: luarocks-tag-release-action
       env:

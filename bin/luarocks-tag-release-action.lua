@@ -8,6 +8,8 @@ local function getenv_or_empty(env_var)
   return os.getenv(env_var) or ''
 end
 
+local action_path = getenv_or_err('GITHUB_ACTION_PATH')
+
 local github_repo = getenv_or_err('GITHUB_REPOSITORY')
 
 local repo_name = assert(
@@ -85,6 +87,7 @@ local function parse_copy_directory_args(str_args)
 end
 
 local license_input = os.getenv('INPUT_LICENSE')
+local template_input = os.getenv('INPUT_TEMPLATE')
 
 ---@type Args
 local args = {
@@ -99,7 +102,8 @@ local args = {
   summary = getenv_or_empty('INPUT_SUMMARY'),
   detailed_description_lines = parse_list_args(getenv_or_empty('INPUT_DETAILED_DESCRIPTION')),
   build_type = getenv_or_err('INPUT_BUILD_TYPE'),
-  rockspec_template_file_path = getenv_or_err('INPUT_TEMPLATE'),
+  rockspec_template_file_path = template_input ~= '' and template_input
+    or action_path .. '/resources/rockspec.template',
   upload = getenv_or_err('INPUT_UPLOAD') == 'true',
   license = license_input ~= '' and license_input or nil,
 }
