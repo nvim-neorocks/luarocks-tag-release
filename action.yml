@@ -16,12 +16,10 @@ inputs:
     default: ${{ github.ref_name }}
   dependencies:
     description: "List of LuaRocks dependencies."
-    required: true
-    default: ""
+    required: false
   labels:
     description: "List of package labels."
-    required: true
-    default: ""
+    required: false
   copy_directories:
     description: |
       List of additional directories to copy.
@@ -33,24 +31,13 @@ inputs:
       {{ neovim.plugin.dirs }}
   summary:
     description: "Short description of the package."
-    required: true
-    default: ""
+    required: false
   detailed_description:
     description: "Detailed description of the package."
-    required: true
-    default: ""
-  build_type:
-    description: "The build type."
-    required: true
-    default: builtin
-    type: choice
-    options:
-      - builtin
-      - make
+    required: false
   template:
     description: "Path to a rockspec template."
-    required: true
-    default: "/rockspec.template"
+    required: false
   upload:
     description: |
       Whether to upload to LuaRocks.
@@ -65,17 +52,21 @@ inputs:
       in which case LuaRocks will fall back to this one.
     required: false
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args:
-    - ${{ inputs.name }}
-    - ${{ inputs.version }}
-    - ${{ inputs.dependencies }}
-    - ${{ inputs.labels }}
-    - ${{ inputs.copy-directories }}
-    - ${{ inputs.summary }}
-    - ${{ inputs.detailed_description }}
-    - ${{ inputs.build_type }}
-    - ${{ inputs.template }}
-    - ${{ inputs.upload }}
-    - ${{ inputs.license }}
+  using: "composite"
+  steps:
+    - uses: cachix/install-nix-action@v20
+    - run: nix profile install "${{ github.action_path }}#luarocks-tag-release-action"
+      shell: bash
+    - run: luarocks-tag-release-action
+      env:
+        INPUT_NAME: ${{ inputs.name }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_DEPENDENCIES: ${{ inputs.dependencies }}
+        INPUT_LABELS: ${{ inputs.labels }}
+        INPUT_COPY_DIRECTORIES: ${{ inputs.copy-directories }}
+        INPUT_SUMMARY: ${{ inputs.summary }}
+        INPUT_DETAILED_DESCRIPTION: ${{ inputs.detailed_description }}
+        INPUT_TEMPLATE: ${{ inputs.template }}
+        INPUT_UPLOAD: ${{ inputs.upload }}
+        INPUT_LICENSE: ${{ inputs.license }}
+      shell: bash

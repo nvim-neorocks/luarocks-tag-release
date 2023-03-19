@@ -158,22 +158,6 @@ Example:
       and tests the installation before releasing.
 ```
 
-### `build_type`
-
-The LuaRocks build backend.
-
-* Defaults to `builtin`.
-* If the installation fails, it may be necessary to [use a Makefile](https://github.com/luarocks/luarocks/wiki/Creating-a-Makefile-that-plays-nice-with-LuaRocks).
-
-Example:
-
-```yaml
-- name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v3
-  with:
-    build_type: "make"
-```
-
 ### `template`
 
 By default, this workflow will generate a rockspec based on a [predefined template](./rockspec.template).

@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.0.0] - 2023-03-08
+- POTENIALLY BREAKING: Convert to composite action.
+- POTENTIALLY BREAKING: Remove redundant `build_type` input.
+  Use `template` input for non-builtin build types instead.
+- Remove `gnumake` from shell wrapper (no longer needed in a composite action).
+
 ## [v3.0.0] - 2023-03-08
 ### Added
 - Add directories from Neovim's `runtimepath` and some common plugin directories
