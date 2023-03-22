@@ -1,11 +1,19 @@
 ---
-name: "Test Luarocks install"
+name: "Tests and checks"
 on: pull_request
 
 jobs:
-  luarocks-release:
+  checks:
     runs-on: ubuntu-latest
-    name: Test Luarocks install
+    name: Checks
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v20
+      - name: Nix checks
+        run: nix flake check -L
+  tests:
+    runs-on: ubuntu-latest
+    name: Tests
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -15,7 +23,7 @@ jobs:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
         with:
           dependencies: |
-            plenary.nvim
+            dkjson
           version: "0.0.0"
           upload: false
           copy_directories: |
