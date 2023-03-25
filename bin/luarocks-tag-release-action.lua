@@ -108,6 +108,13 @@ local args = {
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 
+args.ref_type = getenv_or_err('GITHUB_REF_TYPE')
+print('Workflow has been triggered by: ' .. args.ref_type)
+args.git_ref = getenv_or_err('GITHUB_REF_NAME')
+if args.ref_type ~= 'tag' then
+  args.git_ref = getenv_or_err('GITHUB_SHA')
+end
+
 local luarocks_tag_release = require('luarocks-tag-release')
 
 luarocks_tag_release(args)
