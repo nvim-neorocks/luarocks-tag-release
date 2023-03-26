@@ -1,32 +1,29 @@
 #!/usr/bin/env lua
 
+---@alias github_ref_type 'tag' | 'branch'
+
 ---@class Args
----@field repo_name string
----@field github_repo string
----@field github_server_url string
----@field package_name string
----@field package_version string
----@field dependencies string[]
----@field labels string[]
----@field copy_directories string[]
----@field summary string
----@field detailed_description_lines string[]
----@field rockspec_template_file_path string
----@field upload boolean
----@field license string|nil
+---@field repo_name string The repository name.
+---@field github_repo string The github repository (owner/repo_name).
+---@field github_server_url string The github server's URL.
+---@field git_ref string E.g. a tag or a commit sha.
+---@field ref_type github_ref_type
+---@field package_name string The name of the LuaRocks package.
+---@field package_version string The version of the LuaRocks package.
+---@field dependencies string[] List of LuaRocks package dependencies.
+---@field labels string[] List of labels to add to the rockspec.
+---@field copy_directories string[] List of directories to add to the rockspec's copy_directories.
+---@field summary string Package summary.
+---@field detailed_description_lines string[] Detailed description (list of lines).
+---@field rockspec_template_file_path string File path to the rockspec template (relative to repo's root).
+---@field upload boolean Whether to upload to LuaRocks.
+---@field license string|nil License SPDX ID (optional).
 
 ---@param args Args
 local function luarocks_tag_release(args)
   local modrev = string.gsub(args.package_version, 'v', '')
 
-  local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
-  local git_ref = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
-  local archive_dir_suffix = modrev
-  if not is_tag then
-    print('Publishing an untagged release.')
-    git_ref = assert(os.getenv('GITHUB_SHA'), 'GITHUB_SHA not set')
-    archive_dir_suffix = git_ref
-  end
+  local archive_dir_suffix = args.ref_type == 'tag' and modrev or args.git_ref
 
   local target_rockspec_file = args.package_name .. '-' .. modrev .. '-1.rockspec'
 
@@ -158,11 +155,11 @@ local function luarocks_tag_release(args)
       .. ' version '
       .. args.package_version
       .. ' from ref '
-      .. git_ref
+      .. args.git_ref
       .. '.'
   )
   local rockspec = content
-    :gsub('$git_ref', git_ref)
+    :gsub('$git_ref', args.git_ref)
     :gsub('$modrev', modrev)
     :gsub('$repo_url', repo_url)
     :gsub('$archive_dir_suffix', archive_dir_suffix)
