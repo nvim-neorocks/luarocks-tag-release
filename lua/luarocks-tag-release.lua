@@ -25,14 +25,14 @@
 ---@param package_version string
 ---@param args Args
 local function luarocks_tag_release(package_name, package_version, args)
-  local modversion = string.gsub(package_version, 'v', '')
+  local modrev = string.gsub(package_version, 'v', '')
 
   local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
   --
   local git_head_ref = os.getenv('GITHUB_HEAD_REF')
   local is_pr = git_head_ref ~= nil
   local git_ref = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
-  local modrev = '1'
+  local specrev = '1'
   local archive_dir_suffix = args.ref_type == 'tag' and modrev or args.git_ref
   if not is_tag then
     print('Publishing an untagged release.')
@@ -40,10 +40,10 @@ local function luarocks_tag_release(package_name, package_version, args)
     archive_dir_suffix = git_ref
   end
   if is_pr then
-    modrev = git_ref
+    specrev = git_ref
   end
 
-  local target_rockspec_file = package_name .. '-' .. modversion .. '-'.. modrev .. '.rockspec'
+  local target_rockspec_file = package_name .. '-' .. modrev .. '-'.. specrev .. '.rockspec'
 
   ---@param filename string
   ---@return string? content
@@ -224,6 +224,7 @@ local function luarocks_tag_release(package_name, package_version, args)
   local rockspec = content
     :gsub('$git_ref', args.git_ref)
     :gsub('$modrev', modrev)
+    :gsub('$specrev', specrev)
     :gsub('$repo_url', repo_url)
     :gsub('$archive_dir_suffix', archive_dir_suffix)
     :gsub('$package', package_name)

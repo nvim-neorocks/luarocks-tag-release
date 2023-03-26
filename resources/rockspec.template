@@ -1,6 +1,6 @@
 local git_ref = '$git_ref'
 local modrev = '$modrev'
-local specrev = '-1'
+local specrev = '$specrev'
 
 local repo_url = '$repo_url'
 
