@@ -136,10 +136,24 @@ end
 
 local luarocks_tag_release = require('luarocks-tag-release')
 
+local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
+--
+local git_head_ref = os.getenv('GITHUB_HEAD_REF')
+local is_pr = git_head_ref ~= nil
+local git_ref
+-- = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
+local specrev = '1'
+if not is_tag then
+  print('Publishing an untagged release.')
+  -- git_ref = assert(os.getenv('GITHUB_SHA'), 'GITHUB_SHA not set')
+end
+if is_pr then
+  specrev = assert(os.getenv("GITHUB_RUN_ATTEMPT"), "GITHUB_RUN_ATTEMPT not set")
+end
 if getenv_or_empty('GITHUB_EVENT_NAME') == "pull_request" then
   print("Running in a pull request, suffixing package name")
   -- package_name = package_name.."-pr-"..os.getenv("GITHUB_HEAD_REF")
   package_version = "pr-"..os.getenv("GITHUB_HEAD_REF")
 end
 
-luarocks_tag_release(package_name, package_version, args)
+luarocks_tag_release(package_name, package_version, specrev, args)

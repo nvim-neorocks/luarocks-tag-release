@@ -23,29 +23,15 @@
 
 ---@param package_name string
 ---@param package_version string
+---@param specrev number the version of the rockspec
 ---@param args Args
-local function luarocks_tag_release(package_name, package_version, args)
+local function luarocks_tag_release(package_name, package_version, specrev, args)
   -- version in format 3.0 must follow the format '[%w.]+-[%d]+'
   local modrev = string.gsub(package_version, 'v', '')
 
-  local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
-  --
-  local git_head_ref = os.getenv('GITHUB_HEAD_REF')
-  local is_pr = git_head_ref ~= nil
-  local git_ref
-  -- = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
-  local specrev = '1'
   local archive_dir_suffix = args.ref_type == 'tag' and modrev or args.git_ref
-  if not is_tag then
-    print('Publishing an untagged release.')
-    git_ref = assert(os.getenv('GITHUB_SHA'), 'GITHUB_SHA not set')
-    archive_dir_suffix = git_ref
-  end
-  if is_pr then
-    specrev = assert(os.getenv("GITHUB_RUN_ATTEMPT"), "GITHUB_RUN_ATTEMPT not set")
-  end
 
-  local target_rockspec_file = package_name .. '-' .. modrev .. '-'.. specrev .. '.rockspec'
+  local target_rockspec_file = package_name .. '-' .. modrev .. '-'.. tostring(specrev) .. '.rockspec'
 
   ---@param filename string
   ---@return string? content
