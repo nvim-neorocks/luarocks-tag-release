@@ -6,7 +6,7 @@ local repo_url = '$repo_url'
 
 rockspec_format = '3.0'
 package = '$package'
-version = modrev .. specrev
+version = modrev ..'-'.. specrev
 
 description = {
   summary = '$summary',

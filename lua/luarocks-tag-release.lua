@@ -23,7 +23,7 @@
 
 ---@param package_name string
 ---@param package_version string
----@param specrev number the version of the rockspec
+---@param specrev string the version of the rockspec
 ---@param args Args
 local function luarocks_tag_release(package_name, package_version, specrev, args)
   -- version in format 3.0 must follow the format '[%w.]+-[%d]+'
@@ -31,7 +31,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
 
   local archive_dir_suffix = args.ref_type == 'tag' and modrev or args.git_ref
 
-  local target_rockspec_file = package_name .. '-' .. modrev .. '-'.. tostring(specrev) .. '.rockspec'
+  local target_rockspec_file = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 
   ---@param filename string
   ---@return string? content
@@ -122,7 +122,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     print(stdout)
     cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
     if test_release then
-      cmd = cmd.." --force"
+      cmd = cmd .. ' --force'
     end
     print('UPLOAD: ' .. cmd)
     stdout, _ = execute(cmd)
@@ -205,9 +205,9 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
       .. args.git_ref
       .. '.'
   )
-  print("is_pr", is_pr, "event name", os.getenv('GITHUB_EVENT_NAME'), "head:", os.getenv('GITHUB_HEAD_REF'))
+  print('is_pr', is_pr, 'event name', os.getenv('GITHUB_EVENT_NAME'), 'head:', os.getenv('GITHUB_HEAD_REF'))
   if is_pr then
-    print("Running from Pull Request, overriding existing releases enabled")
+    print('Running from Pull Request, overriding existing releases enabled')
   end
   local rockspec = content
     :gsub('$git_ref', args.git_ref)

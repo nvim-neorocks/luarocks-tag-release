@@ -140,7 +140,6 @@ local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
 --
 local git_head_ref = os.getenv('GITHUB_HEAD_REF')
 local is_pr = git_head_ref ~= nil
-local git_ref
 -- = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
 local specrev = '1'
 if not is_tag then
