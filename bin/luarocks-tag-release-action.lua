@@ -138,7 +138,8 @@ local luarocks_tag_release = require('luarocks-tag-release')
 
 if getenv_or_empty('GITHUB_EVENT_NAME') == "pull_request" then
   print("Running in a pull request, suffixing package name")
-  package_name = package_name.."pr-"..os.getenv("GITHUB_HEAD_REF")
+  -- package_name = package_name.."-pr-"..os.getenv("GITHUB_HEAD_REF")
+  package_version = "pr-"..os.getenv("GITHUB_HEAD_REF")
 end
 
 luarocks_tag_release(package_name, package_version, args)
