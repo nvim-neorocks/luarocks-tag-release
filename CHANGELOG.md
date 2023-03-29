@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v4.0.1] - 2023-03-29
 ### Changed
 - Change license to AGPLv3.0.
   Note: This does not affect the permission to use this action with a package that has a different license.
