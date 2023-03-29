@@ -121,6 +121,7 @@ Example:
 > * compiler
 > * doc
 > * filetype.lua
+> * ftplugin
 > * indent
 > * keymap
 > * lang

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Change license to AGPLv3.0.
   Note: This does not affect the permission to use this action with a package that has a different license.
+### Fixed
+- Add `ftplugin` to `{{ neovim.plugin.dirs }}`.
 
 ## [v4.0.0] - 2023-03-19
 - POTENIALLY BREAKING: Convert to composite action.
