@@ -40,6 +40,11 @@
         ];
       };
 
+      base-dependencies = with pkgs.lua51Packages; [
+        dkjson
+        luafilesystem
+      ];
+
       formatting = pre-commit-hooks.lib.${system}.run {
         src = self;
         hooks = {
@@ -48,6 +53,7 @@
           luacheck.enable = true;
           editorconfig-checker.enable = true;
           markdownlint.enable = true;
+          lua-ls.enable = true;
         };
         settings = {
           markdownlint.config = {
@@ -57,6 +63,13 @@
             MD022 = false;
             MD031 = false;
             MD032 = false;
+          };
+          lua-ls = {
+            config = {
+              Lua = {
+                workspace.library = base-dependencies;
+              };
+            };
           };
         };
       };

@@ -41,21 +41,23 @@ No need to add a rockspec to your repository for each release (or at all).
 
 ## Features
 
-* Can generate a [rockspec](https://github.com/luarocks/luarocks/wiki/Rockspec-format) based on repository metadata and information provided to the action.
-* Tests a local installation from the rockspec file before uploading.
-* Uploads the package to LuaRocks.
-* Tests the installation of the uploaded package.
-* Runs [`luarocks test`](https://github.com/luarocks/luarocks/wiki/test)
+- Can generate a [rockspec](https://github.com/luarocks/luarocks/wiki/Rockspec-format)
+  based on repository metadata and information provided to the action.
+- Tests a local installation from the rockspec file before uploading.
+- Uploads the package to LuaRocks.
+- Tests the installation of the uploaded package.
+- Runs [`luarocks test`](https://github.com/luarocks/luarocks/wiki/test)
   with lua, neovim 0.9 and/or neovim-nightly as the interpreter.
 
 ## Prerequisites
 
-* A LuaRocks account and an [API key](https://luarocks.org/settings/api-keys).
-* Add the API key to your [repository's GitHub Actions secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
+- A LuaRocks account and an [API key](https://luarocks.org/settings/api-keys).
+- Add the API key to your [repository's GitHub Actions secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 
 ## Usage
 
 Create `.github/workflows/release.yml` in your repository with the following contents:
+
 ```yaml
 name: LuaRocks release
 on:
@@ -88,7 +90,7 @@ The following optional inputs can be specified using `with:`
 
 The name of the the luarocks package.
 
-* Defaults to the repository name.
+- Defaults to the repository name.
 
 ### `dependencies`
 
@@ -129,9 +131,9 @@ is present, no tests will be run.
 
 Supported interpreters:
 
-* `neovim-stable` - With access to the [Neovim 0.9 Lua API](https://neovim.io/doc/user/lua.html).
-* `neovim-nightly` - With access to the Neovim nightly Lua API.
-* `lua` - Plain luajit
+- `neovim-stable` - With access to the [Neovim 0.9 Lua API](https://neovim.io/doc/user/lua.html).
+- `neovim-nightly` - With access to the Neovim nightly Lua API.
+- `lua` - Plain luajit
 
 Example:
 
@@ -146,7 +148,9 @@ Example:
 
 ### `copy_directories`
 
-Directories in the source directory to be copied to the rock installation prefix as-is. Useful for installing documentation and other files such as samples and tests.
+Directories in the source directory to be copied to the rock installation
+prefix as-is.
+Useful for installing documentation and other files such as samples and tests.
 
 Example:
 
@@ -162,30 +166,33 @@ Example:
 
 >**Note**
 >
-> The value `{{ neovim.plugin.dirs }}` (set by default) expands to common Neovim plugin directories
-> (see also `:help runtimepath`):
+> The value `{{ neovim.plugin.dirs }}` (set by default)
+> expands to common Neovim plugin directories (see also `:help runtimepath`):
 >
-> * autoload
-> * colors
-> * compiler
-> * doc
-> * filetype.lua
-> * ftplugin
-> * indent
-> * keymap
-> * lang
-> * menu.vim
-> * parser
-> * plugin
-> * queries
-> * query
-> * rplugin
-> * spell
-> * syntax
+> - autoload
+> - colors
+> - compiler
+> - doc
+> - filetype.lua
+> - ftplugin
+> - indent
+> - keymap
+> - lang
+> - menu.vim
+> - parser
+> - plugin
+> - queries
+> - query
+> - rplugin
+> - spell
+> - syntax
 >
 >**Warning**
 >
-> Do not use the following directory names: `lua`, `lib`, `rock_manifest` or the name of your rockspec; those names are used by the .rock format internally, and attempting to copy directories with those names using the build.copy_directories directive will cause a clash.
+> Do not use the following directory names: `lua`, `lib`, `rock_manifest`
+> or the name of your rockspec; those names are used by the .rock format
+> internally, and attempting to copy directories with those names using
+> the build.copy_directories directive will cause a clash.
 
 ### `summary`
 
@@ -212,8 +219,8 @@ Example:
 
 By default, this workflow will generate a rockspec based on a [predefined template](./rockspec.template).
 
-You can also add a modified template to your repository and specify the path to it with the `template` variable.
-
+You can also add a modified template to your repository and specify the path
+to it with the `template` variable.
 
 Example:
 
@@ -238,23 +245,27 @@ Example:
   with:
     license: "MIT"
 ```
+
 > **Note**
 >
-> If GitHub can detect the license automatically, it will be displayed in your repository's About section.
+> If GitHub can detect the license automatically,
+> it will be displayed in your repository's About section.
 >
 > ![about](https://user-images.githubusercontent.com/12857160/218101570-b0605716-0457-47c1-ab2e-91d48a48881c.png)
-
 
 ### `version` (optional)
 
 The package version to release to LuaRocks (without the rockspec revision).
-By default, this workflow will use the git tag to determine the LuaRocks package version.
-If you do not have a workflow that releases based on tags, you can manually set the version input.
+By default, this workflow will use the git tag to determine the LuaRocks
+package version.
+If you do not have a workflow that releases based on tags,
+you can manually set the version input.
 
 The following is an example for a basic workflow that runs daily at 00:00,
 sets the package version to `0.0.<number_of_commits>`, and publishes to LuaRocks
 if there have been any commits in the last 24 hours:
 
+<!-- markdownlint-disable -->
 ```yaml
 name: "release"
 on:
@@ -281,6 +292,7 @@ jobs:
         with:
           version: ${{ env.LUAROCKS_VERSION }}
 ```
+<!-- markdownlint-restore -->
 
 > **Note**
 >
@@ -293,16 +305,19 @@ See the [Example configurations wiki page](https://github.com/nvim-neorocks/luar
 
 ## Limitations
 
-* This workflow only works on public repositories.
-* It was designed with Neovim plugins in mind. It should work with any LuaRocks package (lua >= 5.1), but this has not been tested.
-* This action uses lua 5.1. So any packages that depend on lua > 5.1 will fail to install.
+- This workflow only works on public repositories.
+- It was designed with Neovim plugins in mind. It should work with any LuaRocks package
+  (lua >= 5.1), but this has not been tested.
+- This action uses lua 5.1. So any packages that depend on lua > 5.1
+  will fail to install.
 
 ## Acknowledgements
 
 Thanks to:
 
-* [@teto](https://github.com/teto) for the [inspiration](https://teto.github.io/posts/2022-06-22-neovim-plugin-luarocks-2.html) that kickstarted this.
-* [@Conni2461](https://github.com/Conni2461) for the help debugging the first drafts.
+- [@teto](https://github.com/teto) for the [inspiration](https://teto.github.io/posts/2022-06-22-neovim-plugin-luarocks-2.html)
+  that kickstarted this.
+- [@Conni2461](https://github.com/Conni2461) for the help debugging the first drafts.
 
 <!-- MARKDOWN LNIKS & IMAGES -->
 [neovim-shield]: https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white
