@@ -90,6 +90,23 @@ end
 local license_input = os.getenv('INPUT_LICENSE')
 local template_input = os.getenv('INPUT_TEMPLATE')
 
+local interpreters_input = os.getenv('INPUT_TEST_INTERPRETERS')
+---@type lua_interpreter[]
+local test_interpreters = {}
+if interpreters_input then
+  for _, input in pairs(parse_list_args(interpreters_input)) do
+    if input == 'neovim-stable' then
+      table.insert(test_interpreters, 'neolua')
+    elseif input == 'neovim-nightly' then
+      table.insert(test_interpreters, 'neolua-nightly')
+    elseif input == 'lua' then
+      table.insert(test_interpreters, 'lua')
+    else
+      error('Test interpreter ' .. input .. ' not supported.')
+    end
+  end
+end
+
 ---@type Args
 local args = {
   github_repo = github_repo,
@@ -106,6 +123,7 @@ local args = {
     or action_path .. '/resources/rockspec.template',
   upload = getenv_or_err('INPUT_UPLOAD') == 'true',
   license = license_input ~= '' and license_input or nil,
+  luarocks_test_interpreters = test_interpreters,
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 

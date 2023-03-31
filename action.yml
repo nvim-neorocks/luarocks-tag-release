@@ -51,11 +51,21 @@ inputs:
       But sometimes, GitHub does not recognise it,
       in which case LuaRocks will fall back to this one.
     required: false
+  test_interpreters:
+    description: |
+      Lua interpreters to run `luarocks test` with.
+      If not set, no tests will be run.
+      At the moment, "lua", "neovim-stable" and "neovim-nightly" are supported.
+    required: false
+    default: |
+      neovim-stable
+      neovim-nightly
 runs:
   using: "composite"
   steps:
     - uses: cachix/install-nix-action@v21
-    - run: nix profile install "${{ github.action_path }}#luarocks-tag-release-action"
+    - run: |
+        nix profile install --accept-flake-config "${{ github.action_path }}#luarocks-tag-release-action"
       shell: bash
     - run: luarocks-tag-release-action
       env:
@@ -69,4 +79,5 @@ runs:
         INPUT_TEMPLATE: ${{ inputs.template }}
         INPUT_UPLOAD: ${{ inputs.upload }}
         INPUT_LICENSE: ${{ inputs.license }}
+        INPUT_TEST_INTERPRETERS: ${{ inputs.test_interpreters }}
       shell: bash

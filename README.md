@@ -95,6 +95,29 @@ Example:
       neovim
 ```
 
+### `test_interpreters`
+
+Lua interpreters to run `luarocks test` with.
+If no interpreter is set, or no [.busted file](https://lunarmodules.github.io/busted/#usage)
+is present, no tests will be run.
+
+Supported interpreters:
+
+* `neovim-stable` - With access to the [Neovim 0.9 Lua API](https://neovim.io/doc/user/lua.html).
+* `neovim-nightly` - With access to the Neovim nightly Lua API.
+* `lua` - Plain luajit
+
+Example:
+
+```yaml
+- name: LuaRocks Test and Upload
+  uses: nvim-neorocks/luarocks-tag-release@v4
+  with:
+    test_interpreters: |
+      neovim-stable
+      neovim-nightly
+```
+
 ### `copy_directories`
 
 Directories in the source directory to be copied to the rock installation prefix as-is. Useful for installing documentation and other files such as samples and tests.

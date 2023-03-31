@@ -15,6 +15,10 @@ dependencies = {
   'luafilesystem',
 }
 
+test_dependencies = {
+  'plenary.nvim',
+}
+
 source = {
   url = 'git://github.com/mrcjkb/' .. package,
 }
