@@ -24,8 +24,7 @@
     ];
   in
     flake-utils.lib.eachSystem supportedSystems (system: let
-      pkgs = import nixpkgs {inherit system;};
-      inherit (pkgs) lib;
+      pkgs = nixpkgs.legacyPackages.${system};
 
       luarocks-tag-release-wrapped = pkgs.lua51Packages.buildLuaApplication {
         pname = "luarocks-tag-release";
@@ -78,11 +77,31 @@
           };
         };
       };
+
+      shell = pkgs.mkShell {
+        name = "luarocks-tag-release-devShell";
+        buildInputs =
+          (with pkgs; [
+            sumneko-lua-language-server
+            luarocks
+          ])
+          ++ (with pre-commit-hooks.packages.${system}; [
+            alejandra
+            stylua
+            luacheck
+            editorconfig-checker
+            markdownlint-cli
+          ]);
+        shellHook = ''
+          ${self.checks.${system}.formatting.shellHook}
+        '';
+      };
     in {
       packages = {
         default = luarocks-tag-release-action;
         inherit luarocks-tag-release-action;
       };
+      devShells.default = shell;
       checks = {
         inherit formatting;
       };
