@@ -54,7 +54,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: cachix/install-nix-action@v20
+    - uses: cachix/install-nix-action@v21
     - run: nix profile install "${{ github.action_path }}#luarocks-tag-release-action"
       shell: bash
     - run: luarocks-tag-release-action
