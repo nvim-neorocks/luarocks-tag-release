@@ -22,7 +22,7 @@
 
 [![Neovim][neovim-shield]][neovim-url]
 [![Lua][lua-shield]][lua-url]
-[![GPL2 License][license-shield]][license-url]
+[![AGPL3 License][license-shield]][license-url]
 [![Issues][issues-shield]][issues-url]
 [![Luarocks release][ci-shield]][ci-url]
 
