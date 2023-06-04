@@ -45,14 +45,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v4
+        uses: nvim-neorocks/luarocks-tag-release@v5
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
 
 > **Note**
 >
-> Use the `v4` tag to keep up with the latest releases, without breaking changes.
+> Use the `v5` tag to keep up with the latest releases, without breaking changes.
 
 ## Inputs
 
@@ -73,7 +73,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v4
+  uses: nvim-neorocks/luarocks-tag-release@v5
   with:
     dependencies: |
       plenary.nvim
@@ -89,10 +89,33 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v4
+  uses: nvim-neorocks/luarocks-tag-release@v5
   with:
     labels: |
       neovim
+```
+
+### `test_interpreters`
+
+Lua interpreters to run `luarocks test` with.
+If no interpreter is set, or no [.busted file](https://lunarmodules.github.io/busted/#usage)
+is present, no tests will be run.
+
+Supported interpreters:
+
+* `neovim-stable` - With access to the [Neovim 0.9 Lua API](https://neovim.io/doc/user/lua.html).
+* `neovim-nightly` - With access to the Neovim nightly Lua API.
+* `lua` - Plain luajit
+
+Example:
+
+```yaml
+- name: LuaRocks Test and Upload
+  uses: nvim-neorocks/luarocks-tag-release@v5
+  with:
+    test_interpreters: |
+      neovim-stable
+      neovim-nightly
 ```
 
 ### `copy_directories`
@@ -103,7 +126,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v4
+  uses: nvim-neorocks/luarocks-tag-release@v5
   with:
     copy_directories: |
       {{ neovim.plugin.dirs }}
@@ -151,7 +174,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v4
+  uses: nvim-neorocks/luarocks-tag-release@v5
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -170,7 +193,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v4
+  uses: nvim-neorocks/luarocks-tag-release@v5
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -185,7 +208,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v4
+  uses: nvim-neorocks/luarocks-tag-release@v5
   with:
     license: "MIT"
 ```
@@ -225,7 +248,7 @@ jobs:
       - name: Get new commits
         run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v4
+        uses: nvim-neorocks/luarocks-tag-release@v5
         if: ${{ env.NEW_COMMIT_COUNT > 0 }}
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}

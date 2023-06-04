@@ -1,6 +1,11 @@
 {
   description = "Build and upload LuaRocks packages from Git tags";
 
+  nixConfig = {
+    extra-substituters = "https://neorocks.cachix.org";
+    extra-trusted-public-keys = "neorocks.cachix.org-1:WqMESxmVTOJX7qoBC54TwrMMoVI1xAM+7yFin8NRfwk=";
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
@@ -10,6 +15,8 @@
     };
 
     flake-utils.url = "github:numtide/flake-utils";
+
+    neorocks-nix.url = "github:mrcjkb/neorocks-nix";
   };
 
   outputs = {
@@ -17,6 +24,7 @@
     nixpkgs,
     flake-utils,
     pre-commit-hooks,
+    neorocks-nix,
     ...
   }: let
     supportedSystems = [
@@ -24,37 +32,12 @@
     ];
   in
     flake-utils.lib.eachSystem supportedSystems (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-
-      luarocks-tag-release-wrapped = pkgs.lua51Packages.buildLuaApplication {
-        pname = "luarocks-tag-release";
-        version = "scm-1";
-
-        src = self;
-
-        propagatedBuildInputs = with pkgs.lua51Packages; [
-          dkjson
-          luafilesystem
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          neorocks-nix.overlays.default
+          (import ./nix/overlay.nix {inherit self;})
         ];
-      };
-
-      luarocks-tag-release-action = pkgs.writeShellApplication {
-        name = "luarocks-tag-release-action";
-        runtimeInputs = with pkgs; [
-          curl
-          lua51Packages.dkjson # Used by luarocks
-          lua51Packages.luarocks
-          luarocks-tag-release-wrapped
-          unzip
-          zip
-        ];
-
-        text = ''
-          luarocks-tag-release-action.lua "$@"
-        '';
-
-        # The default checkPhase depends on ShellCheck, which depends on GHC
-        checkPhase = "";
       };
 
       formatting = pre-commit-hooks.lib.${system}.run {
@@ -98,8 +81,11 @@
       };
     in {
       packages = {
-        default = luarocks-tag-release-action;
-        inherit luarocks-tag-release-action;
+        default = pkgs.luarocks-tag-release-action;
+        inherit
+          (pkgs)
+          luarocks-tag-release-action
+          ;
       };
       devShells.default = shell;
       checks = {

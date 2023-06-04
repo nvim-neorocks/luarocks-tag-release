@@ -1,6 +1,7 @@
 #!/usr/bin/env lua
 
 ---@alias github_ref_type 'tag' | 'branch'
+---@alias lua_interpreter 'neolua' | 'neolua-nightly' | 'lua'
 
 ---@class Args
 ---@field repo_name string The repository name.
@@ -18,6 +19,7 @@
 ---@field rockspec_template_file_path string File path to the rockspec template (relative to repo's root).
 ---@field upload boolean Whether to upload to LuaRocks.
 ---@field license string|nil License SPDX ID (optional).
+---@field luarocks_test_interpreters lua_interpreter[]
 
 ---@param args Args
 local function luarocks_tag_release(args)
@@ -39,10 +41,19 @@ local function luarocks_tag_release(args)
     return content
   end
 
+  ---@param content string
+  ---@return nil
+  local function write_file(content)
+    local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
+    outfile:write(content)
+    outfile:close()
+  end
+
   ---@param cmd string
-  ---@param on_failure fun(error_msg:string)
+  ---@param on_failure fun(error_msg:string)?
   ---@return string stdout, string stderr
   local function execute(cmd, on_failure)
+    on_failure = on_failure or error
     local exec_out = 'exec_out.txt'
     local exec_err = 'exec_err.txt'
     local to_exec_out = ' >' .. exec_out .. ' 2>' .. exec_err
@@ -55,22 +66,33 @@ local function luarocks_tag_release(args)
     return stdout, stderr
   end
 
-  ---@param rockspec_content string
+  local tmp_dir = execute('mktemp -d'):gsub('\n', '')
+
+  ---@param interpreter lua_interpreter
   ---@return nil
-  local function luarocks_upload(rockspec_content)
-    local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
-    outfile:write(rockspec_content)
-    outfile:close()
-    local tmp_dir = execute('mktemp -d', error):gsub('\n', '')
+  local function luarocks_test(interpreter)
+    print('Initialising luarocks project...')
+    execute('luarocks init', print)
+    print('Done.')
+    print('Configuring luarocks to use interpreter ' .. interpreter .. '...')
+    execute('luarocks config --scope project lua_interpreter ' .. interpreter)
+    print('Done.')
+    print('Running tests...')
+    execute('luarocks test')
+    execute('rm -r .luarocks luarocks', print)
+  end
+
+  ---@return nil
+  local function luarocks_upload()
     local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir
 
     local cmd = luarocks_install_cmd .. ' ' .. target_rockspec_file
     print('TEST: ' .. cmd)
-    local stdout, _ = execute(cmd, error)
+    local stdout, _ = execute(cmd)
     print(stdout)
     cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. args.package_name
     print('TEST: ' .. cmd)
-    stdout, _ = execute(cmd, error)
+    stdout, _ = execute(cmd)
     if not args.upload then
       print('LuaRocks upload disabled. Skipping...')
       return
@@ -78,7 +100,7 @@ local function luarocks_tag_release(args)
     print(stdout)
     cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
     print('UPLOAD: ' .. cmd)
-    stdout, _ = execute(cmd, error)
+    stdout, _ = execute(cmd)
     print(stdout)
     cmd = luarocks_install_cmd .. ' ' .. args.package_name .. ' ' .. modrev
     print('TEST: ' .. cmd)
@@ -179,7 +201,11 @@ local function luarocks_tag_release(args)
   print(rockspec)
   print('========================================================================================')
 
-  luarocks_upload(rockspec)
+  write_file(rockspec)
+  for _, interpreter in pairs(args.luarocks_test_interpreters) do
+    luarocks_test(interpreter)
+  end
+  luarocks_upload()
 
   print('')
   print('Done.')

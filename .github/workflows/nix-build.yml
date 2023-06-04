@@ -1,7 +1,8 @@
 ---
 name: "Tests and checks"
-on: pull_request
-
+on:
+  pull_request:
+  push:
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -11,6 +12,25 @@ jobs:
       - uses: cachix/install-nix-action@v21
       - name: Nix checks
         run: nix flake check -L
+  build:
+    name: ${{ matrix.attribute }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        attribute:
+          - .#luarocks-tag-release-action
+          - .#devShells.x86_64-linux.default
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v21
+    - uses: cachix/cachix-action@v12
+      with:
+        name: neorocks
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+    - run: nix build --accept-flake-config "${{matrix.attribute}}" -L
   tests:
     runs-on: ubuntu-latest
     name: Tests
