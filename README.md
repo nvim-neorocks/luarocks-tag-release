@@ -1,6 +1,30 @@
-# LuaRocks tag release action
+<!-- markdownlint-disable -->
+<br />
+<div align="center">
+  <a href="https://github.com/nvim-neorocks/luarocks-tag-release">
+    <img src="https://avatars.githubusercontent.com/u/124081866?s=400&u=0da379a468d46456477a1f68048b020cf7a99f34&v=4" alt="neorocks">
+  </a>
+  <p align="center">
+    <a href="https://github.com/nvim-neorocks/luarocks-tag-release/issues">Report Bug</a>
+  </p>
+  <p>
+    <strong>
+      luarocks-tag-release
+      <br />
+      Automatically publish <a href="https://luarocks.org/">luarocks</a> packages from git tags.
+      <br />
+      Designed to work with <a href="https://neovim.io/">Neovim</a> plugins.
+    </strong>
+  </p>
+  <h2>🏷️🚀🌒</h>
+</div>
+<!-- markdownlint-restore -->
 
-[![Luarocks release](https://github.com/nvim-neorocks/luarocks-tag-release/actions/workflows/release.yml/badge.svg)](https://github.com/nvim-neorocks/luarocks-tag-release/actions/workflows/release.yml)
+[![Neovim][neovim-shield]][neovim-url]
+[![Lua][lua-shield]][lua-url]
+[![GPL2 License][license-shield]][license-url]
+[![Issues][issues-shield]][issues-url]
+[![Luarocks release][ci-shield]][ci-url]
 
 Publishes packages to [LuaRocks](https://luarocks.org/) when a git tag is pushed.
 No need to add a rockspec to your repository for each release (or at all).
@@ -277,3 +301,15 @@ Thanks to:
 
 * [@teto](https://github.com/teto) for the [inspiration](https://teto.github.io/posts/2022-06-22-neovim-plugin-luarocks-2.html) that kickstarted this.
 * [@Conni2461](https://github.com/Conni2461) for the help debugging the first drafts.
+
+<!-- MARKDOWN LNIKS & IMAGES -->
+[neovim-shield]: https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white
+[neovim-url]: https://neovim.io/
+[lua-shield]: https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white
+[lua-url]: https://www.lua.org/
+[issues-shield]: https://img.shields.io/github/issues/nvim-neorocks/luarocks-tag-release.svg?style=for-the-badge
+[issues-url]: https://github.com/nvim-neorocks/luarocks-tag-release/issues
+[license-shield]: https://img.shields.io/github/license/nvim-neorocks/luarocks-tag-release.svg?style=for-the-badge
+[license-url]: https://github.com/nvim-neorocks/luarocks-tag-release/blob/master/LICENSE
+[ci-shield]: https://img.shields.io/github/actions/workflow/status/nvim-neorocks/luarocks-tag-release/nix-build.yml?style=for-the-badge
+[ci-url]: https://github.com/nvim-neorocks/luarocks-tag-release/actions/workflows/nix-build.yml
