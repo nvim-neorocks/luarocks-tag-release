@@ -45,6 +45,8 @@ No need to add a rockspec to your repository for each release (or at all).
 * Tests a local installation from the rockspec file before uploading.
 * Uploads the package to LuaRocks.
 * Tests the installation of the uploaded package.
+* Runs [`luarocks test`](https://github.com/luarocks/luarocks/wiki/test)
+  with lua, neovim 0.9 and/or neovim-nightly as the interpreter.
 
 ## Prerequisites
 
