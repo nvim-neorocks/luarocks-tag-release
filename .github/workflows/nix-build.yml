@@ -9,7 +9,7 @@ jobs:
     name: Checks
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v21
+      - uses: cachix/install-nix-action@v22
       - name: Nix checks
         run: nix flake check -L
   build:
@@ -25,7 +25,7 @@ jobs:
           - .#devShells.x86_64-linux.default
     steps:
     - uses: actions/checkout@v3
-    - uses: cachix/install-nix-action@v21
+    - uses: cachix/install-nix-action@v22
     - uses: cachix/cachix-action@v12
       with:
         name: neorocks
