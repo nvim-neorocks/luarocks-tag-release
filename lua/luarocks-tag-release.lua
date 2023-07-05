@@ -41,6 +41,17 @@ local function luarocks_tag_release(args)
     return content
   end
 
+  ---@param filename string
+  ---@return boolean file_exists
+  local function file_exists(filename)
+    local f = io.open(filename, 'r')
+    if f then
+      f:close()
+      return true
+    end
+    return false
+  end
+
   ---@param content string
   ---@return nil
   local function write_file(content)
@@ -202,8 +213,10 @@ local function luarocks_tag_release(args)
   print('========================================================================================')
 
   write_file(rockspec)
-  for _, interpreter in pairs(args.luarocks_test_interpreters) do
-    luarocks_test(interpreter)
+  if file_exists('.busted') then
+    for _, interpreter in pairs(args.luarocks_test_interpreters) do
+      luarocks_test(interpreter)
+    end
   end
   luarocks_upload()
 
