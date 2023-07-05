@@ -11,6 +11,7 @@
 
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
+      # url = "github:mrcjkb/pre-commit-hooks.nix/lua-ls-shellhook-fix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -53,7 +54,7 @@
           luacheck.enable = true;
           editorconfig-checker.enable = true;
           markdownlint.enable = true;
-          lua-ls.enable = true;
+          # lua-ls.enable = true; # FIXME: This broke with a flake lock update
         };
         settings = {
           markdownlint.config = {
@@ -67,7 +68,11 @@
           lua-ls = {
             config = {
               Lua = {
-                workspace.library = base-dependencies;
+                workspace = {
+                  library = base-dependencies;
+                  checkThirdParty = false;
+                };
+                diagnostics.libraryFiles = "Disable";
               };
             };
           };
@@ -88,6 +93,7 @@
             editorconfig-checker
             markdownlint-cli
           ]);
+        # FIXME: lua-ls pre-commit hook in nix shell
         shellHook = ''
           ${self.checks.${system}.formatting.shellHook}
         '';
