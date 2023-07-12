@@ -31,7 +31,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
 
   local archive_dir_suffix = args.ref_type == 'tag' and modrev or args.git_ref
 
-  local target_rockspec_file = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
+  local rockspec_file_path = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 
   ---@param filename string
   ---@return string? content
@@ -59,7 +59,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@param content string
   ---@return nil
   local function write_file(content)
-    local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
+    local outfile = assert(io.open(rockspec_file_path, 'w'), 'Could not create ' .. rockspec_file_path .. '.')
     outfile:write(content)
     outfile:close()
   end
@@ -81,8 +81,6 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     return stdout, stderr
   end
 
-  local tmp_dir = execute('mktemp -d'):gsub('\n', '')
-
   ---@param interpreter lua_interpreter
   ---@return nil
   local function luarocks_test(interpreter)
@@ -97,35 +95,40 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     execute('rm -r .luarocks luarocks', print)
   end
 
-  ---@param rockspec_content string
-  ---@param do_upload boolean Upload to luarocks.org when true
-  ---@param test_release boolean Force push when dealing with test releases (e.g., PRs)
-  ---@return nil
-  local function luarocks_upload(rockspec_content, do_upload, test_release)
-    local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
-    outfile:write(rockspec_content)
-    outfile:close()
+  ---@return string tmp_dir The temp directory in which to install the package
+  ---@return string luarocks_install_cmd The luarocks install command for installing in tmp_dir
+  local function mk_luarocks_install_cmd()
     local tmp_dir = execute('mktemp -d', error):gsub('\n', '')
     local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir
+    return tmp_dir, luarocks_install_cmd
+  end
 
-    local cmd = luarocks_install_cmd .. ' ' .. target_rockspec_file
+  ---Creates a rockspec and performs a local test install
+  ---@param rockspec_content string
+  ---@return string rockspec_file_path
+  local function create_rockspec(rockspec_content)
+    local outfile = assert(io.open(rockspec_file_path, 'w'), 'Could not create ' .. rockspec_file_path .. '.')
+    outfile:write(rockspec_content)
+    outfile:close()
+    local tmp_dir, luarocks_install_cmd = mk_luarocks_install_cmd()
+    local cmd = luarocks_install_cmd .. ' ' .. rockspec_file_path
     print('TEST: ' .. cmd)
     local stdout, _ = execute(cmd)
     print(stdout)
     cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. package_name
     print('TEST: ' .. cmd)
     stdout, _ = execute(cmd, error)
-    if not do_upload then
-      print('LuaRocks upload disabled. Skipping...')
-      return
-    end
     print(stdout)
-    cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
-    if test_release then
-      cmd = cmd .. ' --force'
-    end
+    return rockspec_file_path
+  end
+
+  ---@param target_rockspec_path string
+  ---@return nil
+  local function luarocks_upload(target_rockspec_path)
+    local _, luarocks_install_cmd = mk_luarocks_install_cmd()
+    local cmd = 'luarocks upload ' .. target_rockspec_path .. ' --api-key $LUAROCKS_API_KEY'
     print('UPLOAD: ' .. cmd)
-    stdout, _ = execute(cmd)
+    local stdout, _ = execute(cmd)
     print(stdout)
     cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev
     print('TEST: ' .. cmd)
@@ -205,10 +208,6 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
       .. args.git_ref
       .. '.'
   )
-  print('is_pr', is_pr, 'event name', os.getenv('GITHUB_EVENT_NAME'), 'head:', os.getenv('GITHUB_HEAD_REF'))
-  if is_pr then
-    print('Running from Pull Request, overriding existing releases enabled')
-  end
   local rockspec = content
     :gsub('$git_ref', args.git_ref)
     :gsub('$modrev', modrev)
@@ -237,7 +236,12 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
       luarocks_test(interpreter)
     end
   end
-  luarocks_upload(rockspec, args.upload, is_pr)
+  local target_rockspec_path = create_rockspec(rockspec)
+  if args.upload then
+    luarocks_upload(target_rockspec_path)
+  else
+    print('LuaRocks upload disabled. Skipping...')
+  end
 
   print('')
   print('Done.')

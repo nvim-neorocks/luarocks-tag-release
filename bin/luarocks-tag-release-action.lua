@@ -109,6 +109,8 @@ if interpreters_input then
   end
 end
 
+local is_pr = getenv_or_empty('GITHUB_EVENT_NAME') == 'pull_request'
+
 ---@type Args
 local args = {
   github_repo = github_repo,
@@ -121,7 +123,7 @@ local args = {
   detailed_description_lines = parse_list_args(getenv_or_empty('INPUT_DETAILED_DESCRIPTION')),
   rockspec_template_file_path = template_input ~= '' and template_input
     or action_path .. '/resources/rockspec.template',
-  upload = getenv_or_err('INPUT_UPLOAD') == 'true',
+  upload = not is_pr,
   license = license_input ~= '' and license_input or nil,
   luarocks_test_interpreters = test_interpreters,
 }
@@ -130,29 +132,19 @@ table.insert(args.dependencies, 1, 'lua >= 5.1')
 args.ref_type = getenv_or_err('GITHUB_REF_TYPE')
 print('Workflow has been triggered by: ' .. args.ref_type)
 args.git_ref = getenv_or_err('GITHUB_REF_NAME')
-if args.ref_type ~= 'tag' then
+local is_tag = args.ref_type ~= 'tag'
+if not is_tag then
+  print('Publishing an untagged release.')
   args.git_ref = getenv_or_err('GITHUB_SHA')
 end
 
 local luarocks_tag_release = require('luarocks-tag-release')
 
-local is_tag = os.getenv('GITHUB_REF_TYPE') == 'tag'
---
-local git_head_ref = os.getenv('GITHUB_HEAD_REF')
-local is_pr = git_head_ref ~= nil
--- = assert(os.getenv('GITHUB_REF_NAME'), 'GITHUB_REF_NAME not set')
 local specrev = '1'
-if not is_tag then
-  print('Publishing an untagged release.')
-  -- git_ref = assert(os.getenv('GITHUB_SHA'), 'GITHUB_SHA not set')
-end
 if is_pr then
-  specrev = assert(os.getenv("GITHUB_RUN_ATTEMPT"), "GITHUB_RUN_ATTEMPT not set")
-end
-if getenv_or_empty('GITHUB_EVENT_NAME') == "pull_request" then
-  print("Running in a pull request, suffixing package name")
-  -- package_name = package_name.."-pr-"..os.getenv("GITHUB_HEAD_REF")
-  package_version = "pr-"..os.getenv("GITHUB_HEAD_REF")
+  print('Running in a pull request.')
+  specrev = assert(os.getenv('GITHUB_RUN_ATTEMPT'), 'GITHUB_RUN_ATTEMPT not set')
+  args.git_ref = getenv_or_err('GITHUB_SHA')
 end
 
 luarocks_tag_release(package_name, package_version, specrev, args)

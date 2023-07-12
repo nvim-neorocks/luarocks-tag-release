@@ -45,7 +45,6 @@ jobs:
           dependencies: |
             dkjson
           version: "0.0.0"
-          upload: false
           copy_directories: |
             {{ neovim.plugin.dirs }}
             bin
