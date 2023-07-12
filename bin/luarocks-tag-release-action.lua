@@ -87,10 +87,12 @@ local function parse_copy_directory_args(str_args)
   return filter_existing_directories(copy_directories)
 end
 
+local is_pull_request = getenv_or_empty('GITHUB_EVENT_NAME') == 'pull_request'
+
 local license_input = os.getenv('INPUT_LICENSE')
 local template_input = os.getenv('INPUT_TEMPLATE')
 local package_name = getenv_or_err('INPUT_NAME')
-local package_version = getenv_or_err('INPUT_VERSION')
+local package_version = is_pull_request and '0.0.0' or getenv_or_err('INPUT_VERSION')
 
 local interpreters_input = os.getenv('INPUT_TEST_INTERPRETERS')
 ---@type lua_interpreter[]
@@ -109,8 +111,6 @@ if interpreters_input then
   end
 end
 
-local is_pr = getenv_or_empty('GITHUB_EVENT_NAME') == 'pull_request'
-
 ---@type Args
 local args = {
   github_repo = github_repo,
@@ -123,7 +123,7 @@ local args = {
   detailed_description_lines = parse_list_args(getenv_or_empty('INPUT_DETAILED_DESCRIPTION')),
   rockspec_template_file_path = template_input ~= '' and template_input
     or action_path .. '/resources/rockspec.template',
-  upload = not is_pr,
+  upload = not is_pull_request,
   license = license_input ~= '' and license_input or nil,
   luarocks_test_interpreters = test_interpreters,
 }
@@ -141,7 +141,7 @@ end
 local luarocks_tag_release = require('luarocks-tag-release')
 
 local specrev = '1'
-if is_pr then
+if is_pull_request then
   print('Running in a pull request.')
   specrev = assert(os.getenv('GITHUB_RUN_ATTEMPT'), 'GITHUB_RUN_ATTEMPT not set')
   args.git_ref = getenv_or_err('GITHUB_SHA')
