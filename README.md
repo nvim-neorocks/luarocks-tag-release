@@ -62,8 +62,9 @@ Create `.github/workflows/release.yml` in your repository with the following con
 name: LuaRocks release
 on:
   push:
-    tags:
+    tags: # Will upload to luarocks.org when a tag is pushed
       - "*"
+  pull_request: # Will test a local install without uploading to luarocks.org
 
 jobs:
   luarocks-release:
@@ -272,6 +273,7 @@ on:
   workflow_dispatch: # allows manual triggering
   schedule:
     - cron: '0 0 * * *' # runs daily at 00:00
+  pull_request: # Will test a local install without uploading to luarocks.org
 
 jobs:
   luarocks-upload:

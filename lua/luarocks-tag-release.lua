@@ -21,13 +21,17 @@
 ---@field license string|nil License SPDX ID (optional).
 ---@field luarocks_test_interpreters lua_interpreter[]
 
+---@param package_name string
+---@param package_version string
+---@param specrev string the version of the rockspec
 ---@param args Args
-local function luarocks_tag_release(args)
-  local modrev = string.gsub(args.package_version, 'v', '')
+local function luarocks_tag_release(package_name, package_version, specrev, args)
+  -- version in format 3.0 must follow the format '[%w.]+-[%d]+'
+  local modrev = string.gsub(package_version, 'v', '')
 
   local archive_dir_suffix = args.ref_type == 'tag' and modrev or args.git_ref
 
-  local target_rockspec_file = args.package_name .. '-' .. modrev .. '-1.rockspec'
+  local rockspec_file_path = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 
   ---@param filename string
   ---@return string? content
@@ -55,7 +59,7 @@ local function luarocks_tag_release(args)
   ---@param content string
   ---@return nil
   local function write_file(content)
-    local outfile = assert(io.open(target_rockspec_file, 'w'), 'Could not create ' .. target_rockspec_file .. '.')
+    local outfile = assert(io.open(rockspec_file_path, 'w'), 'Could not create ' .. rockspec_file_path .. '.')
     outfile:write(content)
     outfile:close()
   end
@@ -77,8 +81,6 @@ local function luarocks_tag_release(args)
     return stdout, stderr
   end
 
-  local tmp_dir = execute('mktemp -d'):gsub('\n', '')
-
   ---@param interpreter lua_interpreter
   ---@return nil
   local function luarocks_test(interpreter)
@@ -93,27 +95,42 @@ local function luarocks_tag_release(args)
     execute('rm -r .luarocks luarocks', print)
   end
 
-  ---@return nil
-  local function luarocks_upload()
+  ---@return string tmp_dir The temp directory in which to install the package
+  ---@return string luarocks_install_cmd The luarocks install command for installing in tmp_dir
+  local function mk_luarocks_install_cmd()
+    local tmp_dir = execute('mktemp -d', error):gsub('\n', '')
     local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir
+    return tmp_dir, luarocks_install_cmd
+  end
 
-    local cmd = luarocks_install_cmd .. ' ' .. target_rockspec_file
+  ---Creates a rockspec and performs a local test install
+  ---@param rockspec_content string
+  ---@return string rockspec_file_path
+  local function create_rockspec(rockspec_content)
+    local outfile = assert(io.open(rockspec_file_path, 'w'), 'Could not create ' .. rockspec_file_path .. '.')
+    outfile:write(rockspec_content)
+    outfile:close()
+    local tmp_dir, luarocks_install_cmd = mk_luarocks_install_cmd()
+    local cmd = luarocks_install_cmd .. ' ' .. rockspec_file_path
     print('TEST: ' .. cmd)
     local stdout, _ = execute(cmd)
     print(stdout)
-    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. args.package_name
+    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. package_name
     print('TEST: ' .. cmd)
-    stdout, _ = execute(cmd)
-    if not args.upload then
-      print('LuaRocks upload disabled. Skipping...')
-      return
-    end
+    stdout, _ = execute(cmd, error)
     print(stdout)
-    cmd = 'luarocks upload ' .. target_rockspec_file .. ' --api-key $LUAROCKS_API_KEY'
+    return rockspec_file_path
+  end
+
+  ---@param target_rockspec_path string
+  ---@return nil
+  local function luarocks_upload(target_rockspec_path)
+    local _, luarocks_install_cmd = mk_luarocks_install_cmd()
+    local cmd = 'luarocks upload ' .. target_rockspec_path .. ' --api-key $LUAROCKS_API_KEY'
     print('UPLOAD: ' .. cmd)
-    stdout, _ = execute(cmd)
+    local stdout, _ = execute(cmd)
     print(stdout)
-    cmd = luarocks_install_cmd .. ' ' .. args.package_name .. ' ' .. modrev
+    cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev
     print('TEST: ' .. cmd)
     stdout, _ = execute(cmd, print)
     print(stdout)
@@ -184,9 +201,9 @@ local function luarocks_tag_release(args)
     'Generating Luarocks release '
       .. modrev
       .. ' for: '
-      .. args.package_name
+      .. package_name
       .. ' version '
-      .. args.package_version
+      .. package_version
       .. ' from ref '
       .. args.git_ref
       .. '.'
@@ -194,9 +211,10 @@ local function luarocks_tag_release(args)
   local rockspec = content
     :gsub('$git_ref', args.git_ref)
     :gsub('$modrev', modrev)
+    :gsub('$specrev', specrev)
     :gsub('$repo_url', repo_url)
     :gsub('$archive_dir_suffix', archive_dir_suffix)
-    :gsub('$package', args.package_name)
+    :gsub('$package', package_name)
     :gsub('$summary', escape_quotes(args.summary))
     :gsub('$detailed_description', mk_lua_multiline_str(args.detailed_description_lines))
     :gsub('$dependencies', mk_lua_list_string(args.dependencies))
@@ -218,7 +236,12 @@ local function luarocks_tag_release(args)
       luarocks_test(interpreter)
     end
   end
-  luarocks_upload()
+  local target_rockspec_path = create_rockspec(rockspec)
+  if args.upload then
+    luarocks_upload(target_rockspec_path)
+  else
+    print('LuaRocks upload disabled. Skipping...')
+  end
 
   print('')
   print('Done.')

@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  pull_request:
 
 jobs:
   luarocks-release:
@@ -30,7 +31,9 @@ jobs:
             bin
       - name: Fail if changelog entry does not exist
         run: grep -q "${{ github.ref_name }}" CHANGELOG.md
+        if: github.event_name == 'tag'
       - name: Release to marketplace
+        if: github.event_name == 'tag'
         uses: ncipollo/release-action@v1
         with:
           bodyFile: "CHANGELOG.md"
