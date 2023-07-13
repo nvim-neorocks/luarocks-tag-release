@@ -132,7 +132,7 @@ table.insert(args.dependencies, 1, 'lua >= 5.1')
 args.ref_type = getenv_or_err('GITHUB_REF_TYPE')
 print('Workflow has been triggered by: ' .. args.ref_type)
 args.git_ref = getenv_or_err('GITHUB_REF_NAME')
-local is_tag = args.ref_type ~= 'tag'
+local is_tag = args.ref_type == 'tag'
 if not is_tag then
   print('Publishing an untagged release.')
   args.git_ref = getenv_or_err('GITHUB_SHA')
