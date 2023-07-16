@@ -59,6 +59,8 @@ runs:
   steps:
     - uses: cachix/install-nix-action@v22
     - run: |
+        # Ensure we are using the latest neorocks (for luarocks test)
+        nix flake lock --update-input neorocks
         nix profile install --accept-flake-config "${{ github.action_path }}#luarocks-tag-release-action"
       shell: bash
 
