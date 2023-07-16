@@ -164,9 +164,9 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   local license
   local repo_info_str, _ =
     execute('curl -H "Accept: application/vnd.github+json" https://api.github.com/repos/' .. args.github_repo, print)
-  if repo_info_str and repo_info_str ~= '' then
-    local json = require('dkjson')
-    local repo_meta = json.decode(repo_info_str)
+  local json = require('dkjson')
+  local repo_meta = repo_info_str and repo_info_str ~= '' and json.decode(repo_info_str)
+  if repo_meta then
     local repo_license = repo_meta.license or repo_meta.source and repo_meta.source.license
     if args.license then
       license = "license = '" .. args.license .. "'"
