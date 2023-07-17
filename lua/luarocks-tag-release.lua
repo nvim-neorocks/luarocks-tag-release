@@ -20,6 +20,7 @@
 ---@field upload boolean Whether to upload to LuaRocks.
 ---@field license string|nil License SPDX ID (optional).
 ---@field luarocks_test_interpreters lua_interpreter[]
+---@field github_event_path string|nil The path to the file on the runner that contains the full event webhook payload. For example, /github/workflow/event.json.
 
 ---@param package_name string
 ---@param package_version string
@@ -162,10 +163,14 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   local repo_url = args.github_server_url .. '/' .. args.github_repo
   local homepage = repo_url
   local license
-  local repo_info_str, _ =
-    execute('curl -H "Accept: application/vnd.github+json" https://api.github.com/repos/' .. args.github_repo, print)
+  local github_event_data = args.github_event_path and read_file(args.github_event_path)
   local json = require('dkjson')
-  local repo_meta = repo_info_str and repo_info_str ~= '' and json.decode(repo_info_str)
+  local github_event_tbl = github_event_data and json.decode(github_event_data)
+  local repo_meta = github_event_tbl
+    and (
+      github_event_tbl.pull_request and github_event_tbl.pull_request.head and github_event_tbl.pull_request.head.repo
+      or github_event_tbl.repository
+    )
   if repo_meta then
     local repo_license = repo_meta.license or repo_meta.source and repo_meta.source.license
     if args.license then

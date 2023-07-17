@@ -126,6 +126,7 @@ local args = {
   upload = not is_pull_request,
   license = license_input ~= '' and license_input or nil,
   luarocks_test_interpreters = test_interpreters,
+  github_event_path = getenv_or_err('GITHUB_EVENT_PATH'),
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 
