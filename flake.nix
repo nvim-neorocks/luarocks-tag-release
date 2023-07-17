@@ -66,6 +66,7 @@
           };
           lua-ls = {
             config = {
+              runtime.version = "LuaJIT";
               Lua = {
                 workspace = {
                   library = base-dependencies;
