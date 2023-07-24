@@ -9,8 +9,6 @@
 ---@field github_server_url string The github server's URL.
 ---@field git_ref string E.g. a tag or a commit sha.
 ---@field ref_type github_ref_type
----@field package_name string The name of the LuaRocks package.
----@field package_version string The version of the LuaRocks package.
 ---@field dependencies string[] List of LuaRocks package dependencies.
 ---@field labels string[] List of labels to add to the rockspec.
 ---@field copy_directories string[] List of directories to add to the rockspec's copy_directories.
@@ -22,8 +20,8 @@
 ---@field luarocks_test_interpreters lua_interpreter[]
 ---@field github_event_path string|nil The path to the file on the runner that contains the full event webhook payload. For example, /github/workflow/event.json.
 
----@param package_name string
----@param package_version string
+---@param package_name string The name of the LuaRocks package.
+---@param package_version string The version of the LuaRocks package.
 ---@param specrev string the version of the rockspec
 ---@param args Args
 local function luarocks_tag_release(package_name, package_version, specrev, args)

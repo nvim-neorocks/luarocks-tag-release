@@ -127,12 +127,12 @@ local args = {
   license = license_input ~= '' and license_input or nil,
   luarocks_test_interpreters = test_interpreters,
   github_event_path = getenv_or_err('GITHUB_EVENT_PATH'),
+  ref_type = getenv_or_err('GITHUB_REF_TYPE'),
+  git_ref = getenv_or_err('GITHUB_REF_NAME'),
 }
 table.insert(args.dependencies, 1, 'lua >= 5.1')
 
-args.ref_type = getenv_or_err('GITHUB_REF_TYPE')
 print('Workflow has been triggered by: ' .. args.ref_type)
-args.git_ref = getenv_or_err('GITHUB_REF_NAME')
 local is_tag = args.ref_type == 'tag'
 if not is_tag then
   print('Publishing an untagged release.')
