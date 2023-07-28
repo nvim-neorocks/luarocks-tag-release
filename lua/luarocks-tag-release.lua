@@ -55,10 +55,11 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     return false
   end
 
+  ---@param filename string
   ---@param content string
   ---@return nil
-  local function write_file(content)
-    local outfile = assert(io.open(rockspec_file_path, 'w'), 'Could not create ' .. rockspec_file_path .. '.')
+  local function write_file(filename, content)
+    local outfile = assert(io.open(filename, 'w'), 'Could not create ' .. filename .. '.')
     outfile:write(content)
     outfile:close()
   end
@@ -228,12 +229,12 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     :gsub('$repo_name', args.repo_name)
 
   print('')
-  print('Generated rockspec:')
+  print('Generated ' .. rockspec_file_path .. ':')
   print('========================================================================================')
   print(rockspec)
   print('========================================================================================')
 
-  write_file(rockspec)
+  write_file(rockspec_file_path, rockspec)
   if file_exists('.busted') then
     for _, interpreter in pairs(args.luarocks_test_interpreters) do
       luarocks_test(interpreter)
