@@ -59,7 +59,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@param content string
   ---@return nil
   local function write_file(filename, content)
-    local outfile = assert(io.open(filename, 'w'), 'Could not create ' .. file_path .. '.')
+    local outfile = assert(io.open(filename, 'w'), 'Could not create ' .. filenane .. '.')
     outfile:write(content)
     outfile:close()
   end
