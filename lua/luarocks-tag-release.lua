@@ -229,7 +229,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     :gsub('$repo_name', args.repo_name)
 
   print('')
-  print('Generated rockspec:')
+  print('Generated ' .. rockspec_file_path .. ':')
   print('========================================================================================')
   print(rockspec)
   print('========================================================================================')
