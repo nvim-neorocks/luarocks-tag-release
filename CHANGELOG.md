@@ -6,7 +6,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v5.1.2] - 2023-07-28
+### Fixed
+- Avoid duplicate `lua` dependencies in rockspec
+  if specified in dependencies input.
 ### Changed
 - Print generated rockspec's filename in workflow log.
 
