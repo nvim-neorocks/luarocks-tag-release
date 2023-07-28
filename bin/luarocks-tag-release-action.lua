@@ -89,7 +89,7 @@ end
 
 local function list_has_lua(t)
   for _, v in pairs(t) do
-    if v == "lua" or (type(v) == "string" and string.match(v, "^lua%s+")) then
+    if v == 'lua' or (type(v) == 'string' and string.match(v, '^lua%s+')) then
       return true
     end
   end
