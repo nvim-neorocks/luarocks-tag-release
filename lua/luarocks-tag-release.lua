@@ -76,7 +76,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     local stdout = read_file(exec_out) or ''
     local stderr = read_file(exec_err) or ''
     if exit_code ~= 0 then
-      on_failure('FAILED (exit code ' .. exit_code .. '): ' .. cmd .. ' ' .. stderr)
+      on_failure(cmd .. ' FAILED\nexit code: ' .. exit_code .. '\nstdout: ' .. stdout .. '\nstderr: ' .. stderr)
     end
     return stdout, stderr
   end
