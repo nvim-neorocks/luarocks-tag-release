@@ -87,6 +87,15 @@ local function parse_copy_directory_args(str_args)
   return filter_existing_directories(copy_directories)
 end
 
+local function list_has_lua(t)
+  for _, v in pairs(t) do
+    if v == "lua" or (type(v) == "string" and string.match(v, "^lua%s+")) then
+      return true
+    end
+  end
+  return false
+end
+
 local is_pull_request = getenv_or_empty('GITHUB_EVENT_NAME') == 'pull_request'
 
 local license_input = os.getenv('INPUT_LICENSE')
@@ -130,7 +139,9 @@ local args = {
   ref_type = getenv_or_err('GITHUB_REF_TYPE'),
   git_ref = getenv_or_err('GITHUB_REF_NAME'),
 }
-table.insert(args.dependencies, 1, 'lua >= 5.1')
+if not list_has_lua(args.dependencies) then
+  table.insert(args.dependencies, 1, 'lua >= 5.1')
+end
 
 print('Workflow has been triggered by: ' .. args.ref_type)
 local is_tag = args.ref_type == 'tag'
