@@ -67,7 +67,7 @@ local function insert_neovim_plugin_dirs(copy_directories)
     'spell',
     'syntax',
   }
-  for _, dir in neovim_plugin_dirs do
+  for _, dir in pairs(neovim_plugin_dirs) do
     table.insert(copy_directories, dir)
   end
 end
@@ -78,7 +78,7 @@ local function parse_copy_directory_args(str_args)
   local args = parse_list_args(str_args)
   local copy_directories = {}
   for _, arg in pairs(args) do
-    if string.match(arg, '{{ neovim.plugin.dirs }}') then
+    if string.match(arg, '{{ neovim%.plugin%.dirs }}') then
       insert_neovim_plugin_dirs(copy_directories)
     else
       copy_directories[#copy_directories + 1] = arg
