@@ -68,7 +68,7 @@ runs:
         INPUT_VERSION: ${{ inputs.version }}
         INPUT_DEPENDENCIES: ${{ inputs.dependencies }}
         INPUT_LABELS: ${{ inputs.labels }}
-        INPUT_COPY_DIRECTORIES: ${{ inputs.copy-directories }}
+        INPUT_COPY_DIRECTORIES: ${{ inputs.copy_directories }}
         INPUT_SUMMARY: ${{ inputs.summary }}
         INPUT_DETAILED_DESCRIPTION: ${{ inputs.detailed_description }}
         INPUT_TEMPLATE: ${{ inputs.template }}
