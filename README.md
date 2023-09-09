@@ -16,7 +16,7 @@
       Designed to work with <a href="https://neovim.io/">Neovim</a> plugins.
     </strong>
   </p>
-  <h2>🏷️🚀🌒</h>
+  <p>🏷️🚀🌒</p>
 </div>
 <!-- markdownlint-restore -->
 
