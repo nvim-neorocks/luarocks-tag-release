@@ -4,7 +4,6 @@ permissions:
 
 name: Conventional Changelog
 on:
-  pull_request:
   workflow_dispatch:
   push:
     branches:
@@ -17,8 +16,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
     - name: Conventional Changelog
       uses: TriPSs/conventional-changelog-action@v4
       with:
@@ -31,7 +28,6 @@ jobs:
         # output-file: 'CHANGELOG.md'
         output-file: 'false'
         skip-version-file: 'true'
-        skip-git-pull: 'true'
     - name: Release
       uses: actions/create-release@v1
       if: ${{ steps.changelog.outputs.skipped == 'false' }}
