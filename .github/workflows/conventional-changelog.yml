@@ -19,7 +19,7 @@ jobs:
     - name: Conventional Changelog
       uses: TriPSs/conventional-changelog-action@v4
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         git-message: 'chore(release): {version}'
         git-user-name: 'mrcjkb'
         git-user-email: 'marc@jakobi.dev'
@@ -28,6 +28,8 @@ jobs:
         output-file: 'CHANGELOG.md'
         skip-version-file: 'true'
         create-summary: 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
     - name: Release
       uses: actions/create-release@v1
       if: ${{ steps.changelog.outputs.skipped == 'false' }}
