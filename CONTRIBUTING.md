@@ -2,11 +2,7 @@
 
 Contributions are more than welcome!
 
-## Changelog
+## Commit messages / PR titles
 
-Please don't forget to add your changes to the "Unreleased" section of [the changelog](./CHANGELOG.md) (if applicable).
-
-## Commit messages
-
-This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
-
+Please make sure your PR title matches the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+specification.
