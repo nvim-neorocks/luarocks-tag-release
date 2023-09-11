@@ -25,8 +25,7 @@ jobs:
         git-user-email: 'marc@jakobi.dev'
         tag-prefix: 'v'
         input-file: 'CHANGELOG.md'
-        # output-file: 'CHANGELOG.md'
-        output-file: 'false'
+        output-file: 'CHANGELOG.md'
         skip-version-file: 'true'
     - name: Release
       uses: actions/create-release@v1
