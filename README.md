@@ -147,6 +147,15 @@ Example:
       neovim-nightly
 ```
 
+> **Note:**
+>
+> For reproducible builds with recent versions of Neovim,
+> we recommend **not** to use the latest stable tag,
+> but instead to use [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates#enabling-github-dependabot-version-updates)
+> to manage version updates.
+> For convenience, you can [auto-approve](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions#approve-a-pull-request)
+> the pull request.
+
 ### `copy_directories`
 
 Directories in the source directory to be copied to the rock installation
