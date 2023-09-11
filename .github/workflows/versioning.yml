@@ -1,6 +1,7 @@
 name: Update vX and vX.X tags on release
 
 on:
+  workflow_dispatch:
   release:
     types: [published, edited]
 
