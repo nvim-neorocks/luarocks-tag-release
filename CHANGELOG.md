@@ -2,6 +2,14 @@
 
 # Changelog
 
+## [5.1.5](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.1.4...v5.1.5) (2023-09-11)
+
+
+### Bug Fixes
+
+* **dependencies:** update flake.lock ([#98](https://github.com/nvim-neorocks/luarocks-tag-release/issues/98)) ([c3119ad](https://github.com/nvim-neorocks/luarocks-tag-release/commit/c3119adf5d1b990ee9aa6d177bcac4518d529784))
+* **dependencies:** update flake.lock ([#99](https://github.com/nvim-neorocks/luarocks-tag-release/issues/99)) ([0672f79](https://github.com/nvim-neorocks/luarocks-tag-release/commit/0672f7915dd98c32c3020e067a133387409d5abd))
+
 ## [v5.1.4] - 2023-08-06
 ### Fixed
 - Broken `{{ neovim.plugin.dirs }}` variable detection.
