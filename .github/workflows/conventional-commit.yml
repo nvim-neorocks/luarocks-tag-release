@@ -14,3 +14,5 @@ jobs:
       - uses: beemojs/conventional-pr-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+        with:
+          config-preset: angular

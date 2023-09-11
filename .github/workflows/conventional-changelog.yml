@@ -1,0 +1,43 @@
+---
+permissions:
+  contents: write
+
+name: Conventional Changelog
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  conventional-changelog:
+    runs-on: ubuntu-latest
+    name: Release
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Conventional Changelog
+      uses: TriPSs/conventional-changelog-action@v4
+      with:
+        github-token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+        git-message: 'chore(release): {version}'
+        git-user-name: 'mrcjkb'
+        git-user-email: 'marc@jakobi.dev'
+        tag-prefix: 'v'
+        input-file: 'CHANGELOG.md'
+        # output-file: 'CHANGELOG.md'
+        output-file: 'false'
+        skip-version-file: 'true'
+        skip-git-pull: 'true'
+    - name: Release
+      uses: actions/create-release@v1
+      if: ${{ steps.changelog.outputs.skipped == 'false' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+      with:
+        tag_name: ${{ steps.changelog.outputs.tag }}
+        release_name: ${{ steps.changelog.outputs.tag }}
+        body: ${{ steps.changelog.outputs.clean_changelog }}

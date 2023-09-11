@@ -29,12 +29,3 @@ jobs:
           copy_directories: |
             {{ neovim.plugin.dirs }}
             bin
-      - name: Fail if changelog entry does not exist
-        run: grep -q "${{ github.ref_name }}" CHANGELOG.md
-        if: startsWith(github.ref, 'refs/tags/v')
-      - name: Release to marketplace
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: ncipollo/release-action@v1
-        with:
-          bodyFile: "CHANGELOG.md"
-          allowUpdates: true
