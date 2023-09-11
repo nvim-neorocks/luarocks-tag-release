@@ -19,7 +19,7 @@ jobs:
     - name: Conventional Changelog
       uses: TriPSs/conventional-changelog-action@v4
       with:
-        github-token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         git-message: 'chore(release): {version}'
         git-user-name: 'mrcjkb'
         git-user-email: 'marc@jakobi.dev'
