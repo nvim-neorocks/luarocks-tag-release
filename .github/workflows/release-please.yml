@@ -20,10 +20,26 @@ jobs:
         token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         release-type: simple
         package-name: luarocks-tag-release
-        command: release-pr
+        command: github-release
         signoff: "Marc Jakobi<marc@jakobi.dev>"
-    - uses: reitermarkus/automerge@v2
+    - uses: actions/checkout@v4
+    - name: auto-merge
+      uses: reitermarkus/automerge@v2
       with:
         token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         merge-method: squash
         pull-request: ${{ github.event.inputs.pull-request }}
+    - name: tag major and minor versions
+      if: ${{ steps.release.outputs.release_created }}
+      run: |
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git remote add gh-token "https://${{ secrets.GH_TOKEN_FOR_UPDATES }}@github.com/google-github-actions/release-please-action.git"
+        git tag -d v${{ steps.release.outputs.major }} || true
+        git tag -d v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} || true
+        git push origin :v${{ steps.release.outputs.major }} || true
+        git push origin :v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} || true
+        git tag -a v${{ steps.release.outputs.major }} -m "Release v${{ steps.release.outputs.major }}"
+        git tag -a v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} -m "Release v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}"
+        git push origin v${{ steps.release.outputs.major }}
+        git push origin v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}
