@@ -147,7 +147,7 @@ Example:
       neovim-nightly
 ```
 
-> **Note:**
+> **Note**
 >
 > For reproducible builds with recent versions of Neovim,
 > we recommend **not** to use the latest stable tag,
