@@ -4,5 +4,5 @@ Contributions are more than welcome!
 
 ## Commit messages / PR titles
 
-Please make sure your PR title matches the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
-specification.
+This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+Please make sure your PR title matches the [`beemo` preset](https://github.com/beemojs/conventional-changelog-beemo).
