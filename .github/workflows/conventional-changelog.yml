@@ -28,8 +28,7 @@ jobs:
         output-file: 'CHANGELOG.md'
         skip-version-file: 'true'
         create-summary: 'true'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+        git-branch: 'release'
     - name: Release
       uses: actions/create-release@v1
       if: ${{ steps.changelog.outputs.skipped == 'false' }}
