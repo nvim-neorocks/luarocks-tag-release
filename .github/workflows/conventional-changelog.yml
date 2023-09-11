@@ -27,6 +27,8 @@ jobs:
         input-file: 'CHANGELOG.md'
         output-file: 'CHANGELOG.md'
         skip-version-file: 'true'
+        create-summary: 'true'
+        git-branch: 'release'
     - name: Release
       uses: actions/create-release@v1
       if: ${{ steps.changelog.outputs.skipped == 'false' }}
