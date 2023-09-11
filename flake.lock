@@ -190,11 +190,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1694392904,
-        "narHash": "sha256-jR4V1ycSm9L59H+ht6ISIv47ov5E1/xP/aguRphG/G0=",
+        "lastModified": 1694430201,
+        "narHash": "sha256-UGB/wBXSxlAL9wsOqREzdZ0ifCKhxzthxj5HcnmG47g=",
         "owner": "mrcjkb",
         "repo": "neorocks-nix",
-        "rev": "b49e40d6484db986ec17a04943d9b518d3ec281f",
+        "rev": "6148ab0fd116e1101809f16325ffba5c4cb52377",
         "type": "github"
       },
       "original": {
