@@ -22,12 +22,8 @@ jobs:
         package-name: luarocks-tag-release
         command: release-pr
         signoff: "Marc Jakobi<marc@jakobi.dev>"
-    # - name: Release
-    #   uses: actions/create-release@v1
-    #   if: ${{ steps.changelog.outputs.skipped == 'false' }}
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
-    #   with:
-    #     tag_name: ${{ steps.changelog.outputs.tag }}
-    #     release_name: ${{ steps.changelog.outputs.tag }}
-    #     body: ${{ steps.changelog.outputs.clean_changelog }}
+    - uses: reitermarkus/automerge@v2
+      with:
+        token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+        merge-method: squash
+        pull-request: ${{ github.event.inputs.pull-request }}
