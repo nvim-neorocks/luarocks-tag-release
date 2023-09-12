@@ -20,7 +20,7 @@ jobs:
         token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         release-type: simple
         package-name: luarocks-tag-release
-        command: github-release
+        command: release-pr
         signoff: "Marc Jakobi<marc@jakobi.dev>"
     - uses: actions/checkout@v4
     - name: auto-merge
