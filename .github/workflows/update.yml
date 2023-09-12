@@ -21,7 +21,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v20
         with:
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
-          pr-title: "fix(dependencies): update flake.lock" # Title of PR to be created
+          pr-title: "deps: update flake.lock" # Title of PR to be created
           pr-labels: |                  # Labels to be set on the PR
             dependencies
             automated
