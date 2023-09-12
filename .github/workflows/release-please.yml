@@ -25,12 +25,14 @@ jobs:
     - name: auto-merge
       uses: reitermarkus/automerge@v2
       with:
+        package-name: luarocks-tag-release
         token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         merge-method: squash
         pull-request: ${{ github.event.inputs.pull-request }}
     - name: GitHub release
       uses: google-github-actions/release-please-action@v3
       with:
+        package-name: luarocks-tag-release
         token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         release-type: simple
         command: github-release
