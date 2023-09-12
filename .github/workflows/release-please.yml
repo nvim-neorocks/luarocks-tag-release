@@ -14,12 +14,11 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-    - name: Release PR
+    - name: Release
       uses: google-github-actions/release-please-action@v3
       with:
         token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         release-type: simple
-        command: release-pr
         signoff: "Marc Jakobi<marc@jakobi.dev>"
     - uses: actions/checkout@v4
     - name: auto-merge
@@ -29,13 +28,6 @@ jobs:
         token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         merge-method: squash
         pull-request: ${{ github.event.inputs.pull-request }}
-    - name: GitHub release
-      uses: google-github-actions/release-please-action@v3
-      with:
-        package-name: luarocks-tag-release
-        token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
-        release-type: simple
-        command: github-release
     - name: Tag major and minor versions
       if: ${{ steps.release.outputs.release_created }}
       run: |
