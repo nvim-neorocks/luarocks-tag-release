@@ -2,6 +2,19 @@
 
 # Changelog
 
+## [5.1.6](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.1.5...v5.1.6) (2023-09-12)
+
+
+### Bug Fixes
+
+* auto-tag releases ([a3b23d3](https://github.com/nvim-neorocks/luarocks-tag-release/commit/a3b23d3bfae9bc2eb10efe789da2294f17027e06))
+* **dependencies:** update flake.lock ([#105](https://github.com/nvim-neorocks/luarocks-tag-release/issues/105)) ([a29081d](https://github.com/nvim-neorocks/luarocks-tag-release/commit/a29081d5e1a7fda19feee925be53b7556b366e04))
+
+
+### Reverts
+
+* add workflow_dispatch to actions-tagger ([38705c8](https://github.com/nvim-neorocks/luarocks-tag-release/commit/38705c88e9b177dba09cd0fc8ef4b15e1b9b749d))
+
 ## [5.1.5](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.1.4...v5.1.5) (2023-09-11)
 
 
