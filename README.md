@@ -112,7 +112,7 @@ Example:
 ### `labels`
 
 Labels to add to the rockspec.
-If none are specified, this action will use the repository's GitHub.
+If none are specified, this action will use the repository's GitHub topics.
 
 Example:
 
