@@ -42,7 +42,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     OS.execute('luarocks config --scope project lua_interpreter ' .. interpreter)
     print('Done.')
     print('Running tests...')
-    OS.execute('luarocks test')
+    OS.execute('luarocks test', error, true)
     OS.execute('rm -r .luarocks luarocks', print)
   end
 
