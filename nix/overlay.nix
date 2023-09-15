@@ -21,7 +21,7 @@ with final.stdenv; let
     meta = {
       description = "Publish Lua packages to LuaRocks";
       homepage = "https://github.com/nvim-neorocks/luarocks-tag-release";
-      license = licenses.gpl2Only;
+      license = licenses.agpl3Only;
     };
 
     doCheck = true;
