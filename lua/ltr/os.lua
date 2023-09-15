@@ -33,8 +33,9 @@ end
 
 ---@param cmd string
 ---@param on_failure fun(error_msg:string)?
+---@param verbose boolean|nil If true, will print stdout and stderr
 ---@return string stdout, string stderr
-function OS.execute(cmd, on_failure)
+function OS.execute(cmd, on_failure, verbose)
   on_failure = on_failure or error
   local exec_out = 'exec_out.txt'
   local exec_err = 'exec_err.txt'
@@ -44,6 +45,9 @@ function OS.execute(cmd, on_failure)
   local stderr = OS.read_file(exec_err) or ''
   if exit_code ~= 0 then
     on_failure(cmd .. ' FAILED\nexit code: ' .. exit_code .. '\nstdout: ' .. stdout .. '\nstderr: ' .. stderr)
+  elseif verbose then
+    print(stdout)
+    print(stderr)
   end
   return stdout, stderr
 end
