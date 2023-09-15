@@ -50,12 +50,12 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
     if not xs or #xs == 0 then
       return "''"
     end
-    return '[[\n    ' .. table.concat(xs, '\n    ') .. '  \n]]'
+    return '[[\n' .. table.concat(xs, '\n') .. ']]'
   end
 
   local repo_url = meta.github_server_url .. '/' .. meta.github_repo
   local homepage = repo_url
-  local license
+  local license = ''
   local repo_meta = meta.github_event_tbl
     and (
       meta.github_event_tbl.pull_request
@@ -63,6 +63,12 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
         and meta.github_event_tbl.pull_request.head.repo
       or meta.github_event_tbl.repository
     )
+  local on_missing_license = [[
+    Could not get the license SPDX ID from the GitHub API.
+    Please add a license file that GitHub can recognise or add a `license` input,
+    or specify the license type as a workflow input.
+    See: https://github.com/nvim-neorocks/luarocks-tag-release#license
+    ]]
   if repo_meta then
     local repo_license = repo_meta.license or repo_meta.source and repo_meta.source.license
     if meta.license then
@@ -70,11 +76,7 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
     elseif repo_license and repo_license.spdx_id ~= '' and repo_license.spdx_id ~= 'NOASSERTION' then
       license = "license = '" .. repo_license.spdx_id .. "'"
     else
-      error([[
-    Could not get the license SPDX ID from the GitHub API.
-    Please add a license file that GitHub can recognise or add a `license` input.
-    See: https://github.com/nvim-neorocks/luarocks-tag-release#license
-    ]])
+      error(on_missing_license)
     end
     if not meta.summary or meta.summary == '' then
       meta.summary = repo_meta.description and repo_meta.description or ''
@@ -85,6 +87,8 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
     if repo_meta.homepage and repo_meta.homepage ~= '' then
       homepage = repo_meta.homepage
     end
+  elseif meta.license then
+    license = 'license = "' .. meta.license .. '"'
   end
 
   ---@param str string
