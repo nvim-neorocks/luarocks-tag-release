@@ -8,7 +8,12 @@ with final.stdenv; let
 
     src = self;
 
+    nativeCheckInputs = with pkgs; [
+      curl
+    ];
+
     propagatedBuildInputs = with pkgs.luajitPackages; [
+      busted
       dkjson
       luafilesystem
     ];
@@ -18,6 +23,8 @@ with final.stdenv; let
       homepage = "https://github.com/nvim-neorocks/luarocks-tag-release";
       license = licenses.gpl2Only;
     };
+
+    doCheck = true;
   };
 
   luarocks-tag-release-action = pkgs.writeShellApplication {

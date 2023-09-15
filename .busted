@@ -1,12 +1,12 @@
 return {
   _all = {
-    coverage = false
+    coverage = false,
+    lpath = "lua/?.lua;lua/?/?.lua",
   },
   default = {
     verbose = true
   },
   tests = {
-    ROOT = {"tests"},
     verbose = true
   },
 }

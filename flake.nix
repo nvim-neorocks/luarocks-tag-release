@@ -78,6 +78,7 @@
                     "result"
                     "nix"
                     "resources"
+                    "spec"
                   ];
                 };
                 diagnostics.libraryFiles = "Disable";

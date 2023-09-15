@@ -16,7 +16,8 @@ dependencies = {
 }
 
 test_dependencies = {
-  'plenary.nvim',
+  'dkjson',
+  'luafilesystem',
 }
 
 source = {
