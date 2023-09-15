@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.1.10](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.1.9...v5.1.10) (2023-09-15)
+
+
+### Bug Fixes
+
+* print `luarocks test` `stdout` and `stderr` to workflow log ([#115](https://github.com/nvim-neorocks/luarocks-tag-release/issues/115)) ([471de81](https://github.com/nvim-neorocks/luarocks-tag-release/commit/471de8105506a579549ba6906c03f7d784dc2d2c))
+
 ## [5.1.9](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.1.8...v5.1.9) (2023-09-15)
 
 
