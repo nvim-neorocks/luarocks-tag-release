@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.2.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.1.15...v5.2.0) (2023-09-20)
+
+
+### Features
+
+* enable verbose logging if run with debug mode ([#128](https://github.com/nvim-neorocks/luarocks-tag-release/issues/128)) ([1d6da4a](https://github.com/nvim-neorocks/luarocks-tag-release/commit/1d6da4a603db28460dda4accaee28a7469fc8ea7))
+
 ## [5.1.15](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.1.14...v5.1.15) (2023-09-20)
 
 
