@@ -55,6 +55,7 @@ local args = {
   github_event_path = getenv_or_err('GITHUB_EVENT_PATH'),
   ref_type = getenv_or_err('GITHUB_REF_TYPE'),
   git_ref = getenv_or_err('GITHUB_REF_NAME'),
+  is_debug = os.getenv('RUNNER_DEBUG') == '1',
 }
 
 print('Workflow has been triggered by: ' .. args.ref_type)
