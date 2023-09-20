@@ -74,4 +74,5 @@ runs:
         INPUT_TEMPLATE: ${{ inputs.template }}
         INPUT_LICENSE: ${{ inputs.license }}
         INPUT_TEST_INTERPRETERS: ${{ inputs.test_interpreters }}
+        RUNNER_DEBUG: ${{ runner.debug }}
       shell: bash

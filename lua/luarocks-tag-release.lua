@@ -19,6 +19,7 @@
 ---@field license string|nil License SPDX ID (optional).
 ---@field luarocks_test_interpreters lua_interpreter[]
 ---@field github_event_path string|nil The path to the file on the runner that contains the full event webhook payload. For example, /github/workflow/event.json.
+---@field is_debug boolean Whether to enable debug logging
 
 ---@param package_name string The name of the LuaRocks package.
 ---@param package_version string The version of the LuaRocks package.
@@ -30,27 +31,29 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
 
   local rockspec_file_path = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 
+  local luarocks_extra_flags = args.is_debug and ' --verbose ' or ''
+
   local OS = require('ltr.os')
 
   ---@param interpreter lua_interpreter
   ---@return nil
   local function luarocks_test(interpreter)
     print('Initialising luarocks project...')
-    OS.execute('luarocks init', print)
+    OS.execute('luarocks init' .. luarocks_extra_flags, print)
     print('Done.')
     print('Configuring luarocks to use interpreter ' .. interpreter .. '...')
-    OS.execute('luarocks config --scope project lua_interpreter ' .. interpreter)
+    OS.execute('luarocks config --scope project lua_interpreter ' .. interpreter .. luarocks_extra_flags)
     print('Done.')
     print('Running tests...')
-    OS.execute('luarocks test', error, true)
-    OS.execute('rm -r .luarocks luarocks', print)
+    OS.execute('luarocks test' .. luarocks_extra_flags, error, true)
+    OS.execute('rm -r .luarocks luarocks', print, args.is_debug)
   end
 
   ---@return string tmp_dir The temp directory in which to install the package
   ---@return string luarocks_install_cmd The luarocks install command for installing in tmp_dir
   local function mk_luarocks_install_cmd()
-    local tmp_dir = OS.execute('mktemp -d', error):gsub('\n', '')
-    local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir
+    local tmp_dir = OS.execute('mktemp -d', error, args.is_debug):gsub('\n', '')
+    local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir .. luarocks_extra_flags
     return tmp_dir, luarocks_install_cmd
   end
 
@@ -64,11 +67,11 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     local tmp_dir, luarocks_install_cmd = mk_luarocks_install_cmd()
     local cmd = luarocks_install_cmd .. ' ' .. rockspec_file_path
     print('TEST: ' .. cmd)
-    local stdout, _ = OS.execute(cmd)
+    local stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
-    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. package_name
+    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. package_name .. luarocks_extra_flags
     print('TEST: ' .. cmd)
-    stdout, _ = OS.execute(cmd, error)
+    stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
     return rockspec_file_path
   end
@@ -77,13 +80,13 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@return nil
   local function luarocks_upload(target_rockspec_path)
     local _, luarocks_install_cmd = mk_luarocks_install_cmd()
-    local cmd = 'luarocks upload ' .. target_rockspec_path .. ' --api-key $LUAROCKS_API_KEY'
+    local cmd = 'luarocks upload ' .. target_rockspec_path .. ' --api-key $LUAROCKS_API_KEY' .. luarocks_extra_flags
     print('UPLOAD: ' .. cmd)
-    local stdout, _ = OS.execute(cmd)
+    local stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
-    cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev
+    cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev .. luarocks_extra_flags
     print('TEST: ' .. cmd)
-    stdout, _ = OS.execute(cmd, print)
+    stdout, _ = OS.execute(cmd, print, args.is_debug)
     print(stdout)
   end
 
