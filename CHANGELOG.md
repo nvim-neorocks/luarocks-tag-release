@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.2.11](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.2.10...v5.2.11) (2023-10-01)
+
+
+### Dependencies
+
+* update flake.lock ([#150](https://github.com/nvim-neorocks/luarocks-tag-release/issues/150)) ([9919764](https://github.com/nvim-neorocks/luarocks-tag-release/commit/99197644166c613b37af35f36fc936fa39c0d442))
+
 ## [5.2.10](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.2.9...v5.2.10) (2023-09-30)
 
 
