@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.2.49](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.2.48...v5.2.49) (2023-11-13)
+
+
+### Bug Fixes
+
+* name rockspec file using lower case package name ([5c55dc9](https://github.com/nvim-neorocks/luarocks-tag-release/commit/5c55dc95abb6f09937ba3b82429994f17123d600))
+
 ## [5.2.48](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.2.47...v5.2.48) (2023-11-13)
 
 
