@@ -29,7 +29,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   -- version in format 3.0 must follow the format '[%w.]+-[%d]+'
   local modrev = string.gsub(package_version, 'v', '')
 
-  local rockspec_file_path = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
+  local rockspec_file_path = package_name:lower() .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 
   local luarocks_extra_flags = args.is_debug and ' --verbose ' or ''
 
