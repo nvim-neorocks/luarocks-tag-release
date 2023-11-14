@@ -79,7 +79,7 @@ jobs:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
 
-> **Note**
+> [!NOTE]
 >
 > Use the `v5` tag to keep up with the latest releases, without breaking changes.
 
@@ -147,7 +147,7 @@ Example:
       neovim-nightly
 ```
 
-> **Note**
+> [!NOTE]
 >
 > For reproducible builds with recent versions of Neovim,
 > we recommend **not** to use the latest stable tag,
@@ -174,7 +174,7 @@ Example:
       examples
 ```
 
->**Note**
+>[!NOTE]
 >
 > The value `{{ neovim.plugin.dirs }}` (set by default)
 > expands to common Neovim plugin directories (see also `:help runtimepath`):
@@ -198,7 +198,7 @@ Example:
 > - syntax
 
 <!-- markdownlint-disable -->
->**Warning**
+>[!WARNING]
 >
 > Do not use the following directory names: `lua`, `lib`, `rock_manifest`
 > or the name of your rockspec; those names are used by the .rock format
@@ -258,7 +258,7 @@ Example:
     license: "MIT"
 ```
 
-> **Note**
+> [!NOTE]
 >
 > If GitHub can detect the license automatically,
 > it will be displayed in your repository's About section.
@@ -307,7 +307,7 @@ jobs:
 ```
 <!-- markdownlint-restore -->
 
-> **Note**
+> [!NOTE]
 >
 > A `v` prefix (e.g. git tags such as `v1.0.0`) is also supported.
 > It will be removed from the LuaRocks version.
