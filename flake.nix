@@ -69,7 +69,12 @@
               runtime.version = "LuaJIT";
               Lua = {
                 workspace = {
-                  library = base-dependencies;
+                  library =
+                    base-dependencies
+                    ++ [
+                      "\${3rd}/busted/library"
+                      "\${3rd}/luassert/library"
+                    ];
                   checkThirdParty = false;
                   ignoreDir = [
                     ".git"
@@ -78,7 +83,6 @@
                     "result"
                     "nix"
                     "resources"
-                    "spec"
                   ];
                 };
                 diagnostics.libraryFiles = "Disable";
