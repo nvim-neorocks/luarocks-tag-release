@@ -16,6 +16,7 @@ with final.stdenv; let
       busted
       dkjson
       luafilesystem
+      luarocks-build-rust-mlua
     ];
 
     meta = {
