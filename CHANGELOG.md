@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.3.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.2.52...v5.3.0) (2023-11-20)
+
+
+### Features
+
+* add support for luarocks-build-rust-mlua ([#235](https://github.com/nvim-neorocks/luarocks-tag-release/issues/235)) ([d01493e](https://github.com/nvim-neorocks/luarocks-tag-release/commit/d01493e43d10a1e8c08a0a05af580015d3f5dbd3))
+
 ## [5.2.52](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.2.51...v5.2.52) (2023-11-20)
 
 
