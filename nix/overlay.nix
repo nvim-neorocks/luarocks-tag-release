@@ -31,7 +31,8 @@ with final.stdenv; let
     name = "luarocks-tag-release-action";
     runtimeInputs = with pkgs; [
       curl
-      neorocks
+      neolua-stable-wrapper
+      neolua-nightly-wrapper
       luarocks-tag-release-action-wrapped
       unzip
       zip

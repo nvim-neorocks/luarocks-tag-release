@@ -96,7 +96,7 @@
         name = "luarocks-tag-release-devShell";
         buildInputs =
           (with pkgs; [
-            sumneko-lua-language-server
+            lua-language-server
             luarocks
           ])
           ++ (with pre-commit-hooks.packages.${system}; [

@@ -58,11 +58,24 @@ runs:
   using: "composite"
   steps:
     - uses: cachix/install-nix-action@v23
-    - run: |
+    - name: Install luarocks-tag-release-action
+      run: |
         nix profile install --accept-flake-config "${{ github.action_path }}#luarocks-tag-release-action"
       shell: bash
+    - name: Install LuaJIT
+      uses: leafo/gh-actions-lua@v10
+      with:
+        luaVersion: "luajit-2.1.0-beta3"
+    - name: Install luarocks
+      uses: leafo/gh-actions-luarocks@v4
+    - name: Install runtime dependencies
+      run: |
+        luarocks install dkjson
+        luarocks install luafilesystem
+      shell: bash
 
-    - run: luarocks-tag-release-action
+    - name: Run luarocks-tag-release action
+      run: luarocks-tag-release-action
       env:
         INPUT_NAME: ${{ inputs.name }}
         INPUT_VERSION: ${{ inputs.version }}
