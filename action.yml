@@ -57,7 +57,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: cachix/install-nix-action@v23
+    - uses: cachix/install-nix-action@v24
     - run: |
         nix profile install --accept-flake-config "${{ github.action_path }}#luarocks-tag-release-action"
       shell: bash
