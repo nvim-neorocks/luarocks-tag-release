@@ -37,6 +37,7 @@ No need to add a rockspec to your repository for each release (or at all).
 - [Inputs](#inputs)
 - [Example configurations](https://github.com/nvim-neorocks/luarocks-tag-release/wiki/Example-configurations)
 - [Limitations](#limitations)
+- [Related](#related)
 - [Acknowledgements](#acknowledgements)
 
 ## Features
@@ -324,15 +325,28 @@ See the [Example configurations wiki page](https://github.com/nvim-neorocks/luar
 - This action uses lua 5.1. So any packages that depend on lua > 5.1
   will fail to install.
 
+## Related
+
+- [`rocks.nvim`](https://github.com/nvim-neorocks/rocks.nvim):
+  A modern approach to Neovim plugin management, which uses
+  luarocks.
+- [Luarocks :purple_heart: Neovim](https://github.com/nvim-neorocks/sample-luarocks-plugin):
+  A simple sample repository showing how to push your Neovim plugins to luarocks.
+
 ## Acknowledgements
 
 Thanks to:
 
-- [@teto](https://github.com/teto) for the [inspiration](https://teto.github.io/posts/2022-06-22-neovim-plugin-luarocks-2.html)
-  that kickstarted this.
 - [@Conni2461](https://github.com/Conni2461) for the help debugging the first drafts.
+- The [neorocks](https://github.com/nvim-neorocks) surgeons:
+  - [**@teto**](https://github.com/teto)
+  - [**@vhyrro**](https://github.com/vhyrro)
+  - [**@NTBBloodbath**](https://github.com/NTBBloodbath)
+  - [**@vigoux**](https://github.com/vigoux)
+  - [**@vsedov**](https://github.com/vsedov)
+  - [**@mrcjkb**](https://github.com/mrcjkb)
 
-<!-- MARKDOWN LNIKS & IMAGES -->
+<!-- MARKDOWN LINKS & IMAGES -->
 [neovim-shield]: https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white
 [neovim-url]: https://neovim.io/
 [lua-shield]: https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white
