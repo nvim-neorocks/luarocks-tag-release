@@ -190,11 +190,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1703827325,
-        "narHash": "sha256-d18cvH6LP4iCDwE823vLqjusuLjCPDZpUBY5RhhykZo=",
+        "lastModified": 1703913687,
+        "narHash": "sha256-zAZiZC9Lu2M9gfaTI1sUKA5J791H/bcZlxpgLiS2kak=",
         "owner": "mrcjkb",
         "repo": "neorocks-nix",
-        "rev": "e4f1b7dd18a0de26620ab2420b28205ab2f396b4",
+        "rev": "5c262f0ed5e66c7afa68747ed74a78d4f2da8307",
         "type": "github"
       },
       "original": {
@@ -213,11 +213,11 @@
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1703807649,
-        "narHash": "sha256-Cqm5aejScs6pxEFCwwiHisF9Qg1BbGihcYIFtaXHAjk=",
+        "lastModified": 1703901477,
+        "narHash": "sha256-b3iDPyFJDAhjepPm8swqd1AKd6TtuCjVGr/IweS7Mx0=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "1ef60ea6513be72a03958ed6239bfe474c85a7a3",
+        "rev": "dd00b6b442a6d3a8a4758b0ee10ac93d07e7db72",
         "type": "github"
       },
       "original": {
