@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.4.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.3.14...v5.4.0) (2024-02-05)
+
+
+### Features
+
+* suppress nix profile-install if not running in debug mode ([#328](https://github.com/nvim-neorocks/luarocks-tag-release/issues/328)) ([bac476b](https://github.com/nvim-neorocks/luarocks-tag-release/commit/bac476b1fe24684b3429ede197b96601cb6d1f62))
+
 ## [5.3.14](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.3.13...v5.3.14) (2023-12-04)
 
 
