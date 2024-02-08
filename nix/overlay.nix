@@ -26,6 +26,12 @@ with final.stdenv; let
     };
 
     doCheck = true;
+
+    preCheck = ''
+      # This one currently can't be run with nix
+      # It is run in the integration test on GitHub CI
+      rm spec/nvim_spec.lua
+    '';
   };
 
   luarocks-tag-release-action = pkgs.writeShellApplication {

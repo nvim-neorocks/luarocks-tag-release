@@ -83,6 +83,7 @@
                     "result"
                     "nix"
                     "resources"
+                    "spec"
                   ];
                 };
                 diagnostics.libraryFiles = "Disable";
@@ -121,6 +122,10 @@
       devShells.default = shell;
       checks = {
         inherit formatting;
+        inherit
+          (pkgs)
+          luarocks-tag-release-action
+          ;
       };
     });
 }
