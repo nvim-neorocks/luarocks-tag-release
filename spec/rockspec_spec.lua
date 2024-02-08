@@ -35,7 +35,7 @@ build = {
 
 ---@param rockspec_str string The rockspec content
 local function load_rockspec(rockspec_str)
-  local rockspec_module = assert(load(rockspec_str), 'Could not load generated rockspec')
+  local rockspec_module = assert(loadstring(rockspec_str), 'Could not load generated rockspec')
   rockspec_module()
 end
 
