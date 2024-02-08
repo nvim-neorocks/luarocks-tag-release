@@ -1,5 +1,5 @@
 ---
-name: "Luarocks release"
+name: "Test luarocks release"
 on:
   push:
     tags:
