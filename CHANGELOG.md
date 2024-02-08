@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.4.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.4.0...v5.4.1) (2024-02-08)
+
+
+### Bug Fixes
+
+* `luarocks test` not picking up neovim as a lua interpreter ([#334](https://github.com/nvim-neorocks/luarocks-tag-release/issues/334)) ([5837397](https://github.com/nvim-neorocks/luarocks-tag-release/commit/5837397ce6ed963858d48a6b8bfa492f142a9946))
+
 ## [5.4.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.3.14...v5.4.0) (2024-02-05)
 
 
