@@ -57,6 +57,11 @@ inputs:
     default: |
       neovim-stable
       neovim-nightly
+  extra_luarocks_args:
+    description: |
+      Extra args to pass to the luarocks command.
+      For example: "CURL_DIR=/usr/include/x86_64-linux-gnu/"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -78,5 +83,6 @@ runs:
         INPUT_TEMPLATE: ${{ inputs.template }}
         INPUT_LICENSE: ${{ inputs.license }}
         INPUT_TEST_INTERPRETERS: ${{ inputs.test_interpreters }}
+        INPUT_EXTRA_LUAROCKS_ARGS: ${{ inputs.extra_luarocks_args }}
         RUNNER_DEBUG: ${{ runner.debug }}
       shell: bash
