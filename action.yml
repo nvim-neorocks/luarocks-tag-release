@@ -17,6 +17,9 @@ inputs:
   dependencies:
     description: "List of LuaRocks dependencies."
     required: false
+  test_dependencies:
+    description: "List of test suite dependencies."
+    required: false
   labels:
     description: "List of package labels."
     required: false
@@ -67,6 +70,7 @@ runs:
         INPUT_NAME: ${{ inputs.name }}
         INPUT_VERSION: ${{ inputs.version }}
         INPUT_DEPENDENCIES: ${{ inputs.dependencies }}
+        INPUT_TEST_DEPENDENCIES: ${{ inputs.test_dependencies }}
         INPUT_LABELS: ${{ inputs.labels }}
         INPUT_COPY_DIRECTORIES: ${{ inputs.copy_directories }}
         INPUT_SUMMARY: ${{ inputs.summary }}

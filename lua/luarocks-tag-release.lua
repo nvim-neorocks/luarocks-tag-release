@@ -10,6 +10,7 @@
 ---@field git_ref string E.g. a tag or a commit sha.
 ---@field ref_type github_ref_type
 ---@field dependencies string[] List of LuaRocks package dependencies.
+---@field test_dependencies string[] List of test suite dependencies.
 ---@field labels string[] List of labels to add to the rockspec.
 ---@field copy_directories string[] List of directories to add to the rockspec's copy_directories.
 ---@field summary string Package summary.
@@ -121,6 +122,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     summary = args.summary,
     detailed_description_lines = args.detailed_description_lines,
     dependencies = args.dependencies,
+    test_dependencies = args.test_dependencies,
     labels = args.labels,
     copy_directories = args.copy_directories,
     repo_name = args.repo_name,
