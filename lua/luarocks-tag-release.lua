@@ -19,6 +19,7 @@
 ---@field upload boolean Whether to upload to LuaRocks.
 ---@field license string|nil License SPDX ID (optional).
 ---@field luarocks_test_interpreters lua_interpreter[]
+---@field extra_luarocks_args string[]
 ---@field github_event_path string|nil The path to the file on the runner that contains the full event webhook payload. For example, /github/workflow/event.json.
 ---@field is_debug boolean Whether to enable debug logging
 
@@ -32,7 +33,11 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
 
   local rockspec_file_path = package_name:lower() .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 
-  local luarocks_extra_flags = args.is_debug and ' --verbose ' or ''
+  local luarocks_extra_flags_and_args = ' '
+    .. table.concat(args.extra_luarocks_args, ' ')
+    .. (args.is_debug and ' --verbose ' or '')
+
+  print('Luarocks flags and args: ' .. luarocks_extra_flags_and_args)
 
   local OS = require('ltr.os')
 
@@ -40,13 +45,13 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@return nil
   local function luarocks_test(interpreter)
     print('Initialising luarocks project...')
-    OS.execute('luarocks init' .. luarocks_extra_flags, print)
+    OS.execute('luarocks init' .. luarocks_extra_flags_and_args, print)
     print('Done.')
     print('Configuring luarocks to use interpreter ' .. interpreter .. '...')
-    OS.execute('luarocks config --scope project lua_interpreter ' .. interpreter .. luarocks_extra_flags)
+    OS.execute('luarocks config --scope project lua_interpreter ' .. interpreter .. luarocks_extra_flags_and_args)
     print('Done.')
     print('Running tests...')
-    OS.execute('luarocks test' .. luarocks_extra_flags, error, true)
+    OS.execute('luarocks test' .. luarocks_extra_flags_and_args, error, true)
     OS.execute('rm -r .luarocks luarocks', print, args.is_debug)
   end
 
@@ -54,7 +59,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@return string luarocks_install_cmd The luarocks install command for installing in tmp_dir
   local function mk_luarocks_install_cmd()
     local tmp_dir = OS.execute('mktemp -d', error, args.is_debug):gsub('\n', '')
-    local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir .. luarocks_extra_flags
+    local luarocks_install_cmd = 'luarocks install --tree ' .. tmp_dir
     return tmp_dir, luarocks_install_cmd
   end
 
@@ -66,11 +71,11 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     outfile:write(rockspec_content)
     outfile:close()
     local tmp_dir, luarocks_install_cmd = mk_luarocks_install_cmd()
-    local cmd = luarocks_install_cmd .. ' ' .. rockspec_file_path
+    local cmd = luarocks_install_cmd .. ' ' .. rockspec_file_path .. luarocks_extra_flags_and_args
     print('TEST: ' .. cmd)
     local stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
-    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. package_name .. luarocks_extra_flags
+    cmd = 'luarocks remove --tree ' .. tmp_dir .. ' ' .. package_name .. luarocks_extra_flags_and_args
     print('TEST: ' .. cmd)
     stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
@@ -81,11 +86,14 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@return nil
   local function luarocks_upload(target_rockspec_path)
     local _, luarocks_install_cmd = mk_luarocks_install_cmd()
-    local cmd = 'luarocks upload ' .. target_rockspec_path .. ' --api-key $LUAROCKS_API_KEY' .. luarocks_extra_flags
+    local cmd = 'luarocks upload '
+      .. target_rockspec_path
+      .. ' --api-key $LUAROCKS_API_KEY'
+      .. luarocks_extra_flags_and_args
     print('UPLOAD: ' .. cmd)
     local stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
-    cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev .. luarocks_extra_flags
+    cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev .. luarocks_extra_flags_and_args
     print('TEST: ' .. cmd)
     stdout, _ = OS.execute(cmd, print, args.is_debug)
     print(stdout)

@@ -328,6 +328,29 @@ jobs:
 > A `v` prefix (e.g. git tags such as `v1.0.0`) is also supported.
 > It will be removed from the LuaRocks version.
 
+### `extra_luarocks_args`
+
+Extra args to pass to the luarocks command.
+This is useful if luarocks cannot find headers needed for the installation.
+
+Example:
+
+```yaml
+- run: |
+    sudo apt-get install -y libcurl4-openssl-dev
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v5
+  with:
+    extra_luarocks_args: |
+      CURL_INCDIR=/usr/include/x86_64-linux-gnu
+```
+
+> [!TIP]
+>
+> To find out where `apt` installs headers
+> (assuming you are have set `runs-on: ubuntu-xyz`),
+> you can run `dpkg -L <package-name>`.
+
 ## Example configurations
 
 See the [Example configurations wiki page](https://github.com/nvim-neorocks/luarocks-tag-release/wiki/Example-configurations).

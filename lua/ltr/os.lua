@@ -36,6 +36,7 @@ end
 ---@param verbose boolean|nil If true, will print stdout and stderr
 ---@return string stdout, string stderr
 function OS.execute(cmd, on_failure, verbose)
+  print('RUNNING: ' .. cmd)
   on_failure = on_failure or error
   local exec_out = 'exec_out.txt'
   local exec_err = 'exec_err.txt'
