@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.5.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.4.1...v5.5.0) (2024-02-22)
+
+
+### Features
+
+* test_dependencies input ([#349](https://github.com/nvim-neorocks/luarocks-tag-release/issues/349)) ([71e64ab](https://github.com/nvim-neorocks/luarocks-tag-release/commit/71e64ab8ffae25b6803f2c737a3da8d931595163))
+
 ## [5.4.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.4.0...v5.4.1) (2024-02-08)
 
 
