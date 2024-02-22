@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.6.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.5.0...v5.6.0) (2024-02-22)
+
+
+### Features
+
+* support passing in extra luarocks args ([#351](https://github.com/nvim-neorocks/luarocks-tag-release/issues/351)) ([567a8d2](https://github.com/nvim-neorocks/luarocks-tag-release/commit/567a8d26f3125c9c6d928ad275e0765ff5e3e1d2))
+
 ## [5.5.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.4.1...v5.5.0) (2024-02-22)
 
 
