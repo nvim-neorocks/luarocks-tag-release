@@ -110,6 +110,21 @@ Example:
       telescope.nvim
 ```
 
+### `test_dependencies`
+
+Lua dependencies of the test suite.
+Any dependencies specified here must be available on LuaRocks.
+
+Example:
+
+```yaml
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v5
+  with:
+    test_dependencies: |
+      luaunit
+```
+
 ### `labels`
 
 Labels to add to the rockspec.

@@ -22,6 +22,8 @@ description = {
 
 dependencies = $dependencies
 
+test_dependencies = $test_dependencies
+
 source = {
   url = repo_url .. '/archive/' .. git_ref .. '.zip',
   dir = '$repo_name-' .. '$archive_dir_suffix',
@@ -50,6 +52,7 @@ describe('Rockspec', function()
     summary = 'test summary',
     detailed_description_lines = { 'a line', 'another line' },
     dependencies = {},
+    test_dependencies = {},
     labels = { 'neovim' },
     copy_directories = { 'plugin' },
     repo_name = 'luarocks-tag-release',

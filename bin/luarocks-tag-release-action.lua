@@ -41,6 +41,7 @@ local args = {
   repo_name = repo_name,
   github_server_url = github_server_url,
   dependencies = Parser.parse_list_args(getenv_or_empty('INPUT_DEPENDENCIES')),
+  test_dependencies = Parser.parse_list_args(getenv_or_empty('INPUT_TEST_DEPENDENCIES')),
   labels = Parser.parse_list_args(getenv_or_empty('INPUT_LABELS')),
   copy_directories = OS.filter_existing_directories(
     Parser.parse_copy_directory_args(getenv_or_err('INPUT_COPY_DIRECTORIES'))

@@ -20,6 +20,7 @@ end
 ---@field summary string Package summary.
 ---@field detailed_description_lines string[] Detailed description (list of lines).
 ---@field dependencies string[] List of LuaRocks package dependencies.
+---@field test_dependencies string[] List of test suite dependencies.
 ---@field labels string[] List of labels to add to the rockspec.
 ---@field copy_directories string[] List of directories to add to the rockspec's copy_directories.
 ---@field repo_name string The repository name.
@@ -112,6 +113,7 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
     :gsub('$summary', escape_quotes(meta.summary))
     :gsub('$detailed_description', mk_lua_multiline_str(meta.detailed_description_lines))
     :gsub('$dependencies', mk_lua_list_string(meta.dependencies))
+    :gsub('$test_dependencies', mk_lua_list_string(meta.test_dependencies))
     :gsub('$labels', mk_lua_list_string(meta.labels))
     :gsub('$homepage', homepage)
     :gsub('$license', license)
