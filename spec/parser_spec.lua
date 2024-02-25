@@ -39,6 +39,7 @@ describe('Parser', function()
       'lang',
       'menu.vim',
       'parser',
+      'parser-info',
       'plugin',
       'queries',
       'query',

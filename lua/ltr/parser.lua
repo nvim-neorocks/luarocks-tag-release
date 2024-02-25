@@ -25,6 +25,7 @@ local function insert_neovim_plugin_dirs(copy_directories)
     'lang',
     'menu.vim',
     'parser',
+    'parser-info',
     'plugin',
     'queries',
     'query',
