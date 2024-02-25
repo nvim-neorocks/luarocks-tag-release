@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.7.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.6.0...v5.7.0) (2024-02-25)
+
+
+### Features
+
+* add `parser-info` to `{{ neovim.plugin.dirs }}` ([#357](https://github.com/nvim-neorocks/luarocks-tag-release/issues/357)) ([bbc7eb7](https://github.com/nvim-neorocks/luarocks-tag-release/commit/bbc7eb7deffea5f9ce40a3b1ea2a225cd91fa7a5))
+
 ## [5.6.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.5.0...v5.6.0) (2024-02-22)
 
 
