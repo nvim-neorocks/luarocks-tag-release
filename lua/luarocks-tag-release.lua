@@ -20,6 +20,7 @@
 ---@field license string|nil License SPDX ID (optional).
 ---@field luarocks_test_interpreters lua_interpreter[]
 ---@field extra_luarocks_args string[]
+---@field target_server string|nil The server to publish to
 ---@field github_event_path string|nil The path to the file on the runner that contains the full event webhook payload. For example, /github/workflow/event.json.
 ---@field is_debug boolean Whether to enable debug logging
 
@@ -86,10 +87,8 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@return nil
   local function luarocks_upload(target_rockspec_path)
     local _, luarocks_install_cmd = mk_luarocks_install_cmd()
-    local cmd = 'luarocks upload '
-      .. target_rockspec_path
-      .. ' --api-key $LUAROCKS_API_KEY'
-      .. luarocks_extra_flags_and_args
+    local cmd = 'luarocks upload ' .. target_rockspec_path .. ' --api-key $LUAROCKS_API_KEY' .. luarocks_extra_flags_and_args .. args.target_server and (' --server ' .. args.target_server)
+      or ''
     print('UPLOAD: ' .. cmd)
     local stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)

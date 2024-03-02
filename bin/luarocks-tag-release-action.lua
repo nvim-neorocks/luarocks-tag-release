@@ -54,6 +54,7 @@ local args = {
   license = license_input ~= '' and license_input or nil,
   luarocks_test_interpreters = test_interpreters,
   extra_luarocks_args = Parser.parse_list_args(getenv_or_empty('INPUT_EXTRA_LUAROCKS_ARGS')),
+  target_server = os.getenv('INPUT_TARGET_SERVER'),
   github_event_path = getenv_or_err('GITHUB_EVENT_PATH'),
   ref_type = getenv_or_err('GITHUB_REF_TYPE'),
   git_ref = getenv_or_err('GITHUB_REF_NAME'),

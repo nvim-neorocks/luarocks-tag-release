@@ -351,6 +351,19 @@ Example:
 > (assuming you are have set `runs-on: ubuntu-xyz`),
 > you can run `dpkg -L <package-name>`.
 
+### `target_server`
+
+The server to which to upload the rock.
+
+Example:
+
+```yaml
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v5
+  with:
+    target_server: https://luarocks.org/m/neovim
+```
+
 ## Example configurations
 
 See the [Example configurations wiki page](https://github.com/nvim-neorocks/luarocks-tag-release/wiki/Example-configurations).
