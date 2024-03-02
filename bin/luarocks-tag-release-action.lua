@@ -13,7 +13,7 @@ end
 
 local action_path = getenv_or_err('GITHUB_ACTION_PATH')
 
-local github_repo = getenv_or_err('GITHUB_REPOSITORY')
+local github_repo = os.getenv('GITHUB_REPOSITORY_OVERRIDE') or getenv_or_err('GITHUB_REPOSITORY')
 
 local repo_name = assert(
   string.match(github_repo, '/(.+)'),
@@ -56,16 +56,20 @@ local args = {
   extra_luarocks_args = Parser.parse_list_args(getenv_or_empty('INPUT_EXTRA_LUAROCKS_ARGS')),
   target_server = os.getenv('INPUT_TARGET_SERVER'),
   github_event_path = getenv_or_err('GITHUB_EVENT_PATH'),
-  ref_type = getenv_or_err('GITHUB_REF_TYPE'),
-  git_ref = getenv_or_err('GITHUB_REF_NAME'),
+  ref_type = os.getenv('GITHUB_REF_TYPE_OVERRIDE') or getenv_or_err('GITHUB_REF_TYPE'),
+  git_ref = os.getenv('GITHUB_REF_NAME_OVERRIDE') or getenv_or_err('GITHUB_REF_NAME'),
   is_debug = os.getenv('RUNNER_DEBUG') == '1',
 }
+
+local function get_github_sha()
+  return os.getenv('GITHUB_SHA_OVERRIDE') or getenv_or_err('GITHUB_SHA')
+end
 
 print('Workflow has been triggered by: ' .. args.ref_type)
 local is_tag = args.ref_type == 'tag'
 if not is_tag then
   print('Publishing an untagged release.')
-  args.git_ref = getenv_or_err('GITHUB_SHA')
+  args.git_ref = get_github_sha()
 end
 
 local luarocks_tag_release = require('luarocks-tag-release')
@@ -74,7 +78,7 @@ local specrev = '1'
 if is_pull_request then
   print('Running in a pull request.')
   specrev = assert(os.getenv('GITHUB_RUN_ATTEMPT'), 'GITHUB_RUN_ATTEMPT not set')
-  args.git_ref = getenv_or_err('GITHUB_SHA')
+  args.git_ref = get_github_sha()
 end
 
 luarocks_tag_release(package_name, package_version, specrev, args)
