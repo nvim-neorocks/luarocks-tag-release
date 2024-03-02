@@ -87,8 +87,11 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@return nil
   local function luarocks_upload(target_rockspec_path)
     local _, luarocks_install_cmd = mk_luarocks_install_cmd()
-    local cmd = 'luarocks upload ' .. target_rockspec_path .. ' --api-key $LUAROCKS_API_KEY' .. luarocks_extra_flags_and_args .. args.target_server and (' --server ' .. args.target_server)
-      or ''
+    local cmd = 'luarocks upload '
+      .. target_rockspec_path
+      .. ' --api-key $LUAROCKS_API_KEY'
+      .. luarocks_extra_flags_and_args
+      .. (args.target_server and ' --server ' .. args.target_server or '')
     print('UPLOAD: ' .. cmd)
     local stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
