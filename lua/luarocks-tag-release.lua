@@ -24,12 +24,12 @@
 ---@field is_debug boolean Whether to enable debug logging
 
 ---@param package_name string The name of the LuaRocks package.
----@param package_version string The version of the LuaRocks package.
+---@param package_version string | nil The version of the LuaRocks package.
 ---@param specrev string the version of the rockspec
 ---@param args Args
 local function luarocks_tag_release(package_name, package_version, specrev, args)
-  -- version in format 3.0 must follow the format '[%w.]+-[%d]+'
-  local modrev = string.gsub(package_version, 'v', '')
+  -- version in format 3.0 must follow the format '[%w.]+-[%d]+' or be 'dev' or 'scm'
+  local modrev = package_version and package_version ~= 'dev' and string.gsub(package_version, 'v', '') or 'scm'
 
   local rockspec_file_path = package_name:lower() .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 

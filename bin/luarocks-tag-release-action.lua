@@ -30,7 +30,8 @@ local is_pull_request = getenv_or_empty('GITHUB_EVENT_NAME') == 'pull_request'
 local license_input = os.getenv('INPUT_LICENSE')
 local template_input = os.getenv('INPUT_TEMPLATE')
 local package_name = getenv_or_err('INPUT_NAME')
-local package_version = is_pull_request and '0.0.0' or getenv_or_err('INPUT_VERSION')
+---@type string | nil
+local package_version = is_pull_request and '0.0.0' or os.getenv('INPUT_VERSION')
 
 local interpreters_input = os.getenv('INPUT_TEST_INTERPRETERS')
 local test_interpreters = Parser.parse_interpreter_input(interpreters_input)
