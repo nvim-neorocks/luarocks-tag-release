@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.9.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.8.0...v5.9.0) (2024-03-07)
+
+
+### Features
+
+* support "scm" and "dev" versions ([#370](https://github.com/nvim-neorocks/luarocks-tag-release/issues/370)) ([2b77919](https://github.com/nvim-neorocks/luarocks-tag-release/commit/2b7791947011f89b51409c83e89ab4216eb4fa82))
+
 ## [5.8.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.7.0...v5.8.0) (2024-03-02)
 
 
