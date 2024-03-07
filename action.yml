@@ -11,8 +11,10 @@ inputs:
     required: true
     default: ${{ github.event.repository.name }}
   version:
-    description: "The version of your package. By default, the git tag is used."
-    required: true
+    description: |
+      The version of your package. Uses the git tag by default (if one exists).
+      Can also be set to `null`, `"scm"` or `"dev"` to publish a development rockspec.
+    required: false
     default: ${{ github.ref_name }}
   dependencies:
     description: "List of LuaRocks dependencies."

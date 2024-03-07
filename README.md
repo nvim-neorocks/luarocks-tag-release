@@ -289,6 +289,10 @@ package version.
 If you do not have a workflow that releases based on tags,
 you can manually set the version input.
 
+Setting this input to either `null`, `"scm"` or `"dev"` will result in a
+scm release, where the generated rockspec's source URL
+is the repository's URL.
+
 The following is an example for a basic workflow that runs daily at 00:00,
 sets the package version to `0.0.<number_of_commits>`, and publishes to LuaRocks
 if there have been any commits in the last 24 hours:
