@@ -28,10 +28,11 @@
 ---@param specrev string the version of the rockspec
 ---@param args Args
 local function luarocks_tag_release(package_name, package_version, specrev, args)
+  package_name = package_name:lower()
   -- version in format 3.0 must follow the format '[%w.]+-[%d]+' or be 'dev' or 'scm'
   local modrev = package_version and package_version ~= 'dev' and string.gsub(package_version, 'v', '') or 'scm'
 
-  local rockspec_file_path = package_name:lower() .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
+  local rockspec_file_path = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
 
   local luarocks_extra_flags_and_args = ' '
     .. table.concat(args.extra_luarocks_args, ' ')
