@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.9.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.9.0...v5.9.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* lowercase package_name ([467bdfd](https://github.com/nvim-neorocks/luarocks-tag-release/commit/467bdfda255b5074337e70b16a0b098ab02993d2))
+
 ## [5.9.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.8.0...v5.9.0) (2024-03-07)
 
 
