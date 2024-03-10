@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.10.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.9.1...v5.10.0) (2024-03-10)
+
+
+### Features
+
+* when uploading dev rocks, only upload if the rockspec sha changed ([#381](https://github.com/nvim-neorocks/luarocks-tag-release/issues/381)) ([a85364b](https://github.com/nvim-neorocks/luarocks-tag-release/commit/a85364bcb0db44e3438432d8a81a323f2ee3acc9))
+
 ## [5.9.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.9.0...v5.9.1) (2024-03-08)
 
 
