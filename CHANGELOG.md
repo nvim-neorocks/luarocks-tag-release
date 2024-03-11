@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.11.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.10.0...v5.11.0) (2024-03-11)
+
+
+### Features
+
+* support LUAROCKS_TAG_RELEASE_DISABLE_UPLOAD environment variable ([a7fb13c](https://github.com/nvim-neorocks/luarocks-tag-release/commit/a7fb13c2e26d99918315530c3ad2fbc0c9ee38da))
+
 ## [5.10.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.9.1...v5.10.0) (2024-03-10)
 
 
