@@ -51,7 +51,7 @@ local args = {
   detailed_description_lines = Parser.parse_list_args(getenv_or_empty('INPUT_DETAILED_DESCRIPTION')),
   rockspec_template_file_path = template_input ~= '' and template_input
     or action_path .. '/resources/rockspec.template',
-  upload = not is_pull_request,
+  upload = os.getenv('LUAROCKS_TAG_RELEASE_DISABLE_UPLOAD') ~= nil or not is_pull_request,
   license = license_input ~= '' and license_input or nil,
   luarocks_test_interpreters = test_interpreters,
   extra_luarocks_args = Parser.parse_list_args(getenv_or_empty('INPUT_EXTRA_LUAROCKS_ARGS')),
