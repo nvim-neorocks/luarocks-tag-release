@@ -2,6 +2,14 @@
 
 # Changelog
 
+## [5.11.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.11.0...v5.11.1) (2024-03-13)
+
+
+### Reverts
+
+* support LUAROCKS_TAG_RELEASE_DISABLE_UPLOAD environment variable ([437e606](https://github.com/nvim-neorocks/luarocks-tag-release/commit/437e60669818531709e711d00c74caecd2d5f0c9))
+* when uploading dev rocks, only upload if the rockspec sha changed ([#381](https://github.com/nvim-neorocks/luarocks-tag-release/issues/381)) ([5598832](https://github.com/nvim-neorocks/luarocks-tag-release/commit/55988321885cf9cbf34eb86efbc76b04e7e18fb5))
+
 ## [5.11.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.10.0...v5.11.0) (2024-03-11)
 
 
