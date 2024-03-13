@@ -150,32 +150,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
       luarocks_test(interpreter)
     end
   end
-  local is_dev = package_version == 'scm' or package_version == 'dev'
-  local function get_rockspec_sha()
-    local stdout, _ = OS.execute('sha256sum ' .. rockspec_file_path, error, args.is_debug)
-    return stdout:match('^(%S*)')
-  end
-  local previous_rockspec_sha = nil
-  if is_dev then
-    OS.execute(
-      'luarocks download --dev '
-        .. luarocks_extra_flags_and_args
-        .. '--rockspec '
-        .. package_name
-        .. ' '
-        .. package_version,
-      print
-    )
-    previous_rockspec_sha = get_rockspec_sha()
-    OS.execute('rm ' .. rockspec_file_path, print)
-  end
   local target_rockspec_path = create_rockspec(rockspec)
-  if is_dev then
-    print('Previous rockspec sha: ' .. previous_rockspec_sha)
-    local new_rockspec_sha = get_rockspec_sha()
-    print('New rockspec sha: ' .. new_rockspec_sha)
-    args.upload = previous_rockspec_sha == '' or new_rockspec_sha ~= previous_rockspec_sha
-  end
   if args.upload then
     luarocks_upload(target_rockspec_path)
   else
