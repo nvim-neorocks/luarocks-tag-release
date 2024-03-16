@@ -14,6 +14,7 @@ end
 ---@param copy_directories string[] List of directories
 local function insert_neovim_plugin_dirs(copy_directories)
   local neovim_plugin_dirs = {
+    'after',
     'autoload',
     'colors',
     'compiler',
