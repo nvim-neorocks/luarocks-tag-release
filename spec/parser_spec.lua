@@ -28,6 +28,7 @@ describe('Parser', function()
       third
     ]])
     assert.same(result, {
+      'after',
       'autoload',
       'colors',
       'compiler',
