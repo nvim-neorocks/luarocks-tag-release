@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.11.2](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.11.1...v5.11.2) (2024-03-16)
+
+
+### Bug Fixes
+
+* **parser:** add missing `after` directory in the Neovim plugin dirs list ([#392](https://github.com/nvim-neorocks/luarocks-tag-release/issues/392)) ([8d3d786](https://github.com/nvim-neorocks/luarocks-tag-release/commit/8d3d78685669c4fac94135c35fa8d8dcee63cd94))
+
 ## [5.11.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.11.0...v5.11.1) (2024-03-13)
 
 
