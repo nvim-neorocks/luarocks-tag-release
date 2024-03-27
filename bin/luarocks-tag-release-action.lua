@@ -23,7 +23,7 @@ local repo_name = assert(
   ]]
 )
 
-local github_server_url = getenv_or_err('GITHUB_SERVER_URL')
+local git_server_url = os.getenv('GIT_SERVER_URL_OVERRIDE') or getenv_or_err('GITHUB_SERVER_URL')
 
 local is_pull_request = getenv_or_empty('GITHUB_EVENT_NAME') == 'pull_request'
 
@@ -40,7 +40,7 @@ local test_interpreters = Parser.parse_interpreter_input(interpreters_input)
 local args = {
   github_repo = github_repo,
   repo_name = repo_name,
-  github_server_url = github_server_url,
+  git_server_url = git_server_url,
   dependencies = Parser.parse_list_args(getenv_or_empty('INPUT_DEPENDENCIES')),
   test_dependencies = Parser.parse_list_args(getenv_or_empty('INPUT_TEST_DEPENDENCIES')),
   labels = Parser.parse_list_args(getenv_or_empty('INPUT_LABELS')),

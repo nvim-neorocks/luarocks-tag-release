@@ -46,7 +46,7 @@ describe('Rockspec', function()
   ---@type GenerateMeta
   local meta = {
     ref_type = 'tag',
-    github_server_url = 'https://github.com',
+    git_server_url = 'https://github.com',
     github_repo = 'nvim-neorocks/luarocks-tag-release',
     git_ref = '1.0.0',
     summary = 'test summary',
