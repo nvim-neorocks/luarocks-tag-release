@@ -6,7 +6,7 @@
 ---@class (exact) Args
 ---@field repo_name string The repository name.
 ---@field github_repo string The github repository (owner/repo_name).
----@field github_server_url string The github server's URL.
+---@field git_server_url string The github server's URL.
 ---@field git_ref string E.g. a tag or a commit sha.
 ---@field ref_type github_ref_type
 ---@field dependencies string[] List of LuaRocks package dependencies.
@@ -124,7 +124,7 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   local github_event_tbl = github_event_data and json.decode(github_event_data)
   local rockspec = require('ltr.rockspec').generate(package_name, modrev, specrev, rockspec_template, {
     ref_type = args.ref_type,
-    github_server_url = args.github_server_url,
+    git_server_url = args.git_server_url,
     github_repo = args.github_repo,
     license = args.license,
     git_ref = args.git_ref,
