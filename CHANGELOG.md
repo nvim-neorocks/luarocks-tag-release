@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.12.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.11.2...v5.12.0) (2024-03-27)
+
+
+### Features
+
+* allow overriding git server URL with `GIT_SERVER_URL_OVERRIDE` ([#402](https://github.com/nvim-neorocks/luarocks-tag-release/issues/402)) ([532117c](https://github.com/nvim-neorocks/luarocks-tag-release/commit/532117c5b322a93c74b20203c890b0e174acd23c))
+
 ## [5.11.2](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.11.1...v5.11.2) (2024-03-16)
 
 
