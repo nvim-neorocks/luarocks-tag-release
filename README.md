@@ -284,7 +284,7 @@ Example:
 ### `version` (optional)
 
 The package version to release to LuaRocks (without the rockspec revision).
-By default, this workflow will use the git tag to determine the LuaRocks
+By default, this workflow will use `github.ref_name` (the git tag or branch name) to determine the LuaRocks
 package version.
 If you do not have a workflow that releases based on tags,
 you can manually set the version input.
