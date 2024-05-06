@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.13.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.12.0...v5.13.0) (2024-05-06)
+
+
+### Features
+
+* add `specrev` input ([#407](https://github.com/nvim-neorocks/luarocks-tag-release/issues/407)) ([f6d8fb5](https://github.com/nvim-neorocks/luarocks-tag-release/commit/f6d8fb5297a1bcf902cb81c53812ab05110c642c))
+
 ## [5.12.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.11.2...v5.12.0) (2024-03-27)
 
 
