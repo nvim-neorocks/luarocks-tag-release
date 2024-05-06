@@ -284,8 +284,8 @@ Example:
 ### `version` (optional)
 
 The package version to release to LuaRocks (without the rockspec revision).
-By default, this workflow will use `github.ref_name` (the git tag or branch name) to determine the LuaRocks
-package version.
+By default, this workflow will use `github.ref_name` (the git tag or branch name)
+to determine the LuaRocks package version.
 If you do not have a workflow that releases based on tags,
 you can manually set the version input.
 
@@ -331,6 +331,28 @@ jobs:
 >
 > A `v` prefix (e.g. git tags such as `v1.0.0`) is also supported.
 > It will be removed from the LuaRocks version.
+
+### `specrev` (optional)
+
+The specrev (revision) of the generated rockspec. Defaults to `'1'`.
+
+> [!TIP]
+>
+> When publishing `scm` or `dev` rockspecs, it can be useful to set
+> point the source to a commit hash, and increment the `specrev` with every
+> new push.
+> This allows consumers to roll back or pin dev versions.
+
+Example:
+
+```yaml
+- name: LuaRocks Upload
+  uses: nvim-neorocks/luarocks-tag-release@v5
+  with:
+    version: "scm"
+    # Add logic or determining if the specrev needs to be incremented
+    specrev: "${{ env.SPECREV }}"
+```
 
 ### `extra_luarocks_args`
 
