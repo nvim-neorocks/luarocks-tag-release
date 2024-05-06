@@ -16,6 +16,11 @@ inputs:
       Can also be set to `null`, `"scm"` or `"dev"` to publish a development rockspec.
     required: false
     default: ${{ github.ref_name }}
+  specrev:
+    description: |
+      The rockspec revision. Defaults to '1', resulting in <version>-1 as the <modrev>-<specrev>.
+    required: false
+    default: "1"
   dependencies:
     description: "List of LuaRocks dependencies."
     required: false
@@ -76,6 +81,7 @@ runs:
       env:
         INPUT_NAME: ${{ inputs.name }}
         INPUT_VERSION: ${{ inputs.version }}
+        INPUT_SPECREV: ${{ inputs.specrev }}
         INPUT_DEPENDENCIES: ${{ inputs.dependencies }}
         INPUT_TEST_DEPENDENCIES: ${{ inputs.test_dependencies }}
         INPUT_LABELS: ${{ inputs.labels }}

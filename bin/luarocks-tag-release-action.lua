@@ -74,11 +74,13 @@ end
 
 local luarocks_tag_release = require('luarocks-tag-release')
 
-local specrev = '1'
+local specrev
 if is_pull_request then
   print('Running in a pull request.')
   specrev = assert(os.getenv('GITHUB_RUN_ATTEMPT'), 'GITHUB_RUN_ATTEMPT not set')
   args.git_ref = get_github_sha()
+else
+  specrev = os.getenv('INPUT_SPECREV') or '1'
 end
 
 luarocks_tag_release(package_name, package_version, specrev, args)
