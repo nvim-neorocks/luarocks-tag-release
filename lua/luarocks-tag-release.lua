@@ -22,6 +22,7 @@
 ---@field extra_luarocks_args string[]
 ---@field github_event_path string|nil The path to the file on the runner that contains the full event webhook payload. For example, /github/workflow/event.json.
 ---@field is_debug boolean Whether to enable debug logging
+---@field fail_on_duplicate boolean Whether to fail if the rock version has already been uploaded.
 
 ---@param package_name string The name of the LuaRocks package.
 ---@param package_version string | nil The version of the LuaRocks package.
@@ -92,7 +93,19 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
       .. ' --api-key $LUAROCKS_API_KEY'
       .. luarocks_extra_flags_and_args
     print('UPLOAD: ' .. cmd)
-    local stdout, _ = OS.execute(cmd, error, args.is_debug)
+    local stdout, _ = OS.execute(cmd, function(message)
+      if message:find('already exists on the server') and not args.fail_on_duplicate then
+        print(
+          string.format(
+            '%s already exists with version %s on the remote. Doing nothing (`fail_on_duplicate` is false).',
+            package_name,
+            package_version
+          )
+        )
+      else
+        error(message)
+      end
+    end, args.is_debug)
     print(stdout)
     cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev .. luarocks_extra_flags_and_args
     print('TEST: ' .. cmd)

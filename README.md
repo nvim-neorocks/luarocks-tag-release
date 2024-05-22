@@ -354,6 +354,12 @@ Example:
     specrev: "${{ env.SPECREV }}"
 ```
 
+### `fail_on_duplicate` (optional)
+
+When set to `true` will cause the workflow to fail with an error if the rock already exists on the server.
+By default, if the rock already exists with a given version, the workflow will do nothing and fall back to other tasks
+instead (e.g. running tests).
+
 ### `extra_luarocks_args`
 
 Extra args to pass to the luarocks command.
