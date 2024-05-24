@@ -23,14 +23,6 @@ with final.stdenv; let
       homepage = "https://github.com/nvim-neorocks/luarocks-tag-release";
       license = licenses.agpl3Only;
     };
-
-    doCheck = true;
-
-    preCheck = ''
-      # This one currently can't be run with nix
-      # It is run in the integration test on GitHub CI
-      rm spec/nvim_spec.lua
-    '';
   };
 
   luarocks-tag-release-action = pkgs.writeShellApplication {
