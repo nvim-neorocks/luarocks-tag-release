@@ -13,6 +13,7 @@ with final.stdenv; let
     ];
 
     propagatedBuildInputs = with pkgs.lua51Packages; [
+      # busted-nightly
       dkjson
       luafilesystem
       luarocks-build-rust-mlua
@@ -23,6 +24,8 @@ with final.stdenv; let
       homepage = "https://github.com/nvim-neorocks/luarocks-tag-release";
       license = licenses.agpl3Only;
     };
+
+    # doCheck = true;
   };
 
   luarocks-tag-release-action = pkgs.writeShellApplication {
