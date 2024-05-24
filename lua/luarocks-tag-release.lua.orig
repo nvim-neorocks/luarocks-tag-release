@@ -46,11 +46,14 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   ---@return nil
   local function luarocks_test(interpreter)
     print('Initialising luarocks project...')
+<<<<<<< HEAD
+    OS.execute('luarocks init' .. luarocks_extra_flags_and_args, print)
+=======
     OS.execute('luarocks --tree . init' .. luarocks_extra_flags_and_args, print)
+>>>>>>> a5567c9 (fix: add `--tree .` to `luarocks init` before running tests)
     print('Done.')
     print('Configuring luarocks to use interpreter ' .. interpreter .. '...')
     OS.execute('luarocks config --scope project lua_interpreter ' .. interpreter .. luarocks_extra_flags_and_args)
-    OS.execute('luarocks config --local lua_interpreter ' .. interpreter .. luarocks_extra_flags_and_args)
     print('Done.')
     print('Running tests...')
     OS.execute('luarocks test' .. luarocks_extra_flags_and_args, error, true)
