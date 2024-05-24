@@ -13,7 +13,6 @@ with final.stdenv; let
     ];
 
     propagatedBuildInputs = with pkgs.lua51Packages; [
-      busted
       dkjson
       luafilesystem
       luarocks-build-rust-mlua
