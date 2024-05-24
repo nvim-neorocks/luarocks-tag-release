@@ -2,6 +2,23 @@
 
 # Changelog
 
+## [5.13.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.13.0...v5.13.1) (2024-05-24)
+
+
+### Bug Fixes
+
+* add --local lua_interpreter luarocks config ([eaece88](https://github.com/nvim-neorocks/luarocks-tag-release/commit/eaece884f51711ca69fbc47b18b8223b961f7589))
+* add `--local` flag for test runs ([76057a2](https://github.com/nvim-neorocks/luarocks-tag-release/commit/76057a2ad04a43444c9c5b885251e3b15e7c6dec))
+* add `--tree .` to `luarocks init` before running tests ([a5ef7e6](https://github.com/nvim-neorocks/luarocks-tag-release/commit/a5ef7e6400396b4d6858ed788db08ddfb9c2330c))
+* don't propagate busted ([8d3bb48](https://github.com/nvim-neorocks/luarocks-tag-release/commit/8d3bb48e456a2227d34ac3e6f0212bb97a86cab9))
+* lua_interpreter -&gt; variables.LUA ([9f80ab8](https://github.com/nvim-neorocks/luarocks-tag-release/commit/9f80ab80229effed03116c5a2219e98e0106b072))
+* remove busted from propagatedBuildInputs ([0b7b24f](https://github.com/nvim-neorocks/luarocks-tag-release/commit/0b7b24f8feab1928e77c7d07ea1570311ff5f904))
+
+
+### Reverts
+
+* add `--local` flag for test runs ([b75ae1d](https://github.com/nvim-neorocks/luarocks-tag-release/commit/b75ae1d796ba28ee0079dd3a8dd0db85e1b79e3c))
+
 ## [5.13.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.12.0...v5.13.0) (2024-05-06)
 
 
