@@ -59,6 +59,7 @@ local args = {
   ref_type = os.getenv('GITHUB_REF_TYPE_OVERRIDE') or getenv_or_err('GITHUB_REF_TYPE'),
   git_ref = os.getenv('GITHUB_REF_NAME_OVERRIDE') or getenv_or_err('GITHUB_REF_NAME'),
   is_debug = os.getenv('RUNNER_DEBUG') == '1',
+  fail_on_duplicate = getenv_or_empty('INPUT_FAIL_ON_DUPLICATE') == 'true',
 }
 
 local function get_github_sha()

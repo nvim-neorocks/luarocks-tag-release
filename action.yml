@@ -69,6 +69,10 @@ inputs:
       Extra args to pass to the luarocks command.
       For example: "CURL_DIR=/usr/include/x86_64-linux-gnu/"
     required: false
+  fail_on_duplicate:
+    description: |
+      Whether to fail if the rock's version has already been published to `luarocks.org`.
+    required: false
 runs:
   using: "composite"
   steps:
@@ -92,5 +96,6 @@ runs:
         INPUT_LICENSE: ${{ inputs.license }}
         INPUT_TEST_INTERPRETERS: ${{ inputs.test_interpreters }}
         INPUT_EXTRA_LUAROCKS_ARGS: ${{ inputs.extra_luarocks_args }}
+        INPUT_FAIL_ON_DUPLICATE: ${{ inputs.fail_on_duplicate }}
         RUNNER_DEBUG: ${{ runner.debug }}
       shell: bash
