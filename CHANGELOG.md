@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.14.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.13.1...v5.14.0) (2024-05-25)
+
+
+### Features
+
+* do not fail on already existing rocks, add `fail_on_duplicate` flag ([#411](https://github.com/nvim-neorocks/luarocks-tag-release/issues/411)) ([07c35cf](https://github.com/nvim-neorocks/luarocks-tag-release/commit/07c35cf0c2a1346dc9484c74a250f1e0c48dede8))
+
 ## [5.13.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.13.0...v5.13.1) (2024-05-24)
 
 
