@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [5.14.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.14.0...v5.14.1) (2024-06-17)
+
+
+### Bug Fixes
+
+* add `ftdetect` to `{{ neovim.plugin.dirs }}`. ([#431](https://github.com/nvim-neorocks/luarocks-tag-release/issues/431)) ([9ae4c23](https://github.com/nvim-neorocks/luarocks-tag-release/commit/9ae4c23abc6b08b14c0d456d7c85d718d61f3d90))
+
 ## [5.14.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.13.1...v5.14.0) (2024-05-25)
 
 
