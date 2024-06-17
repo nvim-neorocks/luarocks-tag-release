@@ -21,6 +21,7 @@ local function insert_neovim_plugin_dirs(copy_directories)
     'doc',
     'filetype.lua',
     'ftplugin',
+    'ftdetect',
     'indent',
     'keymap',
     'lang',
