@@ -201,6 +201,7 @@ Example:
 > - doc
 > - filetype.lua
 > - ftplugin
+> - ftdetect
 > - indent
 > - keymap
 > - lang
