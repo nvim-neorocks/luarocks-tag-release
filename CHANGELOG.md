@@ -2,6 +2,17 @@
 
 # Changelog
 
+## [6.0.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.14.1...v6.0.0) (2024-06-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* deprecate `test_interpreters` and disable tests by default
+
+### Features
+
+* deprecate `test_interpreters` and disable tests by default ([906f4b5](https://github.com/nvim-neorocks/luarocks-tag-release/commit/906f4b54130766a3f2691b9cb5a910c39da6a40a))
+
 ## [5.14.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.14.0...v5.14.1) (2024-06-17)
 
 
