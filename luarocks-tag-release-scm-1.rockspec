@@ -18,6 +18,7 @@ dependencies = {
 test_dependencies = {
   'dkjson',
   'luafilesystem',
+  'nlua',
 }
 
 source = {
