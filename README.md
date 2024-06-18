@@ -142,8 +142,15 @@ Example:
 
 ### `test_interpreters`
 
+> [!WARNING]
+>
+> DEPRECATED! Use [nvim-neorocks/nvim-busted-action](https://github.com/nvim-neorocks/nvim-busted-action)
+> for tests instead!
+>
+> This will be removed completely in a later release.
+
 Lua interpreters to run `luarocks test` with.
-If no interpreter is set, or no [.busted file](https://lunarmodules.github.io/busted/#usage)
+If set to an empty string (default), or no [.busted file](https://lunarmodules.github.io/busted/#usage)
 is present, no tests will be run.
 
 Supported interpreters:

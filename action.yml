@@ -57,13 +57,9 @@ inputs:
     required: false
   test_interpreters:
     description: |
-      Lua interpreters to run `luarocks test` with.
-      If not set, no tests will be run.
-      At the moment, "lua", "neovim-stable" and "neovim-nightly" are supported.
+      DEPRECATED! Use nvim-neorocks/nvim-busted-action for tests instead!
     required: false
-    default: |
-      neovim-stable
-      neovim-nightly
+    default: ""
   extra_luarocks_args:
     description: |
       Extra args to pass to the luarocks command.
