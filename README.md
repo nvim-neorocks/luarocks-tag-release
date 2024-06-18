@@ -75,14 +75,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v5
+        uses: nvim-neorocks/luarocks-tag-release@v6
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
 
 > [!NOTE]
 >
-> Use the `v5` tag to keep up with the latest releases, without breaking changes.
+> Use the `v6` tag to keep up with the latest releases, without breaking changes.
 
 ## Inputs
 
@@ -103,7 +103,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     dependencies: |
       plenary.nvim
@@ -119,7 +119,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     test_dependencies: |
       luaunit
@@ -134,7 +134,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     labels: |
       neovim
@@ -163,7 +163,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Test and Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     test_interpreters: |
       neovim-stable
@@ -189,7 +189,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     copy_directories: |
       {{ neovim.plugin.dirs }}
@@ -243,7 +243,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -262,7 +262,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -277,7 +277,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     license: "MIT"
 ```
@@ -326,7 +326,7 @@ jobs:
       - name: Get new commits
         run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v5
+        uses: nvim-neorocks/luarocks-tag-release@v6
         if: ${{ env.NEW_COMMIT_COUNT > 0 }}
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
@@ -355,7 +355,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     version: "scm"
     # Add logic or determining if the specrev needs to be incremented
@@ -379,7 +379,7 @@ Example:
 - run: |
     sudo apt-get install -y libcurl4-openssl-dev
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v5
+  uses: nvim-neorocks/luarocks-tag-release@v6
   with:
     extra_luarocks_args: |
       CURL_INCDIR=/usr/include/x86_64-linux-gnu
