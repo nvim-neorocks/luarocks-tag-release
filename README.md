@@ -144,8 +144,8 @@ Example:
 
 > [!WARNING]
 >
-> DEPRECATED! Use [nvim-neorocks/nvim-busted-action](https://github.com/nvim-neorocks/nvim-busted-action)
-> for tests instead!
+> DEPRECATED! Use [nvim-busted-action](https://github.com/marketplace/actions/nvim-busted-action)
+> or [lua-busted](https://github.com/marketplace/actions/lua-busted) for tests instead!
 >
 > This will be removed completely in a later release.
 
