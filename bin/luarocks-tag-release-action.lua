@@ -37,7 +37,9 @@ local interpreters_input = os.getenv('INPUT_TEST_INTERPRETERS')
 if interpreters_input ~= '' then
   print([[
 WARNING: The test_interpreters input is deprecated and will be removed in a later release.
-Use nvim-neorocks/nvim-busted-action instead.'
+Use nvim-neorocks/nvim-busted-action or lua-busted instead.
+  - https://github.com/marketplace/actions/nvim-busted-action
+  - https://github.com/marketplace/actions/lua-busted
 ]])
 end
 local test_interpreters = Parser.parse_interpreter_input(interpreters_input)
