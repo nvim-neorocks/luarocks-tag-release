@@ -34,6 +34,12 @@ local package_name = getenv_or_err('INPUT_NAME')
 local package_version = is_pull_request and '0.0.0' or os.getenv('INPUT_VERSION')
 
 local interpreters_input = os.getenv('INPUT_TEST_INTERPRETERS')
+if interpreters_input ~= '' then
+  print([[
+WARNING: The test_interpreters input is deprecated and will be removed in a later release.
+Use nvim-neorocks/nvim-busted-action instead.'
+]])
+end
 local test_interpreters = Parser.parse_interpreter_input(interpreters_input)
 
 ---@type Args
