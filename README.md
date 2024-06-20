@@ -253,7 +253,7 @@ Example:
 
 ### `template`
 
-By default, this workflow will generate a rockspec based on a [predefined template](./rockspec.template).
+By default, this workflow will generate a rockspec based on a [predefined template](resources/rockspec.template).
 
 You can also add a modified template to your repository and specify the path
 to it with the `template` variable.
