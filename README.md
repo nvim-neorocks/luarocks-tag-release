@@ -47,8 +47,6 @@ No need to add a rockspec to your repository for each release (or at all).
 - Tests a local installation from the rockspec file before uploading.
 - Uploads the package to LuaRocks.
 - Tests the installation of the uploaded package.
-- Runs [`luarocks test`](https://github.com/luarocks/luarocks/wiki/test)
-  with lua, neovim 0.9 and/or neovim-nightly as the interpreter.
 
 ## Prerequisites
 
@@ -75,14 +73,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v6
+        uses: nvim-neorocks/luarocks-tag-release@v7
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
 ```
 
 > [!NOTE]
 >
-> Use the `v6` tag to keep up with the latest releases, without breaking changes.
+> Use the `v7` tag to keep up with the latest releases, without breaking changes.
 
 ## Inputs
 
@@ -103,7 +101,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     dependencies: |
       plenary.nvim
@@ -119,7 +117,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     test_dependencies: |
       luaunit
@@ -134,50 +132,11 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     labels: |
       neovim
 ```
-
-### `test_interpreters`
-
-> [!WARNING]
->
-> DEPRECATED! Use [nvim-busted-action](https://github.com/marketplace/actions/nvim-busted-action)
-> or [lua-busted](https://github.com/marketplace/actions/lua-busted) for tests instead!
->
-> This will be removed completely in a later release.
-
-Lua interpreters to run `luarocks test` with.
-If set to an empty string (default), or no [.busted file](https://lunarmodules.github.io/busted/#usage)
-is present, no tests will be run.
-
-Supported interpreters:
-
-- `neovim-stable` - With access to the [Neovim 0.9 Lua API](https://neovim.io/doc/user/lua.html).
-- `neovim-nightly` - With access to the Neovim nightly Lua API.
-- `lua` - Plain luajit
-
-Example:
-
-```yaml
-- name: LuaRocks Test and Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
-  with:
-    test_interpreters: |
-      neovim-stable
-      neovim-nightly
-```
-
-> [!NOTE]
->
-> For reproducible builds with recent versions of Neovim,
-> we recommend **not** to use the latest stable tag,
-> but instead to use [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates#enabling-github-dependabot-version-updates)
-> to manage version updates.
-> For convenience, you can [auto-approve](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions#approve-a-pull-request)
-> the pull request.
 
 ### `copy_directories`
 
@@ -189,7 +148,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     copy_directories: |
       {{ neovim.plugin.dirs }}
@@ -243,7 +202,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     detailed_description: |
       Publishes packages to LuaRocks when a git tag is pushed.
@@ -262,7 +221,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     template: "/path/to/my/template.rockspec"
 ```
@@ -277,7 +236,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     license: "MIT"
 ```
@@ -326,7 +285,7 @@ jobs:
       - name: Get new commits
         run: echo "NEW_COMMIT_COUNT=$(git log --oneline --since '24 hours ago' | wc -l)" >> $GITHUB_ENV
       - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v6
+        uses: nvim-neorocks/luarocks-tag-release@v7
         if: ${{ env.NEW_COMMIT_COUNT > 0 }}
         env:
           LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
@@ -355,7 +314,7 @@ Example:
 
 ```yaml
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     version: "scm"
     # Add logic or determining if the specrev needs to be incremented
@@ -379,7 +338,7 @@ Example:
 - run: |
     sudo apt-get install -y libcurl4-openssl-dev
 - name: LuaRocks Upload
-  uses: nvim-neorocks/luarocks-tag-release@v6
+  uses: nvim-neorocks/luarocks-tag-release@v7
   with:
     extra_luarocks_args: |
       CURL_INCDIR=/usr/include/x86_64-linux-gnu

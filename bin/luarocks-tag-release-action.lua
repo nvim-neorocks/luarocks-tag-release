@@ -33,17 +33,6 @@ local package_name = getenv_or_err('INPUT_NAME')
 ---@type string | nil
 local package_version = is_pull_request and '0.0.0' or os.getenv('INPUT_VERSION')
 
-local interpreters_input = os.getenv('INPUT_TEST_INTERPRETERS')
-if interpreters_input ~= '' then
-  print([[
-WARNING: The test_interpreters input is deprecated and will be removed in a later release.
-Use nvim-neorocks/nvim-busted-action or lua-busted instead.
-  - https://github.com/marketplace/actions/nvim-busted-action
-  - https://github.com/marketplace/actions/lua-busted
-]])
-end
-local test_interpreters = Parser.parse_interpreter_input(interpreters_input)
-
 ---@type Args
 local args = {
   github_repo = github_repo,
@@ -61,7 +50,6 @@ local args = {
     or action_path .. '/resources/rockspec.template',
   upload = not is_pull_request,
   license = license_input ~= '' and license_input or nil,
-  luarocks_test_interpreters = test_interpreters,
   extra_luarocks_args = Parser.parse_list_args(getenv_or_empty('INPUT_EXTRA_LUAROCKS_ARGS')),
   github_event_path = getenv_or_err('GITHUB_EVENT_PATH'),
   ref_type = os.getenv('GITHUB_REF_TYPE_OVERRIDE') or getenv_or_err('GITHUB_REF_TYPE'),

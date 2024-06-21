@@ -55,11 +55,6 @@ inputs:
       But sometimes, GitHub does not recognise it,
       in which case LuaRocks will fall back to this one.
     required: false
-  test_interpreters:
-    description: |
-      DEPRECATED! Use nvim-neorocks/nvim-busted-action for tests instead!
-    required: false
-    default: ""
   extra_luarocks_args:
     description: |
       Extra args to pass to the luarocks command.
@@ -90,7 +85,6 @@ runs:
         INPUT_DETAILED_DESCRIPTION: ${{ inputs.detailed_description }}
         INPUT_TEMPLATE: ${{ inputs.template }}
         INPUT_LICENSE: ${{ inputs.license }}
-        INPUT_TEST_INTERPRETERS: ${{ inputs.test_interpreters }}
         INPUT_EXTRA_LUAROCKS_ARGS: ${{ inputs.extra_luarocks_args }}
         INPUT_FAIL_ON_DUPLICATE: ${{ inputs.fail_on_duplicate }}
         RUNNER_DEBUG: ${{ runner.debug }}
