@@ -53,16 +53,4 @@ describe('Parser', function()
       'third',
     })
   end)
-  it('Parse interpreter input', function()
-    assert.same(Parser.parse_interpreter_input('neovim-stable'), { 'neolua' })
-    assert.same(Parser.parse_interpreter_input('neovim-nightly'), { 'neolua-nightly' })
-    assert.same(Parser.parse_interpreter_input('lua'), { 'lua' })
-    assert.same(
-      Parser.parse_interpreter_input([[
-        neovim-stable
-        neovim-nightly
-      ]]),
-      { 'neolua', 'neolua-nightly' }
-    )
-  end)
 end)

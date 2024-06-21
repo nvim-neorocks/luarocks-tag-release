@@ -1,7 +1,6 @@
 #!/usr/bin/env lua
 
 ---@alias github_ref_type 'tag' | 'branch'
----@alias lua_interpreter 'neolua' | 'neolua-nightly' | 'lua'
 
 ---@class (exact) Args
 ---@field repo_name string The repository name.
@@ -18,7 +17,6 @@
 ---@field rockspec_template_file_path string File path to the rockspec template (relative to repo's root).
 ---@field upload boolean Whether to upload to LuaRocks.
 ---@field license string|nil License SPDX ID (optional).
----@field luarocks_test_interpreters lua_interpreter[]
 ---@field extra_luarocks_args string[]
 ---@field github_event_path string|nil The path to the file on the runner that contains the full event webhook payload. For example, /github/workflow/event.json.
 ---@field is_debug boolean Whether to enable debug logging
@@ -42,20 +40,6 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   print('Luarocks flags and args: ' .. luarocks_extra_flags_and_args)
 
   local OS = require('ltr.os')
-
-  ---@param interpreter lua_interpreter
-  ---@return nil
-  local function luarocks_test(interpreter)
-    print('Initialising luarocks project...')
-    OS.execute('luarocks --tree . init' .. luarocks_extra_flags_and_args, print)
-    print('Done.')
-    print('Configuring luarocks to use interpreter ' .. interpreter .. '...')
-    OS.execute('luarocks config --scope project variables.LUA ' .. interpreter .. luarocks_extra_flags_and_args)
-    print('Done.')
-    print('Running tests...')
-    OS.execute('luarocks test' .. luarocks_extra_flags_and_args, error, true)
-    OS.execute('rm -r .luarocks luarocks', print, args.is_debug)
-  end
 
   ---@return string tmp_dir The temp directory in which to install the package
   ---@return string luarocks_install_cmd The luarocks install command for installing in tmp_dir
@@ -158,11 +142,6 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
   print('========================================================================================')
 
   OS.write_file(rockspec_file_path, rockspec)
-  if OS.file_exists('.busted') then
-    for _, interpreter in pairs(args.luarocks_test_interpreters) do
-      luarocks_test(interpreter)
-    end
-  end
   local target_rockspec_path = create_rockspec(rockspec)
   if args.upload then
     luarocks_upload(target_rockspec_path)

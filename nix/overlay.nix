@@ -13,10 +13,10 @@ with final.stdenv; let
     ];
 
     propagatedBuildInputs = with pkgs.lua51Packages; [
-      # busted-nightly
       dkjson
       luafilesystem
       luarocks-build-rust-mlua
+      luarocks-build-treesitter-parser
     ];
 
     meta = {
@@ -31,8 +31,8 @@ with final.stdenv; let
   luarocks-tag-release-action = pkgs.writeShellApplication {
     name = "luarocks-tag-release-action";
     runtimeInputs = with pkgs; [
+      luarocks
       curl
-      neorocks
       luarocks-tag-release-action-wrapped
       unzip
       zip

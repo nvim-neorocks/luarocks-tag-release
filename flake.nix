@@ -9,22 +9,19 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     flake-utils.url = "github:numtide/flake-utils";
-
-    neorocks-nix.url = "github:mrcjkb/neorocks-nix";
   };
 
   outputs = {
     self,
     nixpkgs,
     flake-utils,
-    pre-commit-hooks,
-    neorocks-nix,
+    git-hooks,
     ...
   }: let
     supportedSystems = [
@@ -35,7 +32,6 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
-          neorocks-nix.overlays.default
           (import ./nix/overlay.nix {inherit self;})
         ];
       };
@@ -45,27 +41,27 @@
         luafilesystem
       ];
 
-      formatting = pre-commit-hooks.lib.${system}.run {
+      formatting = git-hooks.lib.${system}.run {
         src = self;
         hooks = {
           alejandra.enable = true;
           stylua.enable = true;
           luacheck.enable = true;
           editorconfig-checker.enable = true;
-          markdownlint.enable = true;
-          lua-ls.enable = true;
-        };
-        settings = {
-          markdownlint.config = {
-            MD004 = false;
-            MD012 = false;
-            MD013 = false;
-            MD022 = false;
-            MD031 = false;
-            MD032 = false;
+          markdownlint = {
+            enable = true;
+            settings.configuration = {
+              MD004 = false;
+              MD012 = false;
+              MD013 = false;
+              MD022 = false;
+              MD031 = false;
+              MD032 = false;
+            };
           };
           lua-ls = {
-            config = {
+            enable = true;
+            settings.configuration = {
               runtime.version = "LuaJIT";
               Lua = {
                 workspace = {
@@ -97,16 +93,10 @@
         name = "luarocks-tag-release-devShell";
         buildInputs =
           (with pkgs; [
-            sumneko-lua-language-server
+            lua-language-server
             luarocks
           ])
-          ++ (with pre-commit-hooks.packages.${system}; [
-            alejandra
-            stylua
-            luacheck
-            editorconfig-checker
-            markdownlint-cli
-          ]);
+          ++ self.checks.${system}.formatting.enabledPackages;
         shellHook = ''
           ${self.checks.${system}.formatting.shellHook}
         '';

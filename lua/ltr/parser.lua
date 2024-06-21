@@ -55,24 +55,4 @@ function Parser.parse_copy_directory_args(str_args)
   return copy_directories
 end
 
----@param interpreters_input string|nil
----@return lua_interpreter[]
-function Parser.parse_interpreter_input(interpreters_input)
-  local test_interpreters = {}
-  if interpreters_input then
-    for _, input in pairs(Parser.parse_list_args(interpreters_input)) do
-      if input == 'neovim-stable' then
-        table.insert(test_interpreters, 'neolua')
-      elseif input == 'neovim-nightly' then
-        table.insert(test_interpreters, 'neolua-nightly')
-      elseif input == 'lua' then
-        table.insert(test_interpreters, 'lua')
-      else
-        error('Test interpreter ' .. input .. ' not supported.')
-      end
-    end
-  end
-  return test_interpreters
-end
-
 return Parser
