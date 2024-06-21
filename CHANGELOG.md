@@ -2,6 +2,17 @@
 
 # Changelog
 
+## [7.0.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v6.0.0...v7.0.0) (2024-06-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for running tests in favour of nvim-busted-action ([#437](https://github.com/nvim-neorocks/luarocks-tag-release/issues/437))
+
+### Features
+
+* drop support for running tests in favour of nvim-busted-action ([#437](https://github.com/nvim-neorocks/luarocks-tag-release/issues/437)) ([2af6c3a](https://github.com/nvim-neorocks/luarocks-tag-release/commit/2af6c3a00772ee42a161d02a8d324ab53b24bb13))
+
 ## [6.0.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v5.14.1...v6.0.0) (2024-06-18)
 
 
