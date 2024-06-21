@@ -15,8 +15,6 @@ with final.stdenv; let
     propagatedBuildInputs = with pkgs.lua51Packages; [
       dkjson
       luafilesystem
-      luarocks-build-rust-mlua
-      luarocks-build-treesitter-parser
     ];
 
     meta = {
