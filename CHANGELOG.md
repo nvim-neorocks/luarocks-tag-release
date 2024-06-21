@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [7.1.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v7.0.1...v7.1.0) (2024-06-21)
+
+
+### Features
+
+* add build backends to release action ([41f04b5](https://github.com/nvim-neorocks/luarocks-tag-release/commit/41f04b5bb45e34a8cc871ea49bb3cca07c7d3da1))
+
 ## [7.0.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v7.0.0...v7.0.1) (2024-06-21)
 
 
