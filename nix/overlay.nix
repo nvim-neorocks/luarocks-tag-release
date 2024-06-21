@@ -29,11 +29,17 @@ with final.stdenv; let
   luarocks-tag-release-action = pkgs.writeShellApplication {
     name = "luarocks-tag-release-action";
     runtimeInputs = with pkgs; [
-      luarocks
       curl
       luarocks-tag-release-action-wrapped
       unzip
       zip
+      (lua5_1.withPackages (luaPkgs:
+        with luaPkgs; [
+          luarocks
+          luafilesystem
+          luarocks-build-rust-mlua
+          luarocks-build-treesitter-parser
+        ]))
     ];
 
     text = ''
