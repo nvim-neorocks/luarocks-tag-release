@@ -2,6 +2,13 @@
 
 # Changelog
 
+## [7.0.1](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v7.0.0...v7.0.1) (2024-06-21)
+
+
+### Bug Fixes
+
+* remove luarocks build backends ([#440](https://github.com/nvim-neorocks/luarocks-tag-release/issues/440)) ([78dd246](https://github.com/nvim-neorocks/luarocks-tag-release/commit/78dd24621e61cc569bd028349313fe4ece2ab953))
+
 ## [7.0.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v6.0.0...v7.0.0) (2024-06-21)
 
 
