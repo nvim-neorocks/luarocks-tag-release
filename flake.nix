@@ -95,10 +95,13 @@
           (with pkgs; [
             lua-language-server
             luarocks
+            luaPackages.dkjson
+            lua
           ])
           ++ self.checks.${system}.formatting.enabledPackages;
         shellHook = ''
           ${self.checks.${system}.formatting.shellHook}
+          export LUA_PATH="lua/?.lua;$LUA_PATH"
         '';
       };
     in {
