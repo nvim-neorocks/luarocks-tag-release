@@ -3,3 +3,4 @@ result
 /lua_modules
 /.luarocks
 .luarc.json
+.pre-commit-config.yaml
