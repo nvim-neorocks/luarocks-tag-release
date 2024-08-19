@@ -37,6 +37,7 @@
       };
 
       base-dependencies = with pkgs.lua51Packages; [
+        argparse
         dkjson
         luafilesystem
       ];
@@ -93,10 +94,10 @@
         name = "luarocks-tag-release-devShell";
         buildInputs =
           (with pkgs; [
+            base-dependencies
             lua-language-server
             luarocks
             luaPackages.dkjson
-            lua
           ])
           ++ self.checks.${system}.formatting.enabledPackages;
         shellHook = ''
