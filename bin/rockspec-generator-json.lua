@@ -7,7 +7,6 @@ jq '.plugins[] | select(.name == nvim-telescope/telescope-fzf-native.nvim)' plug
 local json = require('dkjson')
 
 local input = io.stdin:read('*all')
--- print('You entered: ' .. input)
 
 meta = json.decode(input)
 

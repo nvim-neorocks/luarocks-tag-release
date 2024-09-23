@@ -12,30 +12,38 @@ local parser = argparse('rockspec-generator-cli', 'Generate a rockspec file')
 parser:option('--package_name', 'The name of the package')
 parser:option('--modrev', 'Module revision')
 parser:option('--specrev', 'Spec revision')
-parser:option('--rockspec_template', 'Rockspec template')
+parser:option('--rockspec_template', 'Rockspec template'):default('rockspec.template')
 parser:option('--ref_type', 'Reference type')
 parser:option('--git_server_url', 'Git server URL')
-parser:option('--github_repo', 'GitHub repository')
+parser:option('--repo_url', 'Git repository')
 parser:option('--license', 'License')
 parser:option('--git_ref', 'Git reference')
 parser:option('--summary', 'Summary')
 parser:option('--detailed_description_lines', 'Detailed description lines')
-parser:option('--dependencies', 'Dependencies')
+-- list of strings
+parser:option('--dependencies', 'Dependencies'):default {}
 parser:option('--test_dependencies', 'Test dependencies')
 parser:option('--labels', 'Labels')
 parser:option('--copy_directories', 'Copy directories')
 parser:option('--repo_name', 'Repository name')
-parser:option('--github_event_data', 'GitHub event data'):default {}
+parser:option('--github_event_data', 'GitHub event data'):default('')
 
 local args = parser:parse()
 
+-- For now, let's still assume github
+-- local input = io.stdin:read('*all')
+-- meta = json.decode(input)
+
+-- github_event_tbl
 local github_event_tbl = json.decode(args.github_event_data)
 
+-- github_event_tbl.git_server_url .. '/' .. github_event_tbl.github_repo,
 local rockspec =
   require('ltr.rockspec').generate(args.package_name, args.modrev, args.specrev, args.rockspec_template, {
     ref_type = args.ref_type,
     git_server_url = args.git_server_url,
     github_repo = args.github_repo,
+    repo_url = args.repo_url,
     license = args.license,
     git_ref = args.git_ref,
     summary = args.summary,
@@ -47,3 +55,4 @@ local rockspec =
     repo_name = args.repo_name,
     github_event_tbl = github_event_tbl,
   })
+print(rockspec)

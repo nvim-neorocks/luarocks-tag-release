@@ -15,6 +15,7 @@ end
 ---@field ref_type github_ref_type
 ---@field git_server_url string The github server's URL.
 ---@field github_repo string The github repository (owner/repo_name).
+---@field repo_url string Custom setting
 ---@field license string|nil License SPDX ID (optional).
 ---@field git_ref string E.g. a tag or a commit sha.
 ---@field summary string Package summary.
@@ -54,7 +55,13 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
     return '[[\n' .. table.concat(xs, '\n') .. ']]'
   end
 
-  local repo_url = meta.git_server_url .. '/' .. meta.github_repo
+  local repo_url = meta.repo_url
+  if repo_url == nil then
+    print('repo_url set to nil, aggregating')
+    repo_url = 'placeholder'
+    -- repo_url = meta.git_server_url .. '/' .. meta.github_repo
+  end
+
   local homepage = repo_url
   local license = ''
   local repo_meta = meta.github_event_tbl
