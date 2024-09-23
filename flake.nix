@@ -101,6 +101,7 @@
           ++ self.checks.${system}.formatting.enabledPackages;
         shellHook = ''
           ${self.checks.${system}.formatting.shellHook}
+          export PATH="$PWD/bin;$PATH"
           export LUA_PATH="lua/?.lua;$LUA_PATH"
         '';
       };

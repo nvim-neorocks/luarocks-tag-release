@@ -1,4 +1,9 @@
 #!/usr/bin/env lua
+--[[ NURR
+This script can generate a rockspec from a json in the NURR format.
+e.g.:
+jq '.plugins[] | select(.name == nvim-telescope/telescope-fzf-native.nvim)' plugins.json | ~/luarocks-tag-release/bin/rockspec-generator-cli.lua
+--]]
 local json = require('dkjson')
 
 local input = io.stdin:read('*all')
