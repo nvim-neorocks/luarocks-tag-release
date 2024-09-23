@@ -31,7 +31,7 @@ end
 ---@param package_name string The name of the LuaRocks package.
 ---@param modrev string the version of the package - in format 3.0 must follow the format '[%w.]+-[%d]+'
 ---@param specrev string the version of the rockspec
----@param rockspec_template string The template rockspec
+---@param rockspec_template string The template rockspec content
 ---@param meta GenerateMeta
 ---@return string
 function Rockspec.generate(package_name, modrev, specrev, rockspec_template, meta)
@@ -110,22 +110,41 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
     table.insert(meta.dependencies, 1, 'lua >= 5.1')
   end
 
+  -- TODO only gsub if set
+  -- local mappings = { ['$git_ref'] = meta.git_ref; }
+  local substitutions = {
+    ['$git_ref'] = meta.git_ref,
+    ['$modrev'] = modrev,
+    ['$specrev'] = specrev,
+    ['$repo_url'] = repo_url,
+    ['$archive_dir_suffix'] = archive_dir_suffix,
+    ['$package'] = package_name,
+    ['$summary'] = escape_quotes(meta.summary),
+    ['$detailed_description'] = mk_lua_multiline_str(meta.detailed_description_lines),
+    ['$dependencies'] = mk_lua_list_string(meta.dependencies),
+    ['$test_dependencies'] = mk_lua_list_string(meta.test_dependencies),
+    ['$labels'] = mk_lua_list_string(meta.labels),
+    ['$homepage'] = homepage,
+    ['$license'] = license,
+    ['$copy_directories'] = mk_lua_list_string(meta.copy_directories),
+    ['$repo_name'] = meta.repo_name,
+  }
   local rockspec = rockspec_template
-    :gsub('$git_ref', meta.git_ref)
-    :gsub('$modrev', modrev)
-    :gsub('$specrev', specrev)
-    :gsub('$repo_url', repo_url)
-    :gsub('$archive_dir_suffix', archive_dir_suffix)
-    :gsub('$package', package_name)
-    :gsub('$summary', escape_quotes(meta.summary))
-    :gsub('$detailed_description', mk_lua_multiline_str(meta.detailed_description_lines))
-    :gsub('$dependencies', mk_lua_list_string(meta.dependencies))
-    :gsub('$test_dependencies', mk_lua_list_string(meta.test_dependencies))
-    :gsub('$labels', mk_lua_list_string(meta.labels))
-    :gsub('$homepage', homepage)
-    :gsub('$license', license)
-    :gsub('$copy_directories', mk_lua_list_string(meta.copy_directories))
-    :gsub('$repo_name', meta.repo_name)
+  for key, val in pairs(substitutions) do
+    print('KEY', key)
+    if val then
+      rockspec:gsub(key, val)
+    else
+      print('Skipping ', key(' since mapping is empty'))
+    end
+  end
+
+  -- for _, sub in ipairs(substitutions) do
+  --     template = template:gsub(sub[1], sub[2])
+  -- end
+  --
+  print('ROCKSPEC')
+  print(rockspec)
 
   return rockspec
 end
