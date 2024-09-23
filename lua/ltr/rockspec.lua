@@ -33,7 +33,7 @@ end
 ---@param specrev string the version of the rockspec
 ---@param rockspec_template string The template rockspec content
 ---@param meta GenerateMeta
----@return string
+---@return string, string  The rockspec wanna be filename, its content
 function Rockspec.generate(package_name, modrev, specrev, rockspec_template, meta)
   local archive_dir_suffix = meta.ref_type == 'tag' and modrev or meta.git_ref
 
@@ -113,8 +113,9 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
 
   -- TODO only gsub if set
   -- local mappings = { ['$git_ref'] = meta.git_ref; }
+  local rockspec_filename = package_name .. '-' .. modrev .. '-' .. specrev .. '.rockspec'
   local test_dependencies = mk_lua_list_string(meta.test_dependencies), print('test_dependencies')
-  print(test_dependencies)
+  -- print(test_dependencies)
 
   local substitutions = {
     ['$git_ref'] = meta.git_ref,
@@ -148,10 +149,10 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
   --     template = template:gsub(sub[1], sub[2])
   -- end
   --
-  print('ROCKSPEC')
+  -- print('ROCKSPEC')
   -- print(rockspec)
 
-  return rockspec
+  return rockspec_filename, rockspec
 end
 
 return Rockspec

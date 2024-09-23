@@ -10,11 +10,11 @@ local argparse = require('argparse')
 
 local parser = argparse('rockspec-generator-cli', 'Generate a rockspec file')
 parser:argument('package_name', 'The name of the package')
-parser:option('--modrev', 'Module revision')
-parser:option('--specrev', 'Spec revision')
+parser:option('--modrev', 'Module revision'):default('1')
+parser:option('--specrev', 'Spec revision'):default('1')
 parser:option('--rockspec_template', 'Rockspec template'):default('resources/rockspec.template')
-parser:option('--ref_type', 'Reference type')
-parser:option('--git_server_url', 'Git server URL')
+parser:option('--ref_type', 'Reference type'):default('1')
+parser:option('--git_server_url', 'Git server URL'):default('github.com')
 parser:option('--repo_url', 'Git repository')
 parser:option('--license', 'License')
 parser:option('--git_ref', 'Git reference'):default('main')
@@ -44,20 +44,26 @@ rockspec_template_file:close()
 -- print(rockspec_template)
 
 -- github_event_tbl.git_server_url .. '/' .. github_event_tbl.github_repo,
-local rockspec = require('ltr.rockspec').generate(args.package_name, args.modrev, args.specrev, rockspec_template, {
-  ref_type = args.ref_type,
-  git_server_url = args.git_server_url,
-  github_repo = args.github_repo,
-  repo_url = args.repo_url,
-  license = args.license,
-  git_ref = args.git_ref,
-  summary = args.summary,
-  detailed_description_lines = args.detailed_description_lines,
-  dependencies = args.dependencies,
-  test_dependencies = args.test_dependencies,
-  labels = args.labels,
-  copy_directories = args.copy_directories,
-  repo_name = args.repo_name,
-  github_event_tbl = github_event_tbl,
-})
+local rockspec_filename, content =
+  require('ltr.rockspec').generate(args.package_name, args.modrev, args.specrev, rockspec_template, {
+    ref_type = args.ref_type,
+    git_server_url = args.git_server_url,
+    github_repo = args.github_repo,
+    repo_url = args.repo_url,
+    license = args.license,
+    git_ref = args.git_ref,
+    summary = args.summary,
+    detailed_description_lines = args.detailed_description_lines,
+    dependencies = args.dependencies,
+    test_dependencies = args.test_dependencies,
+    labels = args.labels,
+    copy_directories = args.copy_directories,
+    repo_name = args.repo_name,
+    github_event_tbl = github_event_tbl,
+  })
+
+local rockspec_template_fd = assert(io.open(rockspec_filename, 'w+'), 'Could not open ' .. rockspec_filename)
+rockspec_template_fd:write(content)
+rockspec_template_fd:close()
+
 print(rockspec)
