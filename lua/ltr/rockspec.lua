@@ -40,6 +40,7 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
   ---@param xs string[]?
   ---@return string lua_list_string
   local function mk_lua_list_string(xs)
+    print('mk_lua_list_string(xs): ', xs)
     if not xs or #xs == 0 then
       return '{ }'
     end
@@ -112,6 +113,9 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
 
   -- TODO only gsub if set
   -- local mappings = { ['$git_ref'] = meta.git_ref; }
+  local test_dependencies = mk_lua_list_string(meta.test_dependencies), print('test_dependencies')
+  print(test_dependencies)
+
   local substitutions = {
     ['$git_ref'] = meta.git_ref,
     ['$modrev'] = modrev,
@@ -133,7 +137,8 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
   for key, val in pairs(substitutions) do
     print('KEY', key)
     if val then
-      rockspec:gsub(key, val)
+      print('gsub with val: ', val)
+      rockspec = rockspec:gsub(key, val)
     else
       print('Skipping ', key(' since mapping is empty'))
     end
@@ -144,7 +149,7 @@ function Rockspec.generate(package_name, modrev, specrev, rockspec_template, met
   -- end
   --
   print('ROCKSPEC')
-  print(rockspec)
+  -- print(rockspec)
 
   return rockspec
 end

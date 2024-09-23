@@ -22,7 +22,7 @@ parser:option('--summary', 'Summary'):default('No summary')
 parser:option('--detailed_description_lines', 'Detailed description lines')
 -- list of strings
 parser:option('--dependencies', 'Dependencies'):default {}
-parser:option('--test_dependencies', 'Test dependencies')
+parser:option('--test_dependencies', 'Test dependencies'):default {}
 parser:option('--labels', 'Labels')
 parser:option('--copy_directories', 'Copy directories')
 parser:option('--repo_name', 'Repository name')
@@ -41,7 +41,7 @@ local rockspec_template_file = assert(io.open(args.rockspec_template, 'r'), 'Cou
 local rockspec_template = rockspec_template_file:read('*a')
 rockspec_template_file:close()
 
-print(rockspec_template)
+-- print(rockspec_template)
 
 -- github_event_tbl.git_server_url .. '/' .. github_event_tbl.github_repo,
 local rockspec = require('ltr.rockspec').generate(args.package_name, args.modrev, args.specrev, rockspec_template, {
