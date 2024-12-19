@@ -23,7 +23,7 @@ local repo_name = assert(
   ]]
 )
 
-local git_server_url = os.getenv('GIT_SERVER_URL_OVERRIDE') or getenv_or_err('GITHUB_SERVER_URL')
+local git_server_url = getenv_or_err('INPUT_REPOSITORY')
 
 local is_pull_request = getenv_or_empty('GITHUB_EVENT_NAME') == 'pull_request'
 
