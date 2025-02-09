@@ -56,6 +56,17 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     local outfile = assert(io.open(rockspec_file_path, 'w'), 'Could not create ' .. rockspec_file_path .. '.')
     outfile:write(rockspec_content)
     outfile:close()
+    return rockspec_file_path
+  end
+
+  local function setup_luarocks_paths()
+    print('Getting luarocks path info')
+    local luarocks_path_output, _ = OS.execute('luarocks path', error, args.is_debug)
+    print('Setting up luarocks paths')
+    OS.execute(luarocks_path_output, error, args.is_debug)
+  end
+
+  local function test_install_rockspec()
     local tmp_dir, luarocks_install_cmd = mk_luarocks_install_cmd()
     local cmd = luarocks_install_cmd .. ' ' .. rockspec_file_path .. luarocks_extra_flags_and_args
     print('TEST: ' .. cmd)
@@ -65,13 +76,11 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
     print('TEST: ' .. cmd)
     stdout, _ = OS.execute(cmd, error, args.is_debug)
     print(stdout)
-    return rockspec_file_path
   end
 
   ---@param target_rockspec_path string
   ---@return nil
   local function luarocks_upload(target_rockspec_path)
-    local _, luarocks_install_cmd = mk_luarocks_install_cmd()
     local cmd = 'luarocks upload '
       .. target_rockspec_path
       .. ' --api-key $LUAROCKS_API_KEY'
@@ -91,9 +100,13 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
       end
     end, args.is_debug)
     print(stdout)
-    cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev .. luarocks_extra_flags_and_args
+  end
+
+  local function test_install_package()
+    local _, luarocks_install_cmd = mk_luarocks_install_cmd()
+    local cmd = luarocks_install_cmd .. ' ' .. package_name .. ' ' .. modrev .. luarocks_extra_flags_and_args
     print('TEST: ' .. cmd)
-    stdout, _ = OS.execute(cmd, print, args.is_debug)
+    local stdout, _ = OS.execute(cmd, print, args.is_debug)
     print(stdout)
   end
 
@@ -143,8 +156,11 @@ local function luarocks_tag_release(package_name, package_version, specrev, args
 
   OS.write_file(rockspec_file_path, rockspec)
   local target_rockspec_path = create_rockspec(rockspec)
+  setup_luarocks_paths()
+  test_install_rockspec()
   if args.upload then
     luarocks_upload(target_rockspec_path)
+    test_install_package()
   else
     print('LuaRocks upload disabled. Skipping...')
   end
