@@ -166,11 +166,12 @@ Example:
 > - compiler
 > - doc
 > - filetype.lua
-> - ftplugin
 > - ftdetect
+> - ftplugin
 > - indent
 > - keymap
 > - lang
+> - lsp
 > - menu.vim
 > - parser
 > - plugin
