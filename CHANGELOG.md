@@ -2,6 +2,14 @@
 
 # Changelog
 
+## [7.2.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v7.1.0...v7.2.0) (2025-04-13)
+
+
+### Features
+
+* **neovim:** support `lsp` runtime directory ([#643](https://github.com/nvim-neorocks/luarocks-tag-release/issues/643)) ([da4e090](https://github.com/nvim-neorocks/luarocks-tag-release/commit/da4e090accd58917793aa7116c825d7ea7590754))
+* set up luarocks path before test install ([#597](https://github.com/nvim-neorocks/luarocks-tag-release/issues/597)) ([7bc0a20](https://github.com/nvim-neorocks/luarocks-tag-release/commit/7bc0a20c425da1ba577a4ff6b2c56c81e2feb4ca))
+
 ## [7.1.0](https://github.com/nvim-neorocks/luarocks-tag-release/compare/v7.0.1...v7.1.0) (2024-06-21)
 
 
