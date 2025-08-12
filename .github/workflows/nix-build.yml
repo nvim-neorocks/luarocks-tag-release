@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Checks
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v30
       - name: Nix checks
         run: nix flake check -L
@@ -24,7 +24,7 @@ jobs:
           - .#luarocks-tag-release-action
           - .#devShells.x86_64-linux.default
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: cachix/install-nix-action@v30
     - uses: cachix/cachix-action@v16
       with:
