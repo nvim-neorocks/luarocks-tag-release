@@ -10,6 +10,10 @@ inputs:
     description: "The name of the your package"
     required: true
     default: ${{ github.event.repository.name }}
+  repository_url:
+    description: "The name of the your package"
+    required: true
+    default: ${{ env.GIT_SERVER_URL_OVERRIDE or env.GITHUB_SERVER_URL }}
   version:
     description: |
       The version of your package. Uses the git tag by default (if one exists).
@@ -76,6 +80,7 @@ runs:
       env:
         INPUT_NAME: ${{ inputs.name }}
         INPUT_VERSION: ${{ inputs.version }}
+        INPUT_REPOSITORY: ${{ inputs.repository_url }}
         INPUT_SPECREV: ${{ inputs.specrev }}
         INPUT_DEPENDENCIES: ${{ inputs.dependencies }}
         INPUT_TEST_DEPENDENCIES: ${{ inputs.test_dependencies }}
